@@ -102,10 +102,6 @@ Lights1 bob_dl_Material_26_f3d_lights = gdSPDefLights1(
 	0x7F, 0x7F, 0x7F,
 	0xFF, 0xFF, 0xFF, 0x49, 0x49, 0x49);
 
-Lights1 bob_dl_deathhh_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFF, 0xFF, 0xFF, 0x49, 0x49, 0x49);
-
 Lights1 bob_dl_Material_0_f3d_002_lights = gdSPDefLights1(
 	0x7F, 0x7F, 0x7F,
 	0xFF, 0xFF, 0xFF, 0x49, 0x49, 0x49);
@@ -21531,19 +21527,6 @@ Gfx bob_dl_node_mesh_layer_4_tri_2[] = {
 	gsSPEndDisplayList(),
 };
 
-Vtx bob_dl_Plane_mesh_layer_4_vtx_0[4] = {
-	{{ {21041, 0, -21041}, 0, {-13072, 12272}, {0, 127, 0, 255} }},
-	{{ {-21041, 0, -21041}, 0, {-6544, 12272}, {0, 127, 0, 255} }},
-	{{ {-21041, 0, 21041}, 0, {-6544, 6128}, {0, 127, 0, 255} }},
-	{{ {21041, 0, 21041}, 0, {-13072, 6128}, {0, 127, 0, 255} }},
-};
-
-Gfx bob_dl_Plane_mesh_layer_4_tri_0[] = {
-	gsSPVertex(bob_dl_Plane_mesh_layer_4_vtx_0 + 0, 4, 0),
-	gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
-	gsSPEndDisplayList(),
-};
-
 Vtx bob_dl_node_001_mesh_layer_1_vtx_cull[8] = {
 	{{ {-4637, -4637, 243}, 0, {0, 0}, {0, 0, 0, 0} }},
 	{{ {-4637, 4637, 243}, 0, {0, 0}, {0, 0, 0, 0} }},
@@ -22946,26 +22929,6 @@ Gfx mat_revert_bob_dl_Material_26_f3d[] = {
 	gsSPEndDisplayList(),
 };
 
-Gfx mat_bob_dl_deathhh[] = {
-	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, SHADE, 0, TEXEL0, 0, ENVIRONMENT, 0),
-	gsSPGeometryMode(G_CULL_BACK, 0),
-	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(bob_dl_deathhh_lights),
-	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 204, bob_dl_download__2____Copy_rgba16),
-	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 51, 0, 7, 0, G_TX_WRAP | G_TX_NOMIRROR, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 0, 0),
-	gsDPLoadTile(7, 0, 0, 812, 764),
-	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 51, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 8, 0, G_TX_WRAP | G_TX_NOMIRROR, 8, 0),
-	gsDPSetTileSize(0, 0, 0, 812, 764),
-	gsSPEndDisplayList(),
-};
-
-Gfx mat_revert_bob_dl_deathhh[] = {
-	gsDPPipeSync(),
-	gsSPGeometryMode(0, G_CULL_BACK),
-	gsSPEndDisplayList(),
-};
-
 Gfx mat_bob_dl_Material_0_f3d_002[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
@@ -23160,13 +23123,6 @@ Gfx bob_dl_node_mesh_layer_4[] = {
 	gsSPDisplayList(mat_bob_dl_Material_26_f3d),
 	gsSPDisplayList(bob_dl_node_mesh_layer_4_tri_2),
 	gsSPDisplayList(mat_revert_bob_dl_Material_26_f3d),
-	gsSPEndDisplayList(),
-};
-
-Gfx bob_dl_Plane_mesh_layer_4[] = {
-	gsSPDisplayList(mat_bob_dl_deathhh),
-	gsSPDisplayList(bob_dl_Plane_mesh_layer_4_tri_0),
-	gsSPDisplayList(mat_revert_bob_dl_deathhh),
 	gsDPPipeSync(),
 	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPClearGeometryMode(G_TEXTURE_GEN),

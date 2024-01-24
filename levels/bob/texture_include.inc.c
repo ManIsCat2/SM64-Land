@@ -128,11 +128,6 @@ u8 bob_dl__26_rgba16[] = {
 	#include "levels/bob/_26.rgba16.inc.c"
 };
 
-Gfx bob_dl_download__2____Copy_rgba16_aligner[] = {gsSPEndDisplayList()};
-u8 bob_dl_download__2____Copy_rgba16[] = {
-	#include "levels/bob/download__2__-_Copy.rgba16.inc.c"
-};
-
 Gfx bob_dl__0_2_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 bob_dl__0_2_rgba16[] = {
 	#include "levels/bob/_0_2.rgba16.inc.c"
