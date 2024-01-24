@@ -1,0 +1,14 @@
+extern const GeoLayout eight_star_cage_geo[];
+extern Lights1 eight_star_cage_Material_0_f3d_lights;
+extern Lights1 eight_star_cage_Material_1_f3d_lights;
+extern u8 eight_star_cage__0_rgba16[];
+extern u8 eight_star_cage__1_rgba16[];
+extern Vtx eight_star_cage_Bone_mesh_layer_4_vtx_0[97];
+extern Gfx eight_star_cage_Bone_mesh_layer_4_tri_0[];
+extern Vtx eight_star_cage_Bone_mesh_layer_1_vtx_0[26];
+extern Gfx eight_star_cage_Bone_mesh_layer_1_tri_0[];
+extern Gfx mat_eight_star_cage_Material_0_f3d[];
+extern Gfx mat_revert_eight_star_cage_Material_0_f3d[];
+extern Gfx mat_eight_star_cage_Material_1_f3d[];
+extern Gfx eight_star_cage_Bone_mesh_layer_4[];
+extern Gfx eight_star_cage_Bone_mesh_layer_1[];
