@@ -60,7 +60,7 @@ function models(m)
 end
 
 function on_death_warp()
-    gPlayerSyncTable[0].modelId = E_MODEL_MARIO
+    gPlayerSyncTable[0].modelId = nil
     tanooki = false
 end
 
