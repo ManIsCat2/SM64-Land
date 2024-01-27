@@ -9,12 +9,13 @@ function bhv_leaf_init(obj)
     obj.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     obj_set_model_extended(obj, E_MODEL_TANOOK_LEAF)
     obj_scale(obj, 0.5)
-    obj.oFaceAngleYaw = obj.oFaceAngleYaw - 32768
+    obj.oFaceAngleYaw = obj.oFaceAngleYaw - 32768 -- watchr is so not awesome
     obj.hitboxRadius = 100
     obj.hitboxHeight = 100
     obj.oGravity = 3
     obj.oFriction = 0.8
     obj.oBuoyancy = 1
+    network_init_object(obj, true, nil)
 end
 
 ---@param obj Object
