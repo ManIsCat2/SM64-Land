@@ -110,19 +110,24 @@ function seesaw_green_init(obj)
     obj.header.gfx.skipInViewCheck = true
     obj.oFaceAngleYaw = obj.oFaceAngleYaw + 16384
     obj.oMoveAngleYaw = obj.oMoveAngleYaw + 16384
+    obj.oHomeX = obj.oPosX
+    obj.oHomeY = obj.oPosY
+    obj.oHomeZ = obj.oPosZ
+    network_init_object(obj, true, nil)
 end
+
+ACT_SEESAW_GREEN_FORWARD = 1
+ACT_SEESAW_GREEN_BACKWARD = 2
+ACT_SEESAW_GREEN_STOP = 3
 
 function seesaw_green_loop(o)
     load_object_collision_model()
     local m = gMarioStates[0]
-    if m.controller.buttonDown & U_JPAD ~= 0 and m.controller.buttonDown & D_JPAD == 0 and cur_obj_is_mario_on_platform() then
+    if cur_obj_is_mario_on_platform() ~= 0 and o.oHomeY == 1620 then
         o.oForwardVel = 20
         o.oPosY = o.oPosY - 3.7
-    end
-
-    if m.controller.buttonDown & U_JPAD == 0 and m.controller.buttonDown & D_JPAD ~= 0 and cur_obj_is_mario_on_platform() then
-        o.oForwardVel = -20
-        o.oPosY = o.oPosY + 3.7
+    else
+        o.oForwardVel = 0
     end
 end
 

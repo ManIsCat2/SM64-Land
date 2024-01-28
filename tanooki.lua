@@ -27,7 +27,6 @@ function bhv_leaf_loop(obj)
     if distance < 50 then
         obj_mark_for_deletion(obj)
         play_sound(SOUND_GENERAL_COLLECT_1UP, m.marioObj.header.gfx.cameraToObject)
-        if m.playerIndex ~= 0 then return end
         cloud = false
         bee = false
         fludd = false
