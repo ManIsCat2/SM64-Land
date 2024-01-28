@@ -115,11 +115,14 @@ end
 function seesaw_green_loop(o)
     load_object_collision_model()
     local m = gMarioStates[0]
-    if m.controller.buttonDown & U_JPAD ~= 0 and cur_obj_is_mario_on_platform() then
+    if m.controller.buttonDown & U_JPAD ~= 0 and m.controller.buttonDown & D_JPAD == 0 and cur_obj_is_mario_on_platform() then
         o.oForwardVel = 20
         o.oPosY = o.oPosY - 3.7
-    else
-        o.oForwardVel = 0
+    end
+
+    if m.controller.buttonDown & U_JPAD == 0 and m.controller.buttonDown & D_JPAD ~= 0 and cur_obj_is_mario_on_platform() then
+        o.oForwardVel = -20
+        o.oPosY = o.oPosY + 3.7
     end
 end
 
