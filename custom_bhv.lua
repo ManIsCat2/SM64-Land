@@ -104,14 +104,23 @@ E_MODEL_GREEN_SEESAW = smlua_model_util_get_id("green_seesaw_geo")
 COL_GREEN_SEESAW = smlua_collision_util_get("green_seesaw_collision")
 
 function seesaw_green_init(obj)
-  --  obj.collisionData = COL_GREEN_SEESAW
+    obj.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_MOVE_XZ_USING_FVEL
+    obj.collisionData = COL_GREEN_SEESAW
     obj.oCollisionDistance = 2500
     obj.header.gfx.skipInViewCheck = true
+    obj.oFaceAngleYaw = obj.oFaceAngleYaw + 16384
+    obj.oMoveAngleYaw = obj.oMoveAngleYaw + 16384
 end
 
 function seesaw_green_loop(o)
     load_object_collision_model()
-    object_step()
+    local m = gMarioStates[0]
+    if m.controller.buttonDown & U_JPAD ~= 0 and cur_obj_is_mario_on_platform() then
+        o.oForwardVel = 20
+        o.oPosY = o.oPosY - 3.7
+    else
+        o.oForwardVel = 0
+    end
 end
 
 id_bhvGreenSeesaw = hook_behavior(nil, OBJ_LIST_SURFACE, true, seesaw_green_init, seesaw_green_loop, "id_bhvGreenSeesaw")
