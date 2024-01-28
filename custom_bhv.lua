@@ -114,18 +114,25 @@ function seesaw_green_init(obj)
     obj.oHomeY = obj.oPosY
     obj.oHomeZ = obj.oPosZ
     network_init_object(obj, true, nil)
+
+    -- more things
+    o = obj
+    if o.oHomeY == 1620 then
+        o.oFaceAnglePitch = 2000
+    end
 end
 
 ACT_SEESAW_GREEN_FORWARD = 1
 ACT_SEESAW_GREEN_BACKWARD = 2
 ACT_SEESAW_GREEN_STOP = 3
 
+---@param o Object
 function seesaw_green_loop(o)
     load_object_collision_model()
     local m = gMarioStates[0]
     if cur_obj_is_mario_on_platform() ~= 0 and o.oHomeY == 1620 then
         o.oForwardVel = 20
-        o.oPosY = o.oPosY - 3.7
+        o.oPosY = o.oPosY - 3.9
     else
         o.oForwardVel = 0
     end
