@@ -1,5 +1,5 @@
 -- name: Super Mario 64 Land
--- description: Awesome romhack by Kaze, Ported By I'mYourCat
+-- description: Awesome romhack by Kaze, Ported By I'mYourCat.
 -- incompatible: romhack
 
 gLevelValues.entryLevel = LEVEL_CASTLE_GROUNDS

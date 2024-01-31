@@ -103,38 +103,91 @@ id_bhvCurvedMushroom = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mushroom_c
 E_MODEL_GREEN_SEESAW = smlua_model_util_get_id("green_seesaw_geo")
 COL_GREEN_SEESAW = smlua_collision_util_get("green_seesaw_collision")
 
+
+define_custom_obj_fields({
+    oEndPointX = "f32",
+    oEndPointZ = "f32",
+    oDoneEndPoint = "s32"
+})
+
+---@param obj Object
 function seesaw_green_init(obj)
+    obj.oDoneEndPoint = 0
     obj.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_MOVE_XZ_USING_FVEL
     obj.collisionData = COL_GREEN_SEESAW
     obj.oCollisionDistance = 2500
     obj.header.gfx.skipInViewCheck = true
-    obj.oFaceAngleYaw = obj.oFaceAngleYaw + 16384
-    obj.oMoveAngleYaw = obj.oMoveAngleYaw + 16384
     obj.oHomeX = obj.oPosX
     obj.oHomeY = obj.oPosY
     obj.oHomeZ = obj.oPosZ
-    network_init_object(obj, true, nil)
+    network_init_object(obj, true, {"oEndPointX", "oEndPointZ", "oDoneEndPoint"})
 
     -- more things
     o = obj
     if o.oHomeY == 1620 then
         o.oFaceAnglePitch = 2000
+        obj.oFaceAngleYaw = obj.oFaceAngleYaw + 16384
+        obj.oMoveAngleYaw = obj.oMoveAngleYaw + 16384
+        o.oEndPointX = 1494
+    end
+
+    if o.oHomeX == 3341 then
+        o.oFaceAnglePitch = 0
+        o.oEndPointZ = -12855
+    end
+
+    if o.oHomeX == 4401 then
+        o.oFaceAnglePitch = 0
+        o.oEndPointZ = -11426
+    end
+
+    if o.oHomeX == 6675 then
+        o.oFaceAnglePitch = 0
+       o.oEndPointZ = -9309
     end
 end
-
-ACT_SEESAW_GREEN_FORWARD = 1
-ACT_SEESAW_GREEN_BACKWARD = 2
-ACT_SEESAW_GREEN_STOP = 3
 
 ---@param o Object
 function seesaw_green_loop(o)
     load_object_collision_model()
+    ---@type MarioState
     local m = gMarioStates[0]
-    if cur_obj_is_mario_on_platform() ~= 0 and o.oHomeY == 1620 then
-        o.oForwardVel = 20
-        o.oPosY = o.oPosY - 3.9
-    else
+    djui_chat_message_create(tostring(m.floor.object.oPosZ))
+
+    if m.controller.buttonDown & U_JPAD == 0 then
         o.oForwardVel = 0
+    end
+
+    if cur_obj_is_mario_on_platform() == 0 and m.controller.buttonDown & U_JPAD ~= 0 then
+        o.oForwardVel = 0
+    end
+
+    if cur_obj_is_mario_on_platform() ~= 0 and o.oHomeY == 1620 and not is_bubbled(m) and o.oDoneEndPoint == 0 then
+        if m.controller.buttonDown & U_JPAD ~= 0 then
+            o.oForwardVel = 20
+            o.oPosY = o.oPosY - 3.9
+        else
+            o.oForwardVel = 0
+        end
+
+    end
+
+    if cur_obj_is_mario_on_platform() ~= 0 and (o.oHomeX == 3341 or o.oHomeX == 4401 or o.oHomeX == 6675) and not is_bubbled(m) and o.oDoneEndPoint == 0 then
+        if m.controller.buttonDown & U_JPAD ~= 0 then
+            o.oForwardVel = 20
+        else
+            o.oForwardVel = 0
+        end
+    end
+
+    if o.oPosX == o.oEndPointX then
+        o.oForwardVel = 0
+        o.oDoneEndPoint = 1
+    end
+
+    if o.oPosZ == o.oEndPointZ then
+        o.oForwardVel = 0
+        o.oDoneEndPoint = 1
     end
 end
 
