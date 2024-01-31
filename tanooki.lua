@@ -35,7 +35,7 @@ function bhv_leaf_loop(obj)
     end
 end
 
-id_bhvTanookiLeaf = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_leaf_init, bhv_leaf_loop)
+id_bhvWingCap = hook_behavior(id_bhvWingCap, OBJ_LIST_GENACTOR, true, bhv_leaf_init, bhv_leaf_loop)
 
 function tanooki_loop(m)
     if m.playerIndex == 0 then

@@ -152,7 +152,6 @@ function seesaw_green_loop(o)
     load_object_collision_model()
     ---@type MarioState
     local m = gMarioStates[0]
-    djui_chat_message_create(tostring(m.floor.object.oPosZ))
 
     if m.controller.buttonDown & U_JPAD == 0 then
         o.oForwardVel = 0
