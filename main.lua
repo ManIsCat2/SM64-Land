@@ -6,6 +6,8 @@ gLevelValues.entryLevel = LEVEL_CASTLE_GROUNDS
 gLevelValues.exitCastleLevel = LEVEL_CASTLE_GROUNDS
 --gLevelValues.disableActs = true
 
+vec3f_set(gLevelValues.starPositions.KingBobombStarPos, 0, 70, 0)
+
 camera_set_use_course_specific_settings(false)
 
 save_file_set_flags(SAVE_FLAG_HAVE_METAL_CAP)
