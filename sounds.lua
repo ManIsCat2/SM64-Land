@@ -1,6 +1,7 @@
 smlua_audio_utils_replace_sequence(SEQ_LEVEL_GRASS, 37, 75, "SM3DWZeroVv2")
 smlua_audio_utils_replace_sequence(72, 26, 75, "1-2_Puzzle_Plank")
 smlua_audio_utils_replace_sequence(37, 26, 75, "Space1")
+smlua_audio_utils_replace_sequence(59, 37, 75, "3B_Seq_custom")
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom")
