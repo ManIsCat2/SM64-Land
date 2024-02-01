@@ -145,6 +145,19 @@ function seesaw_green_init(obj)
         o.oFaceAnglePitch = 0
        o.oEndPointZ = -9309
     end
+
+    if o.oHomeX == 3497 then
+        obj.oFaceAngleYaw = obj.oFaceAngleYaw + 16384
+        obj.oMoveAngleYaw = obj.oMoveAngleYaw + 16384
+        o.oEndPointX = 5437
+    end
+
+    if o.oHomeX == 5874 then
+        obj.oFaceAngleYaw = obj.oFaceAngleYaw - 16384
+        obj.oMoveAngleYaw = obj.oMoveAngleYaw - 16384
+        o.oEndPointX = -1546
+        o.oFaceAnglePitch = -2000
+    end
 end
 
 ---@param o Object
@@ -152,6 +165,7 @@ function seesaw_green_loop(o)
     load_object_collision_model()
     ---@type MarioState
     local m = gMarioStates[0]
+   --djui_chat_message_create(tostring(m.floor.object.oPosX))
 
     if m.controller.buttonDown & U_JPAD == 0 then
         o.oForwardVel = 0
@@ -171,9 +185,18 @@ function seesaw_green_loop(o)
 
     end
 
-    if cur_obj_is_mario_on_platform() ~= 0 and (o.oHomeX == 3341 or o.oHomeX == 4401 or o.oHomeX == 6675) and not is_bubbled(m) and o.oDoneEndPoint == 0 then
+    if cur_obj_is_mario_on_platform() ~= 0 and (o.oHomeX == 3341 or o.oHomeX == 4401 or o.oHomeX == 6675 or o.oHomeX == 3497) and not is_bubbled(m) and o.oDoneEndPoint == 0 then
         if m.controller.buttonDown & U_JPAD ~= 0 then
             o.oForwardVel = 20
+        else
+            o.oForwardVel = 0
+        end
+    end
+
+    if cur_obj_is_mario_on_platform() ~= 0 and o.oHomeX == 5874 and not is_bubbled(m) and o.oDoneEndPoint == 0 then
+        if m.controller.buttonDown & U_JPAD ~= 0 then
+            o.oForwardVel = 20
+            o.oPosY = o.oPosY + 1.7
         else
             o.oForwardVel = 0
         end
@@ -187,6 +210,20 @@ function seesaw_green_loop(o)
     if o.oPosZ == o.oEndPointZ then
         o.oForwardVel = 0
         o.oDoneEndPoint = 1
+    end
+
+    if o.oDoneEndPoint == 1 then
+        o.oSubAction = o.oSubAction + 1
+    end
+
+    -- return 
+
+    if o.oSubAction > 400 then
+        o.oPosX = o.oHomeX
+        o.oPosY = o.oHomeY
+        o.oPosZ = o.oHomeZ
+        o.oDoneEndPoint = 0
+        o.oSubAction = 0
     end
 end
 
