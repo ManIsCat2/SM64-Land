@@ -15,9 +15,6 @@ local function is_bubbled(m)
 end
 
 
-
-STAR_COUNT = get_star_count()
-
 E_MODEL_RED_WARP_PIPE = smlua_model_util_get_id("warp_pipe_red_geo")
 
 -- custom cage for boss
@@ -34,7 +31,7 @@ end
 
 function eight_star_cage_loop(o)
     load_object_collision_model()
-    if STAR_COUNT >= 8 then
+    if get_star_count() >= 8 then
         obj_mark_for_deletion(o)
     end
 end
