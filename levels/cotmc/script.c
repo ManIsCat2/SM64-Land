@@ -80,10 +80,26 @@ const LevelScript level_cotmc_entry[] = {
 	OBJECT_WITH_ACTS(0, -1638, 0, 98, 0, 90, 0, 0xa0000, bhvSpinAirborneWarp, 31),
 	OBJECT_WITH_ACTS(E_MODEL_TOAD, -246, 130, 49, 0, 270, 0, 0x1, id_bhvToadMessage, 31),
 	OBJECT_WITH_ACTS(0, -2142, 0, 62, 0, 90, 0, 0xa0a0000, bhvWarp, 31),
-	//OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x0, 0x0041f5a0, 31),
+	// OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x0, 0x0041f5a0, 31),
 	TERRAIN(cotmc_area_1_collision),
 	MACRO_OBJECTS(cotmc_area_1_macro_objs),
 	SET_BACKGROUND_MUSIC(0x00, 59),
+	TERRAIN_TYPE(TERRAIN_GRASS),
+	/* Fast64 begin persistent block [area commands] */
+	/* Fast64 end persistent block [area commands] */
+	END_AREA(),
+
+	AREA(2, cotmc_area_2),
+	WARP_NODE(10, 26, 1, 1, 0),
+	WARP_NODE(240, 6, 1, 50, 0),
+	WARP_NODE(241, 6, 1, 100, 0),
+	OBJECT_WITH_ACTS(E_MODEL_TOAD, -246, 130, 49, 0, 270, 0, 0x4000203, id_bhvToadMessage, 31),
+	OBJECT_WITH_ACTS(0, -1638, 0, 98, 0, 90, 0, 0xa0000, bhvSpinAirborneWarp, 31),
+	OBJECT_WITH_ACTS(0, -2142, 0, 62, 0, 90, 0, 0xa0a0000, bhvWarp, 31),
+	// OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x0, 0x0041f5a0, 31),
+	TERRAIN(cotmc_area_2_collision),
+	MACRO_OBJECTS(cotmc_area_2_macro_objs),
+	SET_BACKGROUND_MUSIC(0, 59),
 	TERRAIN_TYPE(TERRAIN_GRASS),
 	/* Fast64 begin persistent block [area commands] */
 	/* Fast64 end persistent block [area commands] */
