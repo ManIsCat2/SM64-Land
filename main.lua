@@ -5,6 +5,7 @@
 gLevelValues.entryLevel = LEVEL_CASTLE_GROUNDS
 gLevelValues.exitCastleLevel = LEVEL_CASTLE_GROUNDS
 gLevelValues.fixCollisionBugs = true
+gLevelValues.metalCapDurationCotmc = 1
 --really needed
 gServerSettings.stayInLevelAfterStar = true
 --gLevelValues.disableActs = true
