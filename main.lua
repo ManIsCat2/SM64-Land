@@ -5,6 +5,8 @@
 gLevelValues.entryLevel = LEVEL_CASTLE_GROUNDS
 gLevelValues.exitCastleLevel = LEVEL_CASTLE_GROUNDS
 gLevelValues.fixCollisionBugs = true
+--really needed
+gServerSettings.stayInLevelAfterStar = true
 --gLevelValues.disableActs = true
 
 vec3f_set(gLevelValues.starPositions.KingBobombStarPos, 0, 70, 0)
