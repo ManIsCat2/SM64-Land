@@ -62,6 +62,7 @@ end
 function on_death_warp()
     gPlayerSyncTable[0].modelId = nil
     tanooki = false
+    catsuit = false
 end
 
 hook_event(HOOK_MARIO_UPDATE, models)
