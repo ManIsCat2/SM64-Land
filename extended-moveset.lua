@@ -32,29 +32,29 @@ local math_sqrt, math_min, math_max, math_floor = math.sqrt, math.min, math.max,
 local ACT_SPIN_POUND_LAND = allocate_mario_action(ACT_GROUP_STATIONARY | ACT_FLAG_STATIONARY | ACT_FLAG_ATTACKING)
 local ACT_ROLL = allocate_mario_action(ACT_GROUP_MOVING | ACT_FLAG_MOVING | ACT_FLAG_BUTT_OR_STOMACH_SLIDE)
 local ACT_GROUND_POUND_JUMP = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR |
-ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
+    ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
 local ACT_SPIN_JUMP = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR | ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
 local ACT_SPIN_POUND = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR | ACT_FLAG_ATTACKING)
 local ACT_LEDGE_PARKOUR = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR)
 local ACT_ROLL_AIR = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR | ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
 ACT_WALL_SLIDE = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR | ACT_FLAG_MOVING |
-ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
+    ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
 local ACT_WATER_GROUND_POUND = allocate_mario_action(ACT_GROUP_SUBMERGED | ACT_FLAG_MOVING | ACT_FLAG_SWIMMING |
-ACT_FLAG_SWIMMING_OR_FLYING | ACT_FLAG_WATER_OR_TEXT | ACT_FLAG_ATTACKING)
+    ACT_FLAG_SWIMMING_OR_FLYING | ACT_FLAG_WATER_OR_TEXT | ACT_FLAG_ATTACKING)
 local ACT_WATER_GROUND_POUND_LAND = allocate_mario_action(ACT_GROUP_SUBMERGED | ACT_FLAG_STATIONARY | ACT_FLAG_SWIMMING |
-ACT_FLAG_SWIMMING_OR_FLYING | ACT_FLAG_WATER_OR_TEXT)
+    ACT_FLAG_SWIMMING_OR_FLYING | ACT_FLAG_WATER_OR_TEXT)
 local ACT_WATER_GROUND_POUND_STROKE = allocate_mario_action(ACT_GROUP_SUBMERGED | ACT_FLAG_MOVING | ACT_FLAG_SWIMMING |
-ACT_FLAG_SWIMMING_OR_FLYING | ACT_FLAG_WATER_OR_TEXT)
+    ACT_FLAG_SWIMMING_OR_FLYING | ACT_FLAG_WATER_OR_TEXT)
 local ACT_WATER_GROUND_POUND_JUMP = allocate_mario_action(ACT_GROUP_SUBMERGED | ACT_FLAG_MOVING | ACT_FLAG_SWIMMING |
-ACT_FLAG_SWIMMING_OR_FLYING | ACT_FLAG_WATER_OR_TEXT)
+    ACT_FLAG_SWIMMING_OR_FLYING | ACT_FLAG_WATER_OR_TEXT)
 local ACT_CUSTOM_DIVE_SLIDE = allocate_mario_action(ACT_GROUP_MOVING | ACT_FLAG_MOVING | ACT_FLAG_DIVING |
-ACT_FLAG_ATTACKING)
+    ACT_FLAG_ATTACKING)
 local ACT_CUSTOM_WALKING = allocate_mario_action(ACT_GROUP_MOVING | ACT_FLAG_MOVING | ACT_FLAG_ALLOW_FIRST_PERSON)
 local ACT_CUSTOM_HOLD_WALKING = allocate_mario_action(ACT_GROUP_MOVING | ACT_FLAG_MOVING)
 local ACT_CUSTOM_HOLD_HEAVY_WALKING = allocate_mario_action(ACT_GROUP_MOVING | ACT_FLAG_MOVING)
 local ACT_CUSTOM_FINISH_TURNING_AROUND = allocate_mario_action(ACT_GROUP_MOVING | ACT_FLAG_MOVING)
 local ACT_CUSTOM_CRAWLING = allocate_mario_action(ACT_GROUP_MOVING | ACT_FLAG_MOVING | ACT_FLAG_SHORT_HITBOX |
-ACT_FLAG_ALLOW_FIRST_PERSON)
+    ACT_FLAG_ALLOW_FIRST_PERSON)
 local ACT_CUSTOM_AIR_HIT_WALL = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR)
 
 -----------------------------
@@ -651,7 +651,11 @@ function act_wall_slide(m)
     end
 
     -- attempt to stick to the wall a bit. if it's 0, sometimes you'll get kicked off of slightly sloped walls
-    mario_set_forward_vel(m, -1.0)
+    if catsuit then
+        mario_set_forward_vel(m, -4)
+    else
+        mario_set_forward_vel(m, -1)
+    end
 
     m.particleFlags = m.particleFlags | PARTICLE_DUST
 
@@ -692,8 +696,15 @@ function act_wall_slide(m)
             set_mario_action(m, ACT_WALL_SLIDE_CLIMB, 0)
         end
 
-        m.marioObj.header.gfx.angle.x = -0x36000
+        f = 55
+
+        X = m.pos.x -(f * sins(m.faceAngle.y))
+        Z = m.pos.z - (f * coss(m.faceAngle.y))
+
+        m.marioObj.header.gfx.angle.x = -18000
         m.marioObj.header.gfx.angle.y = m.marioObj.header.gfx.angle.y + 0x8000
+        m.marioObj.header.gfx.pos.x = X
+        m.marioObj.header.gfx.pos.z = Z
     end
 
     return 0
@@ -701,7 +712,7 @@ end
 
 local function act_wall_slide_gravity(m)
     if catsuit then
-        m.vel.y = m.vel.y + 4 
+        m.vel.y = m.vel.y + 4
 
         if m.vel.y > 15 then
             m.vel.y = 15
@@ -709,7 +720,7 @@ local function act_wall_slide_gravity(m)
     end
 
     if not catsuit then
-        m.vel.y = m.vel.y- 2
+        m.vel.y = m.vel.y - 2
 
         if m.vel.y < -15 then
             m.vel.y = -15
