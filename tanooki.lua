@@ -43,22 +43,14 @@ function tanooki_loop(m)
             if m.action == ACT_JUMP or m.action == ACT_DOUBLE_JUMP or m.action == ACT_TRIPLE_JUMP or m.action == ACT_LONG_JUMP or m.action == ACT_SIDE_FLIP then
                 if m.controller.buttonPressed & A_BUTTON ~= 0 then
                     if m.pos.y > (m.floorHeight + 100) then
-                    m.vel.y = 2
-                    play_sound(SOUND_ENV_WIND1, m.marioObj.header.gfx.cameraToObject)
+                        m.vel.y = 2
+                        play_sound(SOUND_ENV_WIND1, m.marioObj.header.gfx.cameraToObject)
+                    end
                 end
             end
         end
     end
 end
 
-end
-
-function on_death_warp()
-    gPlayerSyncTable[0].modelId = nil
-    tanooki = false
-    catsuit = false
-end
-
 hook_event(HOOK_MARIO_UPDATE, tanooki_loop)
-hook_event(HOOK_ON_DEATH, on_death_warp)
 hook_event(HOOK_ON_WARP, on_death_warp)
