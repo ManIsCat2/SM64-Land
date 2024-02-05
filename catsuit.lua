@@ -74,12 +74,5 @@ function cat_dive_gravity(m)
     m.vel.y = m.vel.y - 4.5
 end
 
-function models(m)
-    if gPlayerSyncTable[m.playerIndex].modelId ~= nil then
-        obj_set_model_extended(m.marioObj, gPlayerSyncTable[m.playerIndex].modelId)
-    end
-end
-
-hook_event(HOOK_MARIO_UPDATE, models)
 hook_event(HOOK_MARIO_UPDATE, catsuit_power_loop)
 hook_mario_action(ACT_CAT_DIVE, { every_frame = cat_dive, gravity = cat_dive_gravity }, INT_FAST_ATTACK_OR_SHELL)

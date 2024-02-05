@@ -53,19 +53,12 @@ end
 
 end
 
-function models(m)
-    if gPlayerSyncTable[m.playerIndex].modelId ~= nil then
-        obj_set_model_extended(m.marioObj, gPlayerSyncTable[m.playerIndex].modelId)
-    end
-end
-
 function on_death_warp()
     gPlayerSyncTable[0].modelId = nil
     tanooki = false
     catsuit = false
 end
 
-hook_event(HOOK_MARIO_UPDATE, models)
 hook_event(HOOK_MARIO_UPDATE, tanooki_loop)
 hook_event(HOOK_ON_DEATH, on_death_warp)
 hook_event(HOOK_ON_WARP, on_death_warp)
