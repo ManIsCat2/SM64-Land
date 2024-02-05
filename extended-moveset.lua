@@ -93,6 +93,8 @@ for i = 0, (MAX_PLAYERS - 1) do
 
     e.savedWallSlideHeight = 0
     e.savedWallSlide = false
+
+    e.animFrame = 0
 end
 
 local function limit_angle(a)
@@ -638,6 +640,10 @@ function act_wall_slide(m)
     e.savedWallSlideHeight = m.pos.y
     e.savedWallSlide = true
 
+    if m.actionTimer == 0 then
+        e.animFrame = 0
+    end
+
     if (m.input & INPUT_A_PRESSED) ~= 0 then
         m.vel.y = 52.0
         -- m.faceAngle.y = limit_angle(m.faceAngle.y + 0x8000)
@@ -666,6 +672,28 @@ function act_wall_slide(m)
             m.faceAngle.y = m.faceAngle.y + 32768
         end
         return set_mario_action(m, ACT_FREEFALL, 0)
+    end
+
+    -- thank steven from minecraft
+
+    if catsuit then
+        set_mario_animation(m, MARIO_ANIM_CRAWLING)
+        set_anim_to_frame(m, e.animFrame)
+        if e.animFrame >= m.marioObj.header.gfx.animInfo.curAnim.loopEnd then
+            e.animFrame = 0
+        else
+            e.animFrame = e.animFrame + math.abs(m.vel.y)
+        end
+
+        if m.vel.y <= 0 then
+            m.pos.x = e.lastPos.x
+            m.pos.y = e.lastPos.y
+            m.pos.z = e.lastPos.z
+            set_mario_action(m, ACT_WALL_SLIDE_CLIMB, 0)
+        end
+
+        m.marioObj.header.gfx.angle.x = -0x36000
+        m.marioObj.header.gfx.angle.y = m.marioObj.header.gfx.angle.y + 0x8000
     end
 
     return 0
