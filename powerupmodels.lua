@@ -17,3 +17,4 @@ function on_death_warp()
 end
 
 hook_event(HOOK_ON_DEATH, on_death_warp)
+hook_event(HOOK_ON_WARP, on_death_warp)

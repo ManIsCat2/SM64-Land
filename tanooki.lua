@@ -53,4 +53,3 @@ function tanooki_loop(m)
 end
 
 hook_event(HOOK_MARIO_UPDATE, tanooki_loop)
-hook_event(HOOK_ON_WARP, on_death_warp)
