@@ -75,14 +75,26 @@ function tanooki_loop(m)
             if m.action == ACT_JUMP or m.action == ACT_DOUBLE_JUMP or m.action == ACT_TRIPLE_JUMP or m.action == ACT_LONG_JUMP or m.action == ACT_SIDE_FLIP then
                 if m.controller.buttonPressed & A_BUTTON ~= 0 then
                     if m.pos.y > (m.floorHeight + 100) then
+                        set_mario_action(m, ACT_JUMP, 0)
                         m.vel.y = 2
-                        play_sound(SOUND_ENV_WIND1, m.marioObj.header.gfx.cameraToObject)
                         smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
                     end
                 end
             end
         end
     end
+
+    if m.action == ACT_JUMP and tanooki then
+        smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
+    end
 end
+
+function on_sound(m, sound)
+    if m.action == ACT_JUMP and tanooki and smlua_anim_util_get_current_animation_name(m.marioObj) == "anim_flutter" then
+        return 0
+    end
+end
+
+hook_event(HOOK_CHARACTER_SOUND, on_sound)
 
 hook_event(HOOK_MARIO_UPDATE, tanooki_loop)
