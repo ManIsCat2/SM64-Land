@@ -35,6 +35,7 @@ smlua_anim_util_register_animation("anim_flutter",
         0x000A, 0x003F, 0x000A, 0x0049, 0x000A, 0x0053, })
 
 local tanooki = false
+local flutterTimer = 40
 
 ---@param obj Object
 function bhv_leaf_init(obj)
@@ -73,12 +74,18 @@ function tanooki_loop(m)
     if m.playerIndex == 0 then
         if gPlayerSyncTable[0].modelId == E_MODEL_TANOOKI_MARIO and tanooki then
             if m.action == ACT_JUMP or m.action == ACT_DOUBLE_JUMP or m.action == ACT_TRIPLE_JUMP or m.action == ACT_LONG_JUMP or m.action == ACT_SIDE_FLIP then
-                if m.controller.buttonPressed & A_BUTTON ~= 0 then
+                if m.controller.buttonPressed & A_BUTTON ~= 0 and m.action & ACT_FLAG_AIR ~= 0 then
                     if m.pos.y > (m.floorHeight + 100) then
                         set_mario_action(m, ACT_JUMP, 0)
-                        m.vel.y = 2
+                        flutterTimer = 0
                         smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
                     end
+                    if flutterTimer < 40 then
+                        flutterTimer = flutterTimer + 1
+                        m.vel.y = -4
+                    end
+                else
+                    flutterTimer = 40
                 end
             end
         end

@@ -63,6 +63,7 @@ local ACT_CUSTOM_AIR_HIT_WALL = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_F
 
 local ANGLE_QUEUE_SIZE = 9
 local SPIN_TIMER_SUCCESSFUL_INPUT = 4
+local SPIN_RISE_TIMER = 0
 
 local gMarioStateExtras = {}
 for i = 0, (MAX_PLAYERS - 1) do
@@ -101,6 +102,14 @@ local function limit_angle(a)
     return (a + 0x8000) % 0x10000 - 0x8000
 end
 
+-------------------------
+-- fall damage removal --
+-------------------------
+function no_fall_damage(m)
+    m.peakHeight = m.pos.y
+end
+   
+   
 ----------
 -- roll --
 ----------
@@ -490,7 +499,17 @@ local function act_spin_jump(m)
     play_mario_sound(m, SOUND_ACTION_TERRAIN_JUMP, CHAR_SOUND_YAHOO)
 
     common_air_action_step(m, ACT_DOUBLE_JUMP_LAND, MARIO_ANIM_TWIRL,
-        AIR_STEP_CHECK_HANG)
+    AIR_STEP_CHECK_HANG)
+
+    if m.action == ACT_SPIN_JUMP then
+        SPIN_RISE_TIMER = SPIN_RISE_TIMER + 1
+        if SPIN_RISE_TIMER <= 20 then
+            m.vel.y = 20
+        else
+            set_mario_action(m, ACT_FREEFALL, 0)
+            SPIN_RISE_TIMER = 0
+        end
+    end
 
     e.rotAngle = e.rotAngle + 0x2867
     if (e.rotAngle > 0x10000) then e.rotAngle = e.rotAngle - 0x10000 end
@@ -1034,37 +1053,19 @@ local function act_ledge_parkour(m)
 end
 
 local function act_ground_pound_jump(m)
-    local e = gMarioStateExtras[m.playerIndex]
-    if check_kick_or_dive_in_air(m) ~= 0 then
-        m.marioObj.header.gfx.angle.y = m.marioObj.header.gfx.angle.y + e.rotAngle
-        return 1
+  play_mario_sound(m, SOUND_ACTION_TERRAIN_JUMP, CHAR_SOUND_YAHOO)
+    if m.controller.buttonPressed & B_BUTTON ~= 0 then
+        mario_set_forward_vel(m, 10.0)
+        m.vel.y = 35.0
+        play_mario_sound(m, CHAR_SOUND_HOOHOO, CHAR_SOUND_HOOHOO)
+        set_mario_action(m, ACT_DIVE, 0)
     end
-
-    if (m.input & INPUT_Z_PRESSED) ~= 0 then
-        m.marioObj.header.gfx.angle.y = m.marioObj.header.gfx.angle.y + e.rotAngle
-        return set_mario_action(m, ACT_GROUND_POUND, 0)
+    if (m.controller.buttonPressed & Z_TRIG) ~= 0 then
+        set_mario_action(m, ACT_GROUND_POUND, 0)
     end
-
-    if e.spinInput ~= 0 then
-        return set_mario_action(m, ACT_SPIN_JUMP, 1)
-    end
-
-    if m.actionTimer == 0 then
-        e.rotAngle = 0
-    elseif m.actionTimer == 1 then
-        play_sound(SOUND_ACTION_SPIN, m.marioObj.header.gfx.cameraToObject)
-    end
-
-    play_mario_sound(m, SOUND_ACTION_TERRAIN_JUMP, CHAR_SOUND_YAHOO)
-
-    common_air_action_step(m, ACT_JUMP_LAND, MARIO_ANIM_SINGLE_JUMP,
-        AIR_STEP_CHECK_LEDGE_GRAB | AIR_STEP_CHECK_HANG)
-
-    e.rotAngle = e.rotAngle + (0x10000 * 1.0 - e.rotAngle) / 5.0
-    m.marioObj.header.gfx.angle.y = m.marioObj.header.gfx.angle.y - e.rotAngle
-
+    common_air_action_step(m, ACT_JUMP_LAND, MARIO_ANIM_TRIPLE_JUMP,
+    AIR_STEP_CHECK_LEDGE_GRAB | AIR_STEP_CHECK_HANG)
     m.actionTimer = m.actionTimer + 1
-
     return 0
 end
 
@@ -1473,7 +1474,6 @@ local function mario_update(m)
 
     -- dive out of ACT_GROUND_POUND
     if m.action == ACT_GROUND_POUND and (m.input & INPUT_B_PRESSED) ~= 0 then
-        m.faceAngle.y = m.intendedYaw
         mario_set_forward_vel(m, 10.0)
         m.vel.y = 35.0
         set_mario_action(m, ACT_DIVE, 0)
@@ -1564,6 +1564,7 @@ end
 
 hook_event(HOOK_BEFORE_MARIO_UPDATE, before_mario_update)
 hook_event(HOOK_MARIO_UPDATE, mario_update)
+hook_event(HOOK_MARIO_UPDATE, no_fall_damage)
 hook_event(HOOK_ON_SET_MARIO_ACTION, mario_on_set_action)
 hook_event(HOOK_BEFORE_SET_MARIO_ACTION, before_set_mario_action)
 
