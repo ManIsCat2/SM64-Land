@@ -82,7 +82,7 @@ function tanooki_loop(m)
                     end
                     if flutterTimer < 40 then
                         flutterTimer = flutterTimer + 1
-                        m.vel.y = -4
+                        m.vel.y = -1
                     end
                 else
                     flutterTimer = 40

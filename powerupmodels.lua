@@ -14,6 +14,8 @@ function on_death_warp()
     gPlayerSyncTable[0].modelId = nil
     tanooki = false
     catsuit = false
+    timer = 0
+    score = 0
 end
 
 hook_event(HOOK_ON_DEATH, on_death_warp)
