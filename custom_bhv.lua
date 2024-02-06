@@ -225,3 +225,17 @@ function seesaw_green_loop(o)
 end
 
 id_bhvGreenSeesaw = hook_behavior(nil, OBJ_LIST_SURFACE, true, seesaw_green_init, seesaw_green_loop, "id_bhvGreenSeesaw")
+
+
+id_bhvPeachCustom = hook_behavior(nil, OBJ_LIST_GENACTOR, true, function(o)
+    o.oFlags = OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_HOLDABLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.oAnimations = gObjectAnimations.peach_seg5_anims_0501C41C
+    o.oInteractType = INTERACT_TEXT
+    o.hitboxRadius = 90
+    o.hitboxHeight = 150
+    cur_obj_init_animation(5)
+    bhv_toad_message_init()
+end, function (o)
+    o.oIntangibleTimer = 0
+    bhv_toad_message_loop()
+end)

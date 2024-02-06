@@ -11,8 +11,8 @@ local timer = 001
 local score = 0
 
 function mario_update(m)
-    numStars = m.numStars
-    numCoins = m.numCoins
+    numStars = hud_get_value(HUD_DISPLAY_STARS)
+    numCoins = hud_get_value(HUD_DISPLAY_COINS)
     if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) then
         timer = timer + 1 / 180
     else
@@ -64,9 +64,18 @@ function toad_house_hud()
         hud_hide()
         djui_hud_set_resolution(RESOLUTION_N64)
         djui_hud_set_font(FONT_HUD)
+
+        djui_hud_render_texture(TEX_SCORE, 8, 4, 1, 1)
+        djui_hud_print_text(tostring(score), 24, 4, 1)
+        djui_hud_render_texture(TEX_UNCOLLECTED_STAR, ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
+        djui_hud_render_texture(TEX_UNCOLLECTED_STAR, ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
+        djui_hud_render_texture(TEX_UNCOLLECTED_STAR, ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
+        djui_hud_render_texture(TEX_UNCOLLECTED_STAR_100, ((djui_hud_get_screen_width() / 2) - 24) + 42, 4, 1, 1)
+        djui_hud_render_texture(TEX_TIMER, ((djui_hud_get_screen_width() / 2) + 46), 4, 1, 1)
+        djui_hud_print_text(string.format(("%.0f"), timer), djui_hud_get_screen_width() / 2 + 57, 4, 1)
         djui_hud_print_text("$", djui_hud_get_screen_width() - 62, 4, 1)
         djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
-        djui_hud_print_text(string.format(("%.0f"), timer), djui_hud_get_screen_width() - 32, 4, 1)
+        djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - 32, 4, 1)
     end
 end
 

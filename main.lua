@@ -2,7 +2,7 @@
 -- description: Awesome romhack by Kaze, Ported By I'mYourCat.
 -- incompatible: romhack
 
-gLevelValues.entryLevel = LEVEL_CASTLE_GROUNDS
+gLevelValues.entryLevel = LEVEL_CASTLE
 gLevelValues.exitCastleLevel = LEVEL_CASTLE_GROUNDS
 gLevelValues.fixCollisionBugs = true
 gLevelValues.metalCapDurationCotmc = 1
