@@ -16,6 +16,7 @@ function on_death_warp()
     catsuit = false
     timer = 0
     score = 0
+    scoreAdder = 0
 end
 
 hook_event(HOOK_ON_DEATH, on_death_warp)
