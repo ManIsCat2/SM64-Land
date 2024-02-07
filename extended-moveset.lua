@@ -8,7 +8,7 @@ local enable_extended_moveset = true
 ----- Localize functions -----
 ------------------------------
 
-local allocate_mario_action, atan2s, sins, coss, mario_update_moving_sand, mario_update_windy_ground, mario_floor_is_slope, mario_set_forward_vel, set_mario_action, queue_rumble_data_mario, set_jumping_action, play_mario_sound, play_sound, set_mario_animation, common_slide_action, set_anim_to_frame, check_fall_damage_or_get_stuck, play_sound_and_spawn_particles, mario_bonk_reflection, play_mario_landing_sound_once, common_air_action_step, perform_air_step, should_get_stuck_in_ground, play_mario_heavy_landing_sound, check_fall_damage, set_camera_shake_from_hit, drop_and_set_mario_action, stationary_ground_step, check_common_action_exits, stopping_step, mario_drop_held_object, perform_water_step, perform_water_full_step, vec3f_copy, vec3s_set, approach_f32, is_anim_at_end, float_surface_gfx, set_swimming_at_surface_particles, apply_water_current, update_air_without_turn, play_mario_landing_sound, lava_boost_on_wall, check_kick_or_dive_in_air, update_sliding, mario_check_object_grab, mario_grab_used_object, analog_stick_held_back, approach_s32, apply_slope_accel, should_begin_sliding, begin_braking_action, set_jump_from_landing, check_ground_dive_or_punch, anim_and_audio_for_walk, perform_ground_step, push_or_sidle_wall, check_ledge_climb_down, tilt_body_walking, anim_and_audio_for_hold_walk, anim_and_audio_for_heavy_walk, align_with_floor, set_mario_anim_with_accel, play_step_sound =
+local allocate_mario_action, atan2s, sins, coss, mario_update_moving_sand, mario_update_windy_ground, mario_floor_is_slope, mario_set_forward_vel, set_mario_action, queue_rumble_data_mario, set_jumping_action, play_mario_sound, play_sound, set_mario_animation, common_slide_action, set_anim_to_frame, check_fall_damage_or_get_stuck, play_sound_and_spawn_particles, mario_bonk_reflection, play_mario_landing_sound_once, common_air_action_step, perform_air_step, should_get_stuck_in_ground, play_mario_heavy_landing_sound, check_fall_damage, set_camera_shake_from_hit, drop_and_set_mario_action, stationary_ground_step, check_common_action_exits, stopping_step, mario_drop_held_object, perform_water_step, perform_water_full_step, vec3f_copy, vec3s_set, approach_f32, is_anim_at_end, float_surface_gfx, set_swimming_at_surface_particles, apply_water_current, update_air_without_turn, play_mario_landing_sound, lava_boost_on_wall, check_kick_or_dive_in_air, update_sliding, mario_check_object_grab, mario_grab_used_object, analog_stick_held_back, approach_s32, apply_slope_accel, should_begin_sliding, begin_braking_action, set_jump_from_landing, check_ground_dive_or_punch, anim_and_audio_for_walk, perform_ground_step, push_or_sidle_wall, check_ledge_climb_down, anim_and_audio_for_hold_walk, anim_and_audio_for_heavy_walk, align_with_floor, set_mario_anim_with_accel, play_step_sound =
     allocate_mario_action, atan2s, sins, coss, mario_update_moving_sand, mario_update_windy_ground, mario_floor_is_slope,
     mario_set_forward_vel, set_mario_action, queue_rumble_data_mario, set_jumping_action, play_mario_sound, play_sound,
     set_mario_animation, common_slide_action, set_anim_to_frame, check_fall_damage_or_get_stuck,
@@ -20,7 +20,7 @@ local allocate_mario_action, atan2s, sins, coss, mario_update_moving_sand, mario
     update_air_without_turn, play_mario_landing_sound, lava_boost_on_wall, check_kick_or_dive_in_air, update_sliding,
     mario_check_object_grab, mario_grab_used_object, analog_stick_held_back, approach_s32, apply_slope_accel,
     should_begin_sliding, begin_braking_action, set_jump_from_landing, check_ground_dive_or_punch,
-    anim_and_audio_for_walk, perform_ground_step, push_or_sidle_wall, check_ledge_climb_down, tilt_body_walking,
+    anim_and_audio_for_walk, perform_ground_step, push_or_sidle_wall, check_ledge_climb_down,
     anim_and_audio_for_hold_walk, anim_and_audio_for_heavy_walk, align_with_floor, set_mario_anim_with_accel,
     play_step_sound
 local math_sqrt, math_min, math_max, math_floor = math.sqrt, math.min, math.max, math.floor
@@ -1192,7 +1192,6 @@ end
 
 local function act_walking(m)
     local startPos = m.pos
-    local startYaw = m.faceAngle.y
 
     mario_drop_held_object(m)
 
@@ -1244,7 +1243,6 @@ local function act_walking(m)
     end
 
     check_ledge_climb_down(m)
-    tilt_body_walking(m, startYaw)
     return false
 end
 
@@ -1497,6 +1495,7 @@ local function mario_update(m)
     -- ground pound jump
     if m.action == ACT_GROUND_POUND_LAND and (m.input & INPUT_A_PRESSED) ~= 0 then
         set_mario_action(m, ACT_GROUND_POUND_JUMP, 0)
+        m.vel.y = 70
     end
 
     -- water ground pound

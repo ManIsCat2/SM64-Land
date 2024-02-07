@@ -3,11 +3,6 @@ u8 castle_grounds_dl__0_rgba16[] = {
 	#include "levels/castle_grounds/_0.rgba16.inc.c"
 };
 
-Gfx castle_grounds_dl__1_rgba16_aligner[] = {gsSPEndDisplayList()};
-u8 castle_grounds_dl__1_rgba16[] = {
-	#include "levels/castle_grounds/_1.rgba16.inc.c"
-};
-
 Gfx castle_grounds_dl__2_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 castle_grounds_dl__2_rgba16[] = {
 	#include "levels/castle_grounds/_2.rgba16.inc.c"
@@ -116,5 +111,10 @@ u8 castle_grounds_dl__22_rgba16[] = {
 Gfx castle_grounds_dl__23_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 castle_grounds_dl__23_rgba16[] = {
 	#include "levels/castle_grounds/_23.rgba16.inc.c"
+};
+
+Gfx castle_grounds_dl__1_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 castle_grounds_dl__1_rgba16[] = {
+	#include "levels/castle_grounds/_1.rgba16.inc.c"
 };
 
