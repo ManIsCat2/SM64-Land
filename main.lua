@@ -9,11 +9,14 @@ if m.numStars > 0 then
 else
     gLevelValues.entryLevel = LEVEL_CASTLE
 end
+
 gLevelValues.exitCastleLevel = LEVEL_CASTLE_GROUNDS
 gLevelValues.fixCollisionBugs = false
 gLevelValues.metalCapDurationCotmc = 1
+
 --really needed
 gServerSettings.stayInLevelAfterStar = true
+
 --gLevelValues.disableActs = true
 
 vec3f_set(gLevelValues.starPositions.KingBobombStarPos, 0, 70, 0)

@@ -6,6 +6,19 @@ local TEX_UNCOLLECTED_STAR_100 = get_texture_info("hud_star_100_uncollected")
 local TEX_SCORE = get_texture_info("hud_score")
 local TEX_TIMER = get_texture_info("hud_timer")
 
+function operation(course, star, is100star)
+    courseReal = course - 1
+    starflags = save_file_get_star_flags(get_current_save_file_num() - 1, courseReal)
+    if starflags & (1 << star) ~= 0 then
+        return gTextures.star
+    else
+        if is100star then
+            return TEX_UNCOLLECTED_STAR_100
+        else
+            return TEX_UNCOLLECTED_STAR
+        end
+    end
+end
 
 function mario_update(m)
     numStars = hud_get_value(HUD_DISPLAY_STARS)
@@ -13,10 +26,10 @@ function mario_update(m)
 end
 
 function lobby_hud()
-    if gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS) or gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) then
+    if gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS) or gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) or gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE) then
         djui_hud_set_resolution(RESOLUTION_N64)
         djui_hud_set_font(FONT_HUD)
-    
+
         if numStars ~= nil then -- here to stop errors
             djui_hud_print_text(string.format("%.02d", numStars), 8, 4, 1)
         end
@@ -30,16 +43,18 @@ function lobby_hud()
 end
 
 function level_hud()
-    if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_COTMC) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE)  then
+    if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) then
         djui_hud_set_resolution(RESOLUTION_N64)
         djui_hud_set_font(FONT_HUD)
 
         djui_hud_render_texture(TEX_SCORE, 8, 4, 1, 1)
         djui_hud_print_text(string.format(("%.05d"), math.floor(score)), 24, 4, 1)
-        djui_hud_render_texture(TEX_UNCOLLECTED_STAR, ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
-        djui_hud_render_texture(TEX_UNCOLLECTED_STAR, ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
-        djui_hud_render_texture(TEX_UNCOLLECTED_STAR, ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
-        djui_hud_render_texture(TEX_UNCOLLECTED_STAR_100, ((djui_hud_get_screen_width() / 2) - 24) + 42, 4, 1, 1)
+        if gNetworkPlayers[0].currLevelNum == LEVEL_BOB then
+            djui_hud_render_texture(operation(COURSE_BOB, 0), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_BOB, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_BOB, 2), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_BOB, 3, true), ((djui_hud_get_screen_width() / 2) - 24) + 42, 4, 1, 1)
+        end
         djui_hud_render_texture(TEX_TIMER, ((djui_hud_get_screen_width() / 2) + 46), 4, 1, 1)
         djui_hud_print_text(string.format(("%.03d"), math.floor(timer)), djui_hud_get_screen_width() / 2 + 57, 4, 1)
         djui_hud_print_text("$", djui_hud_get_screen_width() - 62, 4, 1)
