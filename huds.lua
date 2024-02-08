@@ -43,7 +43,7 @@ function lobby_hud()
 end
 
 function level_hud()
-    if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) then
+    if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_COTMC) then
         djui_hud_set_resolution(RESOLUTION_N64)
         djui_hud_set_font(FONT_HUD)
 
@@ -77,11 +77,14 @@ function tutorial_hud()
     hud_hide()
 end
 function on_hud_render_behind()
-    hud_hide()
     lobby_hud()
     level_hud()
     toad_house_hud()
-    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) | HUD_DISPLAY_FLAG_POWER)
+    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) &~ HUD_DISPLAY_FLAG_LIVES)
+    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) &~ HUD_DISPLAY_FLAG_COIN_COUNT)
+    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) &~ HUD_DISPLAY_FLAG_TIMER)
+    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) &~ HUD_DISPLAY_FLAG_STAR_COUNT)
+    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) &~ HUD_DISPLAY_FLAG_CAMERA)
 end
 
 hook_event(HOOK_ON_HUD_RENDER_BEHIND, on_hud_render_behind)
