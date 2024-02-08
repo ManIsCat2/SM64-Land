@@ -21,6 +21,8 @@ E_MODEL_RED_WARP_PIPE = smlua_model_util_get_id("warp_pipe_red_geo")
 
 COL_CAGE = smlua_collision_util_get("eight_star_cage_collision")
 E_MODEL_8_STAR_CAGE = smlua_model_util_get_id("eight_star_cage_geo")
+COL_WORLD_CANNON = smlua_collision_util_get("world_cannon_collision")
+E_MODEL_WORLD_CANNON = smlua_model_util_get_id("world_cannon_geo")
 
 ---@param o Object
 function eight_star_cage_init(o)
@@ -36,7 +38,19 @@ function eight_star_cage_loop(o)
     end
 end
 
+function world_cannon_init(o)
+    o.oIntangibleTimer = 0
+    o.header.gfx.skipInViewCheck = true
+    o.collisionData = COL_WORLD_CANNON
+end
+
+function world_cannon_loop(o)
+    load_object_collision_model()
+end
+
+
 bhv8StarCage = hook_behavior(nil, OBJ_LIST_SURFACE, true, eight_star_cage_init, eight_star_cage_loop)
+bhvWorldCannon = hook_behavior(nil, OBJ_LIST_SURFACE, true, world_cannon_init, world_cannon_loop)
 
 -- big mushrooms
 
