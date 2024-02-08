@@ -26,7 +26,7 @@ function mario_update(m)
 end
 
 function lobby_hud()
-    if gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS) or gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) or gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE) then
+    if gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS) or gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) then
         djui_hud_set_resolution(RESOLUTION_N64)
         djui_hud_set_font(FONT_HUD)
 
@@ -73,6 +73,9 @@ function toad_house_hud()
     end
 end
 
+function tutorial_hud()
+    hud_hide()
+end
 function on_hud_render_behind()
     hud_hide()
     lobby_hud()
