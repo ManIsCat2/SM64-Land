@@ -11,7 +11,7 @@ else
 end
 
 gLevelValues.exitCastleLevel = LEVEL_CASTLE_GROUNDS
-gLevelValues.fixCollisionBugs = false
+gLevelValues.fixCollisionBugs = true
 gLevelValues.metalCapDurationCotmc = 1
 
 --really needed

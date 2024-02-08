@@ -49,12 +49,30 @@ function level_hud()
 
         djui_hud_render_texture(TEX_SCORE, 8, 4, 1, 1)
         djui_hud_print_text(string.format(("%.05d"), math.floor(score)), 24, 4, 1)
-        if gNetworkPlayers[0].currLevelNum == LEVEL_BOB then
+        if gNetworkPlayers[0].currLevelNum == LEVEL_BOB and gNetworkPlayers[0].currAreaIndex == 1 then
             djui_hud_render_texture(operation(COURSE_BOB, 0), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_BOB, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_BOB, 2), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_BOB, 6, true), ((djui_hud_get_screen_width() / 2) - 24) + 42, 4, 1, 1)
         end
+
+        if gNetworkPlayers[0].currLevelNum == LEVEL_WF and gNetworkPlayers[0].currAreaIndex == 1 then
+            djui_hud_render_texture(operation(COURSE_WF, 0), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_WF, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_WF, 2), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
+        end
+
+        if gNetworkPlayers[0].currLevelNum == LEVEL_WF and gNetworkPlayers[0].currAreaIndex == 2 then
+            djui_hud_render_texture(operation(COURSE_WF, 5), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_WF, 4), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
+        end
+
+        if gNetworkPlayers[0].currLevelNum == LEVEL_CCM and gNetworkPlayers[0].currAreaIndex == 1 then
+            djui_hud_render_texture(operation(COURSE_CCM, 0), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_CCM, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_CCM, 2), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
+        end
+
         djui_hud_render_texture(TEX_TIMER, ((djui_hud_get_screen_width() / 2) + 46), 4, 1, 1)
         djui_hud_print_text(string.format(("%.03d"), math.floor(timer)), djui_hud_get_screen_width() / 2 + 57, 4, 1)
         djui_hud_print_text("$", djui_hud_get_screen_width() - 62, 4, 1)
