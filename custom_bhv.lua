@@ -48,7 +48,6 @@ function world_cannon_loop(o)
     load_object_collision_model()
 end
 
-
 bhv8StarCage = hook_behavior(nil, OBJ_LIST_SURFACE, true, eight_star_cage_init, eight_star_cage_loop)
 bhvWorldCannon = hook_behavior(nil, OBJ_LIST_SURFACE, true, world_cannon_init, world_cannon_loop)
 
@@ -131,7 +130,7 @@ function seesaw_green_init(obj)
     obj.oHomeX = obj.oPosX
     obj.oHomeY = obj.oPosY
     obj.oHomeZ = obj.oPosZ
-    network_init_object(obj, true, {"oEndPointX", "oEndPointZ", "oDoneEndPoint"})
+    network_init_object(obj, true, { "oEndPointX", "oEndPointZ", "oDoneEndPoint" })
 
     -- more things
     o = obj
@@ -154,7 +153,7 @@ function seesaw_green_init(obj)
 
     if o.oHomeX == 6675 then
         o.oFaceAnglePitch = 0
-       o.oEndPointZ = -9309
+        o.oEndPointZ = -9309
     end
 
     if o.oHomeX == 3497 then
@@ -176,7 +175,7 @@ function seesaw_green_loop(o)
     load_object_collision_model()
     ---@type MarioState
     local m = gMarioStates[0]
-   --djui_chat_message_create(tostring(m.floor.object.oPosX))
+    --djui_chat_message_create(tostring(m.floor.object.oPosX))
 
     if m.controller.buttonDown & U_JPAD == 0 then
         o.oForwardVel = 0
@@ -193,7 +192,6 @@ function seesaw_green_loop(o)
         else
             o.oForwardVel = 0
         end
-
     end
 
     if cur_obj_is_mario_on_platform() ~= 0 and (o.oHomeX == 3341 or o.oHomeX == 4401 or o.oHomeX == 6675 or o.oHomeX == 3497) and not is_bubbled(m) and o.oDoneEndPoint == 0 then
@@ -227,7 +225,7 @@ function seesaw_green_loop(o)
         o.oSubAction = o.oSubAction + 1
     end
 
-    -- return 
+    -- return
 
     if o.oSubAction > 400 then
         o.oPosX = o.oHomeX
@@ -242,14 +240,31 @@ id_bhvGreenSeesaw = hook_behavior(nil, OBJ_LIST_SURFACE, true, seesaw_green_init
 
 
 id_bhvPeachCustom = hook_behavior(nil, OBJ_LIST_GENACTOR, true, function(o)
-    o.oFlags = OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_HOLDABLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.oFlags = OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_HOLDABLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO |
+    OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     o.oAnimations = gObjectAnimations.peach_seg5_anims_0501C41C
     o.oInteractType = INTERACT_TEXT
     o.hitboxRadius = 90
     o.hitboxHeight = 150
     cur_obj_init_animation(5)
     bhv_toad_message_init()
-end, function (o)
+end, function(o)
     o.oIntangibleTimer = 0
     bhv_toad_message_loop()
 end)
+
+--dancing hill :D
+
+E_MODEL_DANCING_HILL = smlua_model_util_get_id("dancing_hill_geo")
+
+---@param o Object
+function bhv_dancing_hill_init(o)
+    o.header.gfx.skipInViewCheck = true
+    obj_set_model_extended(o, E_MODEL_DANCING_HILL)
+end
+
+function bhv_dancing_hill_loop(o)
+    o.oAnimState = o.oAnimState + 1
+end
+
+id_bhvDancingHill = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_dancing_hill_init, bhv_dancing_hill_loop)
