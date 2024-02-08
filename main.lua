@@ -16,7 +16,6 @@ gLevelValues.metalCapDurationCotmc = 1
 
 --really needed
 gServerSettings.stayInLevelAfterStar = true
-
 --gLevelValues.disableActs = true
 
 vec3f_set(gLevelValues.starPositions.KingBobombStarPos, 0, 70, 0)

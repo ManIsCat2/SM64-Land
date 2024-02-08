@@ -2320,7 +2320,7 @@ Gfx mat_tanooki_mario_Dark_Fur__HAIR_[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPCopyLightsPlayerPart(HAIR),
+	gsSPCopyLightsPlayerPart(PANTS),
 	gsSPEndDisplayList(),
 };
 
