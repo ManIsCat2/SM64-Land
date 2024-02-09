@@ -16,6 +16,9 @@ end
 
 
 E_MODEL_RED_WARP_PIPE = smlua_model_util_get_id("warp_pipe_red_geo")
+E_MODEL_BLUE_WARP_PIPE = smlua_model_util_get_id("warp_pipe_blue_geo")
+E_MODEL_PIPE_COVER = smlua_model_util_get_id("pipe_cover_geo")
+COL_PIPE_COVER = smlua_collision_util_get("pipe_cover_collision")
 
 -- custom cage for boss
 

@@ -1,0 +1,14 @@
+extern const GeoLayout warp_pipe_blue_geo[];
+extern Lights1 warp_pipe_blue_Material_0_002_f3d_lights;
+extern Lights1 warp_pipe_blue_Material_1_002_f3d_lights;
+extern u8 warp_pipe_blue__0_rgba16[];
+extern u8 warp_pipe_blue__1_rgba16[];
+extern Vtx warp_pipe_blue_Blue_Pipe_mesh_layer_1_vtx_cull[8];
+extern Vtx warp_pipe_blue_Blue_Pipe_mesh_layer_1_vtx_0[64];
+extern Gfx warp_pipe_blue_Blue_Pipe_mesh_layer_1_tri_0[];
+extern Vtx warp_pipe_blue_Blue_Pipe_mesh_layer_1_vtx_1[20];
+extern Gfx warp_pipe_blue_Blue_Pipe_mesh_layer_1_tri_1[];
+extern Gfx mat_warp_pipe_blue_Material_0_002_f3d[];
+extern Gfx mat_warp_pipe_blue_Material_1_002_f3d[];
+extern Gfx warp_pipe_blue_Blue_Pipe_mesh_layer_1[];
+extern Gfx warp_pipe_blue_material_revert_render_settings[];
