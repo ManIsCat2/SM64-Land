@@ -59,10 +59,9 @@ function pipe_cover_init(o)
 end
 
 function pipe_cover_loop(o)
+    load_object_collision_model()
     if operation(COURSE_BOB, 3) ~= TEX_UNCOLLECTED_STAR then
         obj_mark_for_deletion(o)
-    else
-        load_object_collision_model()
     end
 end
 
