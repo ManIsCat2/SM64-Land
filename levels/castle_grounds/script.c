@@ -67,15 +67,21 @@ JUMP_LINK(script_func_global_14),
 		WARP_NODE(11, LEVEL_BOB, 1, 10, WARP_NO_CHECKPOINT),
 		WARP_NODE(10, LEVEL_BOB, 1, 0, WARP_NO_CHECKPOINT),
 		OBJECT(E_MODEL_BITS_WARP_PIPE, -7419, 136, -1690, 0, 0, 0, (0 << 24) | (51 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
-		// REAL
+		// 1-2 Pipe
 		OBJECT(E_MODEL_NONE, -3615, 336, -1931, 0, 0, 0, (1 << 16), bhvPipeCover),
 		OBJECT(E_MODEL_NONE, -3615, 136, -1931, 0, 0, 0, (0 << 24) | (120 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
 		OBJECT(E_MODEL_BLOCKED_WARP_PIPE, -3615, 136, -1931, 0, 0, 0, (1 << 16), id_bhvFakeWarpPipe),
-		// real end
-		OBJECT(E_MODEL_NONE, 3704, 336, -2507, 0, 0, 0, 0x00000000, bhvPipeCover),
-		OBJECT(E_MODEL_BLOCKED_WARP_PIPE, 3704, 136, -2507, 0, 0, 0, (0 << 24) | (13 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
-		OBJECT(E_MODEL_NONE, 6027, 336, -3383, 0, 0, 0, 0x00000000, bhvPipeCover),
-		OBJECT(E_MODEL_BLOCKED_WARP_PIPE, 6027, 136, -3383, 0, 0, 0, (0 << 24) | (14 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
+		// 1-2 Pipe End
+		// 1-3 Pipe
+		OBJECT(E_MODEL_NONE, 3704, 336, -2507, 0, 0, 0, (2 << 16), bhvPipeCover),
+		OBJECT(E_MODEL_NONE, 3704, 136, -2507, 0, 0, 0, (0 << 24) | (13 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
+		OBJECT(E_MODEL_BLOCKED_WARP_PIPE, 3704, 136, -2507, 0, 0, 0, (2 << 16), id_bhvFakeWarpPipe),
+		// 1-3 Pipe End
+		// 1-4 Pipe
+		OBJECT(E_MODEL_NONE, 6027, 336, -3383, 0, 0, 0, (3 << 16), bhvPipeCover),
+		OBJECT(E_MODEL_NONE, 6027, 136, -3383, 0, 0, 0, (0 << 24) | (14 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
+		OBJECT(E_MODEL_BLOCKED_WARP_PIPE, 6027, 136, -3383, 0, 0, 0, (3 << 16), id_bhvFakeWarpPipe),
+		// 1-4 Pipe End
 		OBJECT(E_MODEL_RED_WARP_PIPE, 7364, 136, -1632, 0, 0, 0, (0 << 24) | (18 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
 		OBJECT(E_MODEL_8_STAR_CAGE, 7364, 136, -1632, 0, 0, 0, 0x00000000, bhv8StarCage),
 		OBJECT(E_MODEL_WORLD_CANNON, -7172, 136, 1052, 0, 0, 0, 0x00000000, bhvWorldCannon),
@@ -128,9 +134,11 @@ JUMP_LINK(script_func_global_14),
 		OBJECT(E_MODEL_DANCING_HILL, 12162, 0, -12097, 0, -12, 0,  0x0, id_bhvDancingHill),
 		OBJECT(E_MODEL_DANCING_HILL, -9850, 0, -13389, 0, 0, 0,  0x10000, id_bhvDancingHill),
 		OBJECT(E_MODEL_DANCING_HILL, 16934, 0, -10157, 0, -12, 0,  0x0, id_bhvDancingHill),
-		OBJECT(E_MODEL_PIPE_COVER, 9170, 336, -1717, 0, 0, 0, 0x00000000, bhvPipeCover),
 		OBJECT(E_MODEL_STAR, -2690, 1630, -2470, 0, 0, 0, (0 << 24) | (0 << 16) | (0 << 8) | (0), id_bhvStar),
 		OBJECT(MODEL_NONE, -10827, 136, -187, 0, 0, 0, (0 << 24) | (9 << 16) | (0 << 8) | (0), bhvSpinAirborneWarp),
+		// World 2 Pipe Cover
+		OBJECT(E_MODEL_PIPE_COVER, 9170, 336, -1717, 0, 0, 0, (4 << 16), bhvPipeCover),
+		// World 2 Pipe Cover End
 		OBJECT(E_MODEL_BLUE_WARP_PIPE, 9170, 136, -1717, 0, 0, 0, (0 << 24) | (1 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
 		TERRAIN(castle_grounds_area_1_collision),
 		MACRO_OBJECTS(castle_grounds_area_1_macro_objs),

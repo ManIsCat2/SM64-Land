@@ -63,6 +63,15 @@ function pipe_cover_loop(o)
     if operation(COURSE_BOB, 1) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 1 then
         obj_mark_for_deletion(o)
     end
+    if operation(COURSE_WF, 0) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 2 then
+        obj_mark_for_deletion(o)
+    end
+    if operation(COURSE_WF, 4) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 3 then
+        obj_mark_for_deletion(o)
+    end
+    if operation(COURSE_BOB, 3) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 4 then
+        obj_mark_for_deletion(o)
+    end
 end
 
 bhvPipeCover = hook_behavior(nil, OBJ_LIST_SURFACE, true, pipe_cover_init, pipe_cover_loop)
@@ -297,6 +306,12 @@ end
 function fake_pipe_loop(o)
     load_object_collision_model()
     if operation(COURSE_BOB, 1) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 1 then
+        obj_set_model_extended(o, E_MODEL_BITS_WARP_PIPE)
+    end
+    if operation(COURSE_WF, 0) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 2 then
+        obj_set_model_extended(o, E_MODEL_BITS_WARP_PIPE)
+    end
+    if operation(COURSE_WF, 4) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 3 then
         obj_set_model_extended(o, E_MODEL_BITS_WARP_PIPE)
     end
 end
