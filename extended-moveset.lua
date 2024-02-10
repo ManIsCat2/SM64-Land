@@ -202,6 +202,15 @@ local function update_roll_sliding(m, stopSpeed)
     return stopped
 end
 
+function responsive_ground_pound_turn(m)
+    if m.playerIndex ~= 0 then return end
+    if m.prevAction == ACT_GROUND_POUND_LAND and m.action ~= ACT_GROUND_POUND_JUMP then
+        m.faceAngle.y = m.intendedYaw
+    end
+end
+
+hook_event(HOOK_MARIO_UPDATE, responsive_ground_pound_turn)
+
 local function act_roll(m)
     local e = gMarioStateExtras[m.playerIndex]
 
