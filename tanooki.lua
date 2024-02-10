@@ -38,7 +38,7 @@ local tanooki = false
 local flutterTimer = 40
 local wallSlideTimer = 0
 
-local ACT_FAKE_JUMP = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR | ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
+ACT_FAKE_JUMP = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR | ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
 local flutterActions = {
     [ACT_JUMP] = true,
     [ACT_DOUBLE_JUMP] = true,
