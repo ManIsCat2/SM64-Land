@@ -47,6 +47,7 @@ local ACT_WATER_GROUND_POUND_STROKE = allocate_mario_action(ACT_GROUP_SUBMERGED 
     ACT_FLAG_SWIMMING_OR_FLYING | ACT_FLAG_WATER_OR_TEXT)
 local ACT_WATER_GROUND_POUND_JUMP = allocate_mario_action(ACT_GROUP_SUBMERGED | ACT_FLAG_MOVING | ACT_FLAG_SWIMMING |
     ACT_FLAG_SWIMMING_OR_FLYING | ACT_FLAG_WATER_OR_TEXT)
+local ACT_CUSTOM_AIR_HIT_WALL = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR)
 
 -----------------------------
 -- initialize extra fields --
@@ -791,6 +792,15 @@ local function act_air_hit_wall(m)
     -- of three.
     return set_mario_animation(m, MARIO_ANIM_START_WALLKICK)
 end
+local convert_actions = {
+    [ACT_AIR_HIT_WALL] = ACT_CUSTOM_AIR_HIT_WALL
+}
+
+local function before_set_mario_action(m, action)
+    if not enable_extended_moveset then return action end
+
+    return convert_actions[action] ~= nil and convert_actions[action] or action
+end
 
 ------------------------
 -- water ground pound --
@@ -1221,6 +1231,7 @@ hook_event(HOOK_BEFORE_MARIO_UPDATE, before_mario_update)
 hook_event(HOOK_MARIO_UPDATE, mario_update)
 hook_event(HOOK_MARIO_UPDATE, no_fall_damage)
 hook_event(HOOK_ON_SET_MARIO_ACTION, mario_on_set_action)
+hook_event(HOOK_BEFORE_SET_MARIO_ACTION, before_set_mario_action)
 
 hook_mario_action(ACT_ROLL, { every_frame = act_roll })
 hook_mario_action(ACT_ROLL_AIR, { every_frame = act_roll_air })
@@ -1234,5 +1245,6 @@ hook_mario_action(ACT_WATER_GROUND_POUND_LAND, { every_frame = act_water_ground_
 hook_mario_action(ACT_WATER_GROUND_POUND_STROKE, { every_frame = act_water_ground_pound_stroke })
 hook_mario_action(ACT_WATER_GROUND_POUND_JUMP, { every_frame = act_water_ground_pound_jump })
 hook_mario_action(ACT_LEDGE_PARKOUR, { every_frame = act_ledge_parkour })
+hook_mario_action(ACT_CUSTOM_AIR_HIT_WALL, { every_frame = act_air_hit_wall })
 
 hook_chat_command('ext-moveset', "Turn extended moveset [on|off]", on_chat_command)
