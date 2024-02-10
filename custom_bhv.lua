@@ -60,7 +60,7 @@ end
 
 function pipe_cover_loop(o)
     load_object_collision_model()
-    if operation(COURSE_BOB, 3) ~= TEX_UNCOLLECTED_STAR then
+    if operation(COURSE_BOB, 1) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 1 then
         obj_mark_for_deletion(o)
     end
 end
@@ -286,3 +286,20 @@ function bhv_dancing_hill_loop(o)
 end
 
 id_bhvDancingHill = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_dancing_hill_init, bhv_dancing_hill_loop)
+
+function bhv_fake_pipe_init(o)
+    o.header.gfx.skipInViewCheck = true
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = gGlobalObjectCollisionData.warp_pipe_seg3_collision_03009AC8
+end
+
+---@param o Object
+function fake_pipe_loop(o)
+    load_object_collision_model()
+    if operation(COURSE_BOB, 1) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 1 then
+        obj_set_model_extended(o, E_MODEL_BITS_WARP_PIPE)
+    end
+end
+
+
+id_bhvFakeWarpPipe = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_fake_pipe_init, fake_pipe_loop)

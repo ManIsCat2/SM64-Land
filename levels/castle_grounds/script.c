@@ -67,8 +67,11 @@ JUMP_LINK(script_func_global_14),
 		WARP_NODE(11, LEVEL_BOB, 1, 10, WARP_NO_CHECKPOINT),
 		WARP_NODE(10, LEVEL_BOB, 1, 0, WARP_NO_CHECKPOINT),
 		OBJECT(E_MODEL_BITS_WARP_PIPE, -7419, 136, -1690, 0, 0, 0, (0 << 24) | (51 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
-		OBJECT(E_MODEL_NONE, -3615, 336, -1931, 0, 0, 0, 0x00000000, bhvPipeCover),
-		OBJECT(E_MODEL_BLOCKED_WARP_PIPE, -3615, 136, -1931, 0, 0, 0, (0 << 24) | (120 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
+		// REAL
+		OBJECT(E_MODEL_NONE, -3615, 336, -1931, 0, 0, 0, (1 << 16), bhvPipeCover),
+		OBJECT(E_MODEL_NONE, -3615, 136, -1931, 0, 0, 0, (0 << 24) | (120 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
+		OBJECT(E_MODEL_BLOCKED_WARP_PIPE, -3615, 136, -1931, 0, 0, 0, (1 << 16), id_bhvFakeWarpPipe),
+		// real end
 		OBJECT(E_MODEL_NONE, 3704, 336, -2507, 0, 0, 0, 0x00000000, bhvPipeCover),
 		OBJECT(E_MODEL_BLOCKED_WARP_PIPE, 3704, 136, -2507, 0, 0, 0, (0 << 24) | (13 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
 		OBJECT(E_MODEL_NONE, 6027, 336, -3383, 0, 0, 0, 0x00000000, bhvPipeCover),
