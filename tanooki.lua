@@ -36,6 +36,22 @@ smlua_anim_util_register_animation("anim_flutter",
 
 local tanooki = false
 local flutterTimer = 40
+local wallSlideTimer = 0
+
+local ACT_FAKE_JUMP = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR | ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
+local flutterActions = {
+    [ACT_JUMP] = true,
+    [ACT_DOUBLE_JUMP] = true,
+    [ACT_TRIPLE_JUMP] = true,
+    [ACT_LONG_JUMP] = true,
+    [ACT_SIDE_FLIP] = true,
+    [ACT_GROUND_POUND_JUMP] = true,
+    [ACT_FORWARD_ROLLOUT] = true,
+    [ACT_BACKWARD_ROLLOUT] = true,
+    [ACT_WALL_KICK_AIR] = true,
+    [ACT_FAKE_JUMP] = true,
+    [ACT_FREEFALL] = true
+}
 
 ---@param obj Object
 function bhv_leaf_init(obj)
@@ -73,35 +89,59 @@ id_bhvWingCap = hook_behavior(id_bhvWingCap, OBJ_LIST_GENACTOR, true, bhv_leaf_i
 function tanooki_loop(m)
     if m.playerIndex == 0 then
         if gPlayerSyncTable[0].modelId == E_MODEL_TANOOKI_MARIO and tanooki then
-            if m.action == ACT_JUMP or m.action == ACT_DOUBLE_JUMP or m.action == ACT_TRIPLE_JUMP or m.action == ACT_LONG_JUMP or m.action == ACT_SIDE_FLIP then
+            if m.action == ACT_WALL_SLIDE then
+                wallSlideTimer = 0
+            elseif m.action == ACT_WALL_KICK_AIR and m.forwardVel > 0 then
+                wallSlideTimer = wallSlideTimer + 1
+            else
+                wallSlideTimer = 0
+            end
+            if flutterActions[m.action] then
                 if m.controller.buttonPressed & A_BUTTON ~= 0 and m.action & ACT_FLAG_AIR ~= 0 then
+                    startTimer = false
                     if m.pos.y > (m.floorHeight + 100) then
-                        set_mario_action(m, ACT_JUMP, 0)
+                        if wallSlideTimer >= 4 and m.action == ACT_WALL_KICK_AIR then
+                            set_mario_action(m, ACT_FAKE_JUMP, 0)
+                            wallSlideTimer = 0
+                            smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
+                        elseif m.action ~= ACT_WALL_KICK_AIR then
+                            set_mario_action(m, ACT_FAKE_JUMP, 0)
+                            wallSlideTimer = 0
+                            smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
+                        end
+                        play_sound(SOUND_ACTION_SPIN, m.marioObj.header.gfx.cameraToObject)
+                        startTimer = true
                         flutterTimer = 0
-                        smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
                     end
-                    if flutterTimer < 40 then
-                        flutterTimer = flutterTimer + 1
-                        m.vel.y = -1
+                end
+                if startTimer then
+                    flutterTimer = flutterTimer + 1
+                    if flutterTimer < 10 then
+                        if m.vel.y < -7.5 then
+                            m.vel.y = -7.5
+                        end
+                    else
+                        startTimer = false
+                        flutterTimer = 0
                     end
                 else
-                    flutterTimer = 40
+                    flutterTimer = 0
                 end
             end
         end
     end
-
     if m.action == ACT_JUMP and tanooki then
         smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
     end
 end
 
-function on_sound(m, sound)
-    if m.action == ACT_JUMP and tanooki and smlua_anim_util_get_current_animation_name(m.marioObj) == "anim_flutter" then
-        return 0
-    end
+local function act_fake_jump(m)
+    if m.playerIndex ~= 0 then return end
+
+    common_air_action_step(m, ACT_JUMP_LAND, MARIO_ANIM_SINGLE_JUMP,
+    AIR_STEP_CHECK_LEDGE_GRAB | AIR_STEP_CHECK_HANG)
 end
 
-hook_event(HOOK_CHARACTER_SOUND, on_sound)
+hook_mario_action(ACT_FAKE_JUMP, { every_frame = act_fake_jump })
 
 hook_event(HOOK_MARIO_UPDATE, tanooki_loop)
