@@ -59,8 +59,8 @@ function bhv_leaf_init(obj)
     obj_set_model_extended(obj, E_MODEL_TANOOK_LEAF)
     obj_scale(obj, 0.5)
     obj.oFaceAngleYaw = obj.oFaceAngleYaw - 32768 -- watchr is so not awesome
-    obj.hitboxRadius = 100
-    obj.hitboxHeight = 100
+    obj.hitboxRadius = 1500
+    obj.hitboxHeight = 1500
     obj.oGravity = 3
     obj.oFriction = 0.8
     obj.oBuoyancy = 1
