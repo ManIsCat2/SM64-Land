@@ -1,10 +1,52 @@
-local areaStarCount = 14
+-- Hud Types --
+
+local curWorld = 1
+
+function worldCheck()
+    if gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS) then
+        if gNetworkPlayers[0].currAreaIndex == 1 then
+            curWorld = 1
+        elseif gNetworkPlayers[0].currAreaIndex == 2 then
+            curWorld = 3
+        elseif gNetworkPlayers[0].currAreaIndex == 3 then
+            curWorld = 5
+        elseif gNetworkPlayers[0].currAreaIndex == 4 then
+            curWorld = 7
+        end
+    elseif gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) then
+        if gNetworkPlayers[0].currAreaIndex == 1 then
+            curWorld = 2
+        elseif gNetworkPlayers[0].currAreaIndex == 2 then
+            curWorld = 4
+        elseif gNetworkPlayers[0].currAreaIndex == 3 then
+            curWorld = 6
+        elseif gNetworkPlayers[0].currAreaIndex == 4 then
+            curWorld = 8
+        end
+    end
+end
+
+
 
 local TEX_SEPERATOR = get_texture_info("custom_hud_slash.rgba16")
-local TEX_UNCOLLECTED_STAR = get_texture_info("hud_star_uncollected")
+TEX_UNCOLLECTED_STAR = get_texture_info("hud_star_uncollected") -- DO NOT LOCALIZE
 local TEX_UNCOLLECTED_STAR_100 = get_texture_info("hud_star_100_uncollected")
 local TEX_SCORE = get_texture_info("hud_score")
 local TEX_TIMER = get_texture_info("hud_timer")
+
+-- World Specific Hud Stars
+local TEX_WORLD_2_STAR = get_texture_info("hud_star_world_2")
+
+local worldSpecific = {
+    {"World 1", 14, nil},
+    {"World 2", 16, TEX_WORLD_2_STAR},
+    {"World 3", 15},
+    {"World 4", 15},
+    {"World 5", 16},
+    {"World 6", 14},
+    {"World 7", 14},
+    {"World 8", 18},
+}
 
 function operation(course, star, is100star)
     courseReal = course - 1
@@ -34,8 +76,16 @@ function lobby_hud()
             djui_hud_print_text(string.format("%.02d", numStars), 8, 4, 1)
         end
         djui_hud_render_texture(TEX_SEPERATOR, 28, 4, 1, 1)
-        djui_hud_print_text(tostring(areaStarCount), 40, 4, 1)
-        djui_hud_print_text("*", 68, 3, 1)
+        if curWorld ~= nil then
+            djui_hud_print_text(tostring(worldSpecific[curWorld][2]), 40, 4, 1)
+        else
+            djui_hud_print_text("NIL", 40, 4, 1)
+        end
+        if worldSpecific[curWorld][3] == nil then
+            djui_hud_print_text("*", 68, 3, 1)
+        else
+            djui_hud_render_texture(worldSpecific[curWorld][3], 68, 3, 1, 1)
+        end
         djui_hud_print_text("*", djui_hud_get_screen_width() - 62, 4, 1)
         djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
         djui_hud_print_text(tostring(numStars), djui_hud_get_screen_width() - 32, 4, 1)
@@ -51,15 +101,15 @@ function level_hud()
         djui_hud_print_text(string.format(("%.05d"), math.floor(score)), 24, 4, 1)
         if gNetworkPlayers[0].currLevelNum == LEVEL_BOB and gNetworkPlayers[0].currAreaIndex == 1 then
             djui_hud_render_texture(operation(COURSE_BOB, 0), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_BOB, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_BOB, 2), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_BOB, 2), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_BOB, 1), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_BOB, 6, true), ((djui_hud_get_screen_width() / 2) - 24) + 42, 4, 1, 1)
         end
 
         if gNetworkPlayers[0].currLevelNum == LEVEL_WF and gNetworkPlayers[0].currAreaIndex == 1 then
-            djui_hud_render_texture(operation(COURSE_WF, 0), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_WF, 2), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_WF, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_WF, 2), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_WF, 0), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
         end
 
         if gNetworkPlayers[0].currLevelNum == LEVEL_WF and gNetworkPlayers[0].currAreaIndex == 2 then
@@ -107,3 +157,4 @@ end
 
 hook_event(HOOK_ON_HUD_RENDER_BEHIND, on_hud_render_behind)
 hook_event(HOOK_MARIO_UPDATE, mario_update)
+hook_event(HOOK_UPDATE, worldCheck)

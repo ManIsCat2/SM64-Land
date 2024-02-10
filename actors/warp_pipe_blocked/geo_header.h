@@ -1,0 +1,18 @@
+extern const GeoLayout warp_pipe_blocked_geo[];
+extern Lights1 warp_pipe_blocked_Bottom_lights;
+extern u8 warp_pipe_blocked_warp_pipe_side_rgba16_i8[];
+extern u8 warp_pipe_blocked_warp_pipe_top_rgba16_i8[];
+extern Vtx warp_pipe_blocked_skinned_mesh_layer_1_vtx_cull[8];
+extern Vtx warp_pipe_blocked_skinned_mesh_layer_1_vtx_0[96];
+extern Gfx warp_pipe_blocked_skinned_mesh_layer_1_tri_0[];
+extern Vtx warp_pipe_blocked_skinned_mesh_layer_1_vtx_1[16];
+extern Gfx warp_pipe_blocked_skinned_mesh_layer_1_tri_1[];
+extern Vtx warp_pipe_blocked_skinned_mesh_layer_1_vtx_2[4];
+extern Gfx warp_pipe_blocked_skinned_mesh_layer_1_tri_2[];
+extern Gfx mat_warp_pipe_blocked_Side[];
+extern Gfx mat_revert_warp_pipe_blocked_Side[];
+extern Gfx mat_warp_pipe_blocked_Top[];
+extern Gfx mat_revert_warp_pipe_blocked_Top[];
+extern Gfx mat_warp_pipe_blocked_Bottom[];
+extern Gfx warp_pipe_blocked_skinned_mesh_layer_1[];
+extern Gfx warp_pipe_blocked_material_revert_render_settings[];

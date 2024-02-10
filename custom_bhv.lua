@@ -17,6 +17,7 @@ end
 
 E_MODEL_RED_WARP_PIPE = smlua_model_util_get_id("warp_pipe_red_geo")
 E_MODEL_BLUE_WARP_PIPE = smlua_model_util_get_id("warp_pipe_blue_geo")
+E_MODEL_BLOCKED_WARP_PIPE = smlua_model_util_get_id("warp_pipe_blocked_geo")
 E_MODEL_PIPE_COVER = smlua_model_util_get_id("pipe_cover_geo")
 COL_PIPE_COVER = smlua_collision_util_get("pipe_cover_collision")
 
@@ -51,6 +52,21 @@ function world_cannon_loop(o)
     load_object_collision_model()
 end
 
+function pipe_cover_init(o)
+    o.oIntangibleTimer = 0
+    o.header.gfx.skipInViewCheck = true
+    o.collisionData = COL_PIPE_COVER
+end
+
+function pipe_cover_loop(o)
+    if operation(COURSE_BOB, 3) ~= TEX_UNCOLLECTED_STAR then
+        obj_mark_for_deletion(o)
+    else
+        load_object_collision_model()
+    end
+end
+
+bhvPipeCover = hook_behavior(nil, OBJ_LIST_SURFACE, true, pipe_cover_init, pipe_cover_loop)
 bhv8StarCage = hook_behavior(nil, OBJ_LIST_SURFACE, true, eight_star_cage_init, eight_star_cage_loop)
 bhvWorldCannon = hook_behavior(nil, OBJ_LIST_SURFACE, true, world_cannon_init, world_cannon_loop)
 
