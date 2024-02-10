@@ -1,10 +1,10 @@
 local areaStarCount = 14
 
-local TEX_SEPERATOR = get_texture_info("custom_hud_slash.rgba16")
-local TEX_UNCOLLECTED_STAR = get_texture_info("hud_star_uncollected")
-local TEX_UNCOLLECTED_STAR_100 = get_texture_info("hud_star_100_uncollected")
-local TEX_SCORE = get_texture_info("hud_score")
-local TEX_TIMER = get_texture_info("hud_timer")
+TEX_SEPERATOR = get_texture_info("custom_hud_slash.rgba16")
+TEX_UNCOLLECTED_STAR = get_texture_info("hud_star_uncollected")
+TEX_UNCOLLECTED_STAR_100 = get_texture_info("hud_star_100_uncollected")
+TEX_SCORE = get_texture_info("hud_score")
+TEX_TIMER = get_texture_info("hud_timer")
 
 function operation(course, star, is100star)
     courseReal = course - 1

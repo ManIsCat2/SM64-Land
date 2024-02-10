@@ -16,9 +16,6 @@ end
 
 
 E_MODEL_RED_WARP_PIPE = smlua_model_util_get_id("warp_pipe_red_geo")
-E_MODEL_BLUE_WARP_PIPE = smlua_model_util_get_id("warp_pipe_blue_geo")
-E_MODEL_PIPE_COVER = smlua_model_util_get_id("pipe_cover_geo")
-COL_PIPE_COVER = smlua_collision_util_get("pipe_cover_collision")
 
 -- custom cage for boss
 
@@ -244,7 +241,7 @@ id_bhvGreenSeesaw = hook_behavior(nil, OBJ_LIST_SURFACE, true, seesaw_green_init
 
 id_bhvPeachCustom = hook_behavior(nil, OBJ_LIST_GENACTOR, true, function(o)
     o.oFlags = OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_HOLDABLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO |
-    OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+        OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     o.oAnimations = gObjectAnimations.peach_seg5_anims_0501C41C
     o.oInteractType = INTERACT_TEXT
     o.hitboxRadius = 90
@@ -271,3 +268,39 @@ function bhv_dancing_hill_loop(o)
 end
 
 id_bhvDancingHill = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_dancing_hill_init, bhv_dancing_hill_loop)
+
+
+---blue pip
+
+E_MODEL_BLUE_WARP_PIPE = smlua_model_util_get_id("warp_pipe_blue_geo")
+E_MODEL_BLUE_WARP_PIPE_COVER = smlua_model_util_get_id("blue_warp_pipe_closed_geo")
+COL_PIPE_COVER = smlua_collision_util_get("pipe_cover_collision")
+
+id_bhvBluePipe = id_bhvWarpPipe
+
+WARP_PIPE_CLOSED_COL = smlua_collision_util_get("blue_warp_pipe_closed_collision")
+
+
+
+function bhv_pipe(o)
+    load_object_collision_model()
+    djui_chat_message_create(tostring(o.oBehParams))
+    if obj_has_model_extended(o, E_MODEL_BLUE_WARP_PIPE_COVER) ~= 0 then
+        if operation(COURSE_BOB, 3) ~= TEX_UNCOLLECTED_STAR then
+            obj_set_model_extended(o, E_MODEL_BLUE_WARP_PIPE)
+            o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+            o.header.gfx.skipInViewCheck = true
+            o.collisionData = gGlobalObjectCollisionData.warp_pipe_seg3_collision_03009AC8
+            o.oCollisionDistance = 2500
+
+        else
+            obj_set_model_extended(o, E_MODEL_BLUE_WARP_PIPE_COVER)
+            o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+            o.header.gfx.skipInViewCheck = true
+            o.collisionData = WARP_PIPE_CLOSED_COL
+            o.oCollisionDistance = 2500
+        end
+    end
+end
+
+ggbhv = hook_behavior(nil, OBJ_LIST_SURFACE, true, nil, bhv_pipe)
