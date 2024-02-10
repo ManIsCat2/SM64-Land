@@ -138,6 +138,18 @@ end
 local function act_fake_jump(m)
     if m.playerIndex ~= 0 then return end
 
+    if m.controller.buttonPressed & B_BUTTON ~= 0 then
+        if m.forwardVel >= 28 then
+            set_mario_action(m, ACT_DIVE, 0)
+        else
+            set_mario_action(m, ACT_JUMP_KICK, 0)
+        end
+    end
+
+    if (m.controller.buttonPressed & Z_TRIG) ~= 0 then
+        set_mario_action(m, ACT_GROUND_POUND, 0)
+    end
+
     common_air_action_step(m, ACT_JUMP_LAND, MARIO_ANIM_SINGLE_JUMP,
     AIR_STEP_CHECK_LEDGE_GRAB | AIR_STEP_CHECK_HANG)
 end
