@@ -42,14 +42,69 @@ function eight_star_cage_loop(o)
     end
 end
 
+---@param o Object
 function world_cannon_init(o)
+    o.oInteractType = 0
     o.oIntangibleTimer = 0
     o.header.gfx.skipInViewCheck = true
     o.collisionData = COL_WORLD_CANNON
+    o.hitboxRadius = 10000
+    o.hitboxHeight = 10000
 end
 
+stuck = false
+stuckTimer = 0
+stuckX = false
+stuckY = false
+
 function world_cannon_loop(o)
-    load_object_collision_model()
+    --load_object_collision_model()
+    m = gMarioStates[0]
+    if dist_between_objects(o, m.marioObj) < 650 and m.action ~= ACT_SHOT_FROM_CANNON then
+        vec3f_set(m.pos, o.oPosX, o.oPosY + 200, o.oPosZ)
+        stuck = true
+    end
+
+    if m.action == ACT_SHOT_FROM_CANNON then
+        stuckTimer = stuckTimer + 1
+    end
+
+    if stuckTimer > 50 then
+        if stuckX then
+            warp_to_level(16, 1, 1)
+            stuckX = false
+            stuckTimer = 0
+            stuck = false
+        end
+    end
+
+    if stuckTimer > 50 then
+        if stuckY then
+            warp_to_warpnode(26, 1, 1, 11)
+            m.action = ACT_SHOT_FROM_CANNON
+            stuckY = false
+            stuckTimer = 0
+            stuck = false
+        end
+    end
+
+    if stuck and m.controller.buttonPressed & X_BUTTON ~= 0 then
+        vec3f_set(m.pos, o.oPosX, o.oPosY + 800, o.oPosZ)
+        m.action = ACT_SHOT_FROM_CANNON
+        m.faceAngle.y = 22268
+        m.vel.y = 35
+        m.forwardVel = 40
+        stuckX = true
+    end
+
+    if stuck and m.controller.buttonPressed & Y_BUTTON ~= 0 then
+        vec3f_set(m.pos, o.oPosX, o.oPosY + 800, o.oPosZ)
+        m.action = ACT_SHOT_FROM_CANNON
+        m.faceAngle.y = 22268
+        m.vel.y = 35
+        m.forwardVel = 40
+        stuckY = true
+    end
 end
 
 function pipe_cover_init(o)
@@ -315,6 +370,5 @@ function fake_pipe_loop(o)
         obj_set_model_extended(o, E_MODEL_BITS_WARP_PIPE)
     end
 end
-
 
 id_bhvFakeWarpPipe = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_fake_pipe_init, fake_pipe_loop)
