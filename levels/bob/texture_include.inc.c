@@ -1,8 +1,3 @@
-Gfx bob_dl__0_rgba16_aligner[] = {gsSPEndDisplayList()};
-u8 bob_dl__0_rgba16[] = {
-	#include "levels/bob/_0.rgba16.inc.c"
-};
-
 Gfx bob_dl__1_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 bob_dl__1_rgba16[] = {
 	#include "levels/bob/_1.rgba16.inc.c"
@@ -28,14 +23,39 @@ u8 bob_dl__5_rgba16[] = {
 	#include "levels/bob/_5.rgba16.inc.c"
 };
 
-Gfx bob_dl__6_rgba16_aligner[] = {gsSPEndDisplayList()};
-u8 bob_dl__6_rgba16[] = {
-	#include "levels/bob/_6.rgba16.inc.c"
-};
-
 Gfx bob_dl__7_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 bob_dl__7_rgba16[] = {
 	#include "levels/bob/_7.rgba16.inc.c"
+};
+
+Gfx bob_dl__23_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl__23_rgba16[] = {
+	#include "levels/bob/_23.rgba16.inc.c"
+};
+
+Gfx bob_dl__24_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl__24_rgba16[] = {
+	#include "levels/bob/_24.rgba16.inc.c"
+};
+
+Gfx bob_dl__25_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl__25_rgba16[] = {
+	#include "levels/bob/_25.rgba16.inc.c"
+};
+
+Gfx bob_dl__26_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl__26_rgba16[] = {
+	#include "levels/bob/_26.rgba16.inc.c"
+};
+
+Gfx bob_dl__0_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl__0_rgba16[] = {
+	#include "levels/bob/_0.rgba16.inc.c"
+};
+
+Gfx bob_dl__6_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl__6_rgba16[] = {
+	#include "levels/bob/_6.rgba16.inc.c"
 };
 
 Gfx bob_dl__8_rgba16_aligner[] = {gsSPEndDisplayList()};
@@ -113,53 +133,38 @@ u8 bob_dl__22_rgba16[] = {
 	#include "levels/bob/_22.rgba16.inc.c"
 };
 
-Gfx bob_dl__24_rgba16_aligner[] = {gsSPEndDisplayList()};
-u8 bob_dl__24_rgba16[] = {
-	#include "levels/bob/_24.rgba16.inc.c"
+Gfx bob_dl__3_0_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl__3_0_rgba16[] = {
+	#include "levels/bob/_3-0.rgba16.inc.c"
 };
 
-Gfx bob_dl__25_rgba16_aligner[] = {gsSPEndDisplayList()};
-u8 bob_dl__25_rgba16[] = {
-	#include "levels/bob/_25.rgba16.inc.c"
-};
-
-Gfx bob_dl__26_rgba16_aligner[] = {gsSPEndDisplayList()};
-u8 bob_dl__26_rgba16[] = {
-	#include "levels/bob/_26.rgba16.inc.c"
-};
-
-Gfx bob_dl__0_2_rgba16_aligner[] = {gsSPEndDisplayList()};
-u8 bob_dl__0_2_rgba16[] = {
-	#include "levels/bob/_0_2.rgba16.inc.c"
-};
-
-Gfx bob_dl__1_2_rgba16_aligner[] = {gsSPEndDisplayList()};
-u8 bob_dl__1_2_rgba16[] = {
-	#include "levels/bob/_1_2.rgba16.inc.c"
-};
-
-Gfx bob_dl__2_2_rgba16_aligner[] = {gsSPEndDisplayList()};
-u8 bob_dl__2_2_rgba16[] = {
-	#include "levels/bob/_2_2.rgba16.inc.c"
+Gfx bob_dl__3_1_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl__3_1_rgba16[] = {
+	#include "levels/bob/_3-1.rgba16.inc.c"
 };
 
 Gfx bob_dl__3_2_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 bob_dl__3_2_rgba16[] = {
-	#include "levels/bob/_3_2.rgba16.inc.c"
+	#include "levels/bob/_3-2.rgba16.inc.c"
 };
 
-Gfx bob_dl__4_2_rgba16_aligner[] = {gsSPEndDisplayList()};
-u8 bob_dl__4_2_rgba16[] = {
-	#include "levels/bob/_4_2.rgba16.inc.c"
+Gfx bob_dl__3_6_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl__3_6_rgba16[] = {
+	#include "levels/bob/_3-6.rgba16.inc.c"
 };
 
-Gfx bob_dl__5_2_rgba16_aligner[] = {gsSPEndDisplayList()};
-u8 bob_dl__5_2_rgba16[] = {
-	#include "levels/bob/_5_2.rgba16.inc.c"
+Gfx bob_dl__3_3_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl__3_3_rgba16[] = {
+	#include "levels/bob/_3-3.rgba16.inc.c"
 };
 
-Gfx bob_dl__6_2_rgba16_aligner[] = {gsSPEndDisplayList()};
-u8 bob_dl__6_2_rgba16[] = {
-	#include "levels/bob/_6_2.rgba16.inc.c"
+Gfx bob_dl__3_4_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl__3_4_rgba16[] = {
+	#include "levels/bob/_3-4.rgba16.inc.c"
+};
+
+Gfx bob_dl__3_5_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl__3_5_rgba16[] = {
+	#include "levels/bob/_3-5.rgba16.inc.c"
 };
 
