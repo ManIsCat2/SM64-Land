@@ -1,4 +1,4 @@
---// Tanooki Leaf behavior and abilities. //--
+-- Tanooki Leaf Powerup --
 
 E_MODEL_TANOOKI_MARIO = smlua_model_util_get_id("tanooki_mario_geo")
 E_MODEL_TANOOK_LEAF = smlua_model_util_get_id("tanooki_leaf_geo")
@@ -50,7 +50,8 @@ local flutterActions = {
     [ACT_BACKWARD_ROLLOUT] = true,
     [ACT_WALL_KICK_AIR] = true,
     [ACT_FAKE_JUMP] = true,
-    [ACT_FREEFALL] = true
+    [ACT_FREEFALL] = true,
+    [ACT_BACKFLIP] = true
 }
 
 ---@param obj Object
