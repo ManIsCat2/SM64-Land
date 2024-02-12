@@ -1,6 +1,11 @@
 -- Hud Types --
 
 local curWorld = 1
+curWorldSelected = 1
+warpsforlevels = {
+    { level = 16, area = 1, warpid = 10 },
+    { level = 26, area = 1, warpid = 11 },
+}
 
 function worldCheck()
     if gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS) then
@@ -26,7 +31,19 @@ function worldCheck()
     end
 end
 
-
+function world_unlocked(world)
+    if world == 1 then
+        return true
+    end
+    
+    if world == 2 then
+        if operation(COURSE_BOB, 3) == gTextures.star then
+            return true
+        else
+            return false
+        end
+    end
+end
 
 local TEX_SEPERATOR = get_texture_info("custom_hud_slash.rgba16")
 TEX_UNCOLLECTED_STAR = get_texture_info("hud_star_uncollected") -- DO NOT LOCALIZE
@@ -38,14 +55,14 @@ local TEX_TIMER = get_texture_info("hud_timer")
 local TEX_WORLD_2_STAR = get_texture_info("hud_star_world_2")
 
 local worldSpecific = {
-    {"World 1", 14, nil},
-    {"World 2", 16, TEX_WORLD_2_STAR},
-    {"World 3", 15},
-    {"World 4", 15},
-    {"World 5", 16},
-    {"World 6", 14},
-    {"World 7", 14},
-    {"World 8", 18},
+    { "World 1", 14, nil },
+    { "World 2", 16, TEX_WORLD_2_STAR },
+    { "World 3", 15 },
+    { "World 4", 15 },
+    { "World 5", 16 },
+    { "World 6", 14 },
+    { "World 7", 14 },
+    { "World 8", 18 },
 }
 
 function operation(course, star, is100star)
@@ -103,7 +120,8 @@ function level_hud()
             djui_hud_render_texture(operation(COURSE_BOB, 0), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_BOB, 2), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_BOB, 1), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_BOB, 6, true), ((djui_hud_get_screen_width() / 2) - 24) + 42, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_BOB, 6, true), ((djui_hud_get_screen_width() / 2) - 24) + 42, 4, 1,
+                1)
         end
 
         if gNetworkPlayers[0].currLevelNum == LEVEL_WF and gNetworkPlayers[0].currAreaIndex == 1 then
@@ -144,15 +162,42 @@ end
 function tutorial_hud()
     hud_hide()
 end
+
+function cannon_hud()
+    if not stuckHud then return end
+    m = gMarioStates[0]
+    if m.playerIndex ~= 0 then return end
+
+    if m.controller.buttonPressed & R_JPAD ~= 0 then
+        curWorldSelected = curWorldSelected + 1
+    end
+
+    if m.controller.buttonPressed & D_JPAD ~= 0 then
+        curWorldSelected = curWorldSelected - 1
+    end
+
+    if curWorldSelected == 0 then
+        curWorldSelected = 8
+    end
+    if curWorldSelected > 8 then
+        curWorldSelected = 1
+    end
+
+    djui_hud_set_resolution(RESOLUTION_DJUI)
+    djui_hud_set_font(FONT_COUNT)
+    djui_hud_print_text("World" .. curWorldSelected, 0, 400, 6)
+end
+
 function on_hud_render_behind()
     lobby_hud()
     level_hud()
     toad_house_hud()
-    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) &~ HUD_DISPLAY_FLAG_LIVES)
-    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) &~ HUD_DISPLAY_FLAG_COIN_COUNT)
-    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) &~ HUD_DISPLAY_FLAG_TIMER)
-    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) &~ HUD_DISPLAY_FLAG_STAR_COUNT)
-    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) &~ HUD_DISPLAY_FLAG_CAMERA)
+    cannon_hud()
+    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) & ~HUD_DISPLAY_FLAG_LIVES)
+    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) & ~HUD_DISPLAY_FLAG_COIN_COUNT)
+    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) & ~HUD_DISPLAY_FLAG_TIMER)
+    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) & ~HUD_DISPLAY_FLAG_STAR_COUNT)
+    hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) & ~HUD_DISPLAY_FLAG_CAMERA)
 end
 
 hook_event(HOOK_ON_HUD_RENDER_BEHIND, on_hud_render_behind)
