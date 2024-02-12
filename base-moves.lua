@@ -43,7 +43,8 @@ local SPINACTIONS = {
     [ACT_FORWARD_ROLLOUT] = true,
     [ACT_BACKWARD_ROLLOUT] = true,
     [ACT_WALL_KICK_AIR] = true,
-    [ACT_BACKFLIP] = true
+    [ACT_BACKFLIP] = true,
+    [ACT_FREEFALL] = true
 }
 
 local gMarioStateExtras = {}
@@ -92,7 +93,7 @@ end
 
 function responsive_ground_pound_turn(m)
     if m.playerIndex ~= 0 then return end
-    if m.prevAction == ACT_GROUND_POUND_LAND and m.action ~= ACT_GROUND_POUND_JUMP then
+    if m.prevAction == ACT_GROUND_POUND_LAND and m.action ~= ACT_GROUND_POUND_JUMP and m.action & ACT_FLAG_AIR == 0 then
         m.faceAngle.y = m.intendedYaw
     end
 end
@@ -418,7 +419,7 @@ local function mario_on_set_action(m)
 
     if e.spinInput ~= 0 and (m.input & INPUT_ABOVE_SLIDE) == 0 then
         if SPINACTIONS[m.action] or m.controller.buttonPressed == X_BUTTON or m.action == ACT_FAKE_JUMP then
-            if (m.action == ACT_FAKE_JUMP or m.action == ACT_WALL_KICK_AIR or m.action == ACT_WALL_SLIDE) and didSpin then return end
+            if (m.action == ACT_FAKE_JUMP or m.action == ACT_WALL_KICK_AIR or m.action == ACT_WALL_SLIDE or m.action == ACT_FREEFALL) and didSpin then return end
             set_mario_action(m, ACT_SPIN_JUMP, 1)
             m.vel.y = 65.0
             m.faceAngle.y = m.intendedYaw
@@ -467,7 +468,7 @@ local function mario_update(m)
 
     -- spin
     if (SPINACTIONS[m.action] or m.action == ACT_FAKE_JUMP) and e.spinInput ~= 0 or (m.controller.buttonPressed == X_BUTTON and (SPINACTIONS[m.action] or m.action == ACT_FAKE_JUMP)) then
-        if (m.action == ACT_FAKE_JUMP or m.action == ACT_WALL_KICK_AIR or m.action == ACT_WALL_SLIDE) and didSpin then return end
+        if (m.action == ACT_FAKE_JUMP or m.action == ACT_WALL_KICK_AIR or m.action == ACT_WALL_SLIDE or m.action == ACT_FREEFALL) and didSpin then return end
         set_mario_action(m, ACT_SPIN_JUMP, 1)
         m.vel.y = 65.0
         m.faceAngle.y = m.intendedYaw
