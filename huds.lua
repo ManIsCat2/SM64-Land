@@ -35,7 +35,7 @@ function world_unlocked(world)
     if world == 1 then
         return true
     end
-    
+
     if world == 2 then
         if operation(COURSE_BOB, 3) == gTextures.star then
             return true
@@ -172,7 +172,7 @@ function cannon_hud()
         curWorldSelected = curWorldSelected + 1
     end
 
-    if m.controller.buttonPressed & D_JPAD ~= 0 then
+    if m.controller.buttonPressed & L_JPAD ~= 0 then
         curWorldSelected = curWorldSelected - 1
     end
 
