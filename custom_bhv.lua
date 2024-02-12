@@ -59,12 +59,11 @@ stuckY = false
 stuckHud = false
 
 function world_cannon_loop(o)
-    --load_object_collision_model()
+    load_object_collision_model()
     m = gMarioStates[0]
-    if dist_between_objects(o, m.marioObj) < 650 and m.action ~= ACT_SHOT_FROM_CANNON then
+
+    if stuck then
         vec3f_set(m.pos, o.oPosX, o.oPosY + 400, o.oPosZ)
-        stuck = true
-        stuckHud = true
     end
 
     if m.action == ACT_SHOT_FROM_CANNON then
@@ -74,11 +73,11 @@ function world_cannon_loop(o)
     if stuckTimer > 50 then
         warp_to_warpnode(warpsforlevels[curWorldSelected].level, warpsforlevels[curWorldSelected].area, 1, warpsforlevels[curWorldSelected].warpid)
         stuckTimer = 0
-        stuck = false
     end
 
-    if m.controller.buttonPressed & Y_BUTTON ~= 0 and world_unlocked(curWorldSelected) then
+    if m.controller.buttonPressed & Y_BUTTON ~= 0 and world_unlocked(curWorldSelected) and m.pos.y == (o.oPosY + 400) then
         stuckHud = false
+        stuck = false
         vec3f_set(m.pos, o.oPosX, o.oPosY + 800, o.oPosZ)
         m.action = ACT_SHOT_FROM_CANNON
         m.faceAngle.y = 22268
