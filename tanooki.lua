@@ -130,9 +130,6 @@ function tanooki_loop(m)
             end
         end
     end
-    if m.action == ACT_JUMP and tanooki then
-        smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
-    end
 end
 
 local function act_fake_jump(m)
