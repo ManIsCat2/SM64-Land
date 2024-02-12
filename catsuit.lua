@@ -35,6 +35,9 @@ function bhv_catsuit_loop(obj)
         fludd = false
         tanooki = false
         catsuit = true
+        powerup = true
+    end
+    if catsuit then
         gPlayerSyncTable[0].modelId = E_MODEL_CAT_MARIO
     end
 end

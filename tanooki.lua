@@ -80,7 +80,11 @@ function bhv_leaf_loop(obj)
         cloud = false
         bee = false
         fludd = false
+        catsuit = false
         tanooki = true
+        powerup = true
+    end
+    if tanooki then
         gPlayerSyncTable[0].modelId = E_MODEL_TANOOKI_MARIO
     end
 end
@@ -92,7 +96,7 @@ function tanooki_loop(m)
         if gPlayerSyncTable[0].modelId == E_MODEL_TANOOKI_MARIO and tanooki then
             if m.action == ACT_WALL_SLIDE then
                 wallSlideTimer = 0
-            elseif m.action == ACT_WALL_KICK_AIR and m.forwardVel > 0 then
+            elseif m.action == ACT_WALL_KICK_AIR then
                 wallSlideTimer = wallSlideTimer + 1
             else
                 wallSlideTimer = 0
@@ -101,15 +105,10 @@ function tanooki_loop(m)
                 if m.controller.buttonPressed & A_BUTTON ~= 0 and m.action & ACT_FLAG_AIR ~= 0 then
                     startTimer = false
                     if m.pos.y > (m.floorHeight + 100) then
-                        if wallSlideTimer >= 4 and m.action == ACT_WALL_KICK_AIR then
-                            set_mario_action(m, ACT_FAKE_JUMP, 0)
-                            wallSlideTimer = 0
-                            smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
-                        elseif m.action ~= ACT_WALL_KICK_AIR then
-                            set_mario_action(m, ACT_FAKE_JUMP, 0)
-                            wallSlideTimer = 0
-                            smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
-                        end
+                        if wallSlideTimer < 4 and m.action == ACT_WALL_KICK_AIR then return end
+                        set_mario_action(m, ACT_FAKE_JUMP, 0)
+                        wallSlideTimer = 0
+                        smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
                         play_sound(SOUND_ACTION_SPIN, m.marioObj.header.gfx.cameraToObject)
                         startTimer = true
                         flutterTimer = 0

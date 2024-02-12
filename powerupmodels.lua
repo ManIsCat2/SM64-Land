@@ -10,14 +10,33 @@ hook_event(HOOK_OBJECT_SET_MODEL, function (o)
     end
 end)
 
+powerup = false
+
+function powerup_check()
+    if powerup == false then
+        cloud = false
+        bee = false
+        fludd = false
+        tanooki = false
+        catsuit = false
+        gPlayerSyncTable[0].modelId = nil
+    end
+end
+
 function on_death_warp()
-    gPlayerSyncTable[0].modelId = nil
-    tanooki = false
-    catsuit = false
+    powerup = false
     timer = 0
     score = 0
     scoreAdder = 0
 end
 
+function damage_check(m)
+    if m.hurtCounter > 0 then
+        powerup = false
+    end
+end
+
+hook_event(HOOK_UPDATE, powerup_check)
+hook_event(HOOK_MARIO_UPDATE, damage_check)
 hook_event(HOOK_ON_DEATH, on_death_warp)
 hook_event(HOOK_ON_WARP, on_death_warp)
