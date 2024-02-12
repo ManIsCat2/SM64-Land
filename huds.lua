@@ -185,7 +185,7 @@ function cannon_hud()
 
     djui_hud_set_resolution(RESOLUTION_DJUI)
     djui_hud_set_font(FONT_COUNT)
-    djui_hud_print_text("World" .. curWorldSelected, 0, 400, 6)
+    djui_hud_print_text("World " .. curWorldSelected, 0, 400, 6)
 end
 
 function on_hud_render_behind()
