@@ -15,4 +15,4 @@ local function on_interact(m,o,interactType,interactValue)
 end
 
 hook_event(HOOK_ON_INTERACT, on_interact)
-hook_event(HOOK_ON_HUD_RENDER_BEHIND, level_end)
+--hook_event(HOOK_ON_HUD_RENDER_BEHIND, level_end)
