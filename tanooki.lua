@@ -51,6 +51,7 @@ local flutterActions = {
     [ACT_WALL_KICK_AIR] = true,
     [ACT_FAKE_JUMP] = true,
     [ACT_FREEFALL] = true,
+    [ACT_FAKE_FREEFALL] = true,
     [ACT_BACKFLIP] = true
 }
 
@@ -108,7 +109,6 @@ function tanooki_loop(m)
                         if wallSlideTimer < 4 and m.action == ACT_WALL_KICK_AIR then return end
                         set_mario_action(m, ACT_FAKE_JUMP, 0)
                         wallSlideTimer = 0
-                        smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
                         play_sound(SOUND_ACTION_SPIN, m.marioObj.header.gfx.cameraToObject)
                         startTimer = true
                         flutterTimer = 0
@@ -119,6 +119,7 @@ function tanooki_loop(m)
                     if flutterTimer < 10 then
                         if m.vel.y < -7.5 then
                             m.vel.y = -7.5
+                            smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
                         end
                     else
                         startTimer = false
