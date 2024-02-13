@@ -43,11 +43,11 @@ function world_unlocked(world)
     end
 
     if world == 2 then
-        --if operation(COURSE_JRB, 0) == gTextures.star then
+        if operation(COURSE_BOB, 3) == gTextures.star then
             return true
-        --else
-        --    return false
-        --end
+        else
+            return false
+        end
     end
 end
 
@@ -157,6 +157,7 @@ end
 
 -- Still WIP
 function cannon_hud()
+    djui_chat_message_create(tostring(xCursorIndex))
     if stuck == false then
         xCursorIndex = 1
         yCursorIndex = 1
@@ -166,11 +167,7 @@ function cannon_hud()
     if m.playerIndex ~= 0 then return end
 
     if m.controller.stickX > 0 and stickMoved == false then
-        if xCursorIndex == 1 then
-            xCursorIndex = 2
-        elseif xCursorIndex == 2 then
-            xCursorIndex = 1
-        end
+        xCursorIndex = xCursorIndex + 1
         stickMoved = true
     end
 
@@ -179,12 +176,16 @@ function cannon_hud()
     end
 
     if m.controller.stickX < 0 and stickMoved == false then
-        if xCursorIndex == 2 then
-            xCursorIndex = 1
-        elseif xCursorIndex == 1 then
-            xCursorIndex = 2
-        end
+        xCursorIndex = xCursorIndex - 1
         stickMoved = true
+    end
+
+    if xCursorIndex == 0 then
+        xCursorIndex = 2
+    end
+
+    if xCursorIndex == 3 then
+        xCursorIndex = 1
     end
 
     worldSelected = xCursorIndex * yCursorIndex
@@ -197,9 +198,9 @@ function cannon_hud()
         djui_hud_print_text("@", (djui_hud_get_screen_width() / 2) + 8, 71, 1)
     end
     djui_hud_print_text("World 1", (djui_hud_get_screen_width() / 2) - 106, 71, 1)
-    --if operation(COURSE_JRB, 0) ~= TEX_UNCOLLECTED_STAR then
+    if world_unlocked(2) then
         djui_hud_print_text("World 2", (djui_hud_get_screen_width() / 2) + 24, 71, 1)
-    --end
+    end
 end
 
 -- Power Meter display (EXTREMELY WIP)
