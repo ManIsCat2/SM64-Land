@@ -64,27 +64,43 @@ function world_cannon_loop(o)
 
     if stuck then
         vec3f_set(m.pos, o.oPosX, o.oPosY + 400, o.oPosZ)
+        m.freeze = 1
+        if soundPlayed == false then
+            play_sound(SOUND_GENERAL_CANNON_UP, m.marioObj.header.gfx.cameraToObject)
+            soundPlayed = true
+        end
     end
 
-    if m.action == ACT_SHOT_FROM_CANNON then
+    if m.action == ACT_SHOT_FROM_CANNON and m.vel.y >= 0 then
         stuckTimer = stuckTimer + 1
     end
 
     if stuckTimer > 50 then
-        warp_to_warpnode(warpsforlevels[curWorldSelected].level, warpsforlevels[curWorldSelected].area, 1, warpsforlevels[curWorldSelected].warpid)
+        warp_to_warpnode(warpsforlevels[worldSelected].level, warpsforlevels[worldSelected].area, 1, warpsforlevels[worldSelected].warpid)
         stuckTimer = 0
     end
 
-    if m.controller.buttonPressed & Y_BUTTON ~= 0 and world_unlocked(curWorldSelected) and m.pos.y == (o.oPosY + 400) then
+    if m.controller.buttonPressed & Y_BUTTON ~= 0 and world_unlocked(worldSelected) and m.pos.y == (o.oPosY + 400) then
         stuckHud = false
         stuck = false
+        soundPlayed = false
         vec3f_set(m.pos, o.oPosX, o.oPosY + 800, o.oPosZ)
         m.action = ACT_SHOT_FROM_CANNON
-        m.faceAngle.y = 22268
-        m.vel.y = 35
-        m.forwardVel = 40
+        m.faceAngle.y = 23039.6484375
+        m.vel.y = 60
+        m.forwardVel = 90
     end
 end
+
+function world_cannon_warp()
+    if gMarioStates[0].area.warpNodes.node.id == 11 and gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) then
+        set_mario_action(gMarioStates[0], ACT_SHOT_FROM_CANNON, 0)
+    end
+    djui_chat_message_create(tostring(gMarioStates[0].area.warpNodes.node.id))
+end
+
+hook_event(HOOK_ON_WARP, world_cannon_warp)
+
 
 function pipe_cover_init(o)
     o.oIntangibleTimer = 0

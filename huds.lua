@@ -1,11 +1,17 @@
 -- Hud Types --
 
 local curWorld = 1
-curWorldSelected = 1
+worldSelected = 1
 warpsforlevels = {
-    { level = 16, area = 1, warpid = 10 },
+    { level = 16, area = 1, warpid = 11 },
     { level = 26, area = 1, warpid = 11 },
 }
+
+local xCursorIndex = 1
+local yCursorIndex = 1
+local stickMoved = false
+
+curWorldStars = 0
 
 function worldCheck()
     if gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS) then
@@ -37,17 +43,17 @@ function world_unlocked(world)
     end
 
     if world == 2 then
-        if operation(COURSE_BOB, 3) == gTextures.star then
+        --if operation(COURSE_JRB, 0) == gTextures.star then
             return true
-        else
-            return false
-        end
+        --else
+        --    return false
+        --end
     end
 end
 
 local TEX_SEPERATOR = get_texture_info("custom_hud_slash.rgba16")
 TEX_UNCOLLECTED_STAR = get_texture_info("hud_star_uncollected") -- DO NOT LOCALIZE
-local TEX_UNCOLLECTED_STAR_100 = get_texture_info("hud_star_100_uncollected")
+TEX_UNCOLLECTED_STAR_100 = get_texture_info("hud_star_100_uncollected")
 local TEX_SCORE = get_texture_info("hud_score")
 local TEX_TIMER = get_texture_info("hud_timer")
 
@@ -86,12 +92,7 @@ end
 
 function lobby_hud()
     if gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS) or gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) then
-        djui_hud_set_resolution(RESOLUTION_N64)
-        djui_hud_set_font(FONT_HUD)
-
-        if numStars ~= nil then -- here to stop errors
-            djui_hud_print_text(string.format("%.02d", numStars), 8, 4, 1)
-        end
+        djui_hud_print_text(string.format("%.02d", curWorldStars), 8, 4, 1)
         djui_hud_render_texture(TEX_SEPERATOR, 28, 4, 1, 1)
         if curWorld ~= nil then
             djui_hud_print_text(tostring(worldSpecific[curWorld][2]), 40, 4, 1)
@@ -110,12 +111,10 @@ function lobby_hud()
 end
 
 function level_hud()
-    if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_COTMC) then
-        djui_hud_set_resolution(RESOLUTION_N64)
-        djui_hud_set_font(FONT_HUD)
+    if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_COTMC) and (gNetworkPlayers[0].currLevelNum == LEVEL_BOB and gNetworkPlayers[0].currAreaIndex ~= 3) then
 
         djui_hud_render_texture(TEX_SCORE, 8, 4, 1, 1)
-        djui_hud_print_text(string.format(("%.05d"), math.floor(score)), 24, 4, 1)
+        djui_hud_print_text(string.format(("%.05d"), math.floor(scoreCounter)), 24, 4, 1)
         if gNetworkPlayers[0].currLevelNum == LEVEL_BOB and gNetworkPlayers[0].currAreaIndex == 1 then
             djui_hud_render_texture(operation(COURSE_BOB, 0), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_BOB, 2), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
@@ -150,48 +149,77 @@ end
 
 function toad_house_hud()
     if gNetworkPlayers[0].currLevelNum == (LEVEL_COTMC) then
-        djui_hud_set_resolution(RESOLUTION_N64)
-        djui_hud_set_font(FONT_HUD)
         djui_hud_print_text("$", djui_hud_get_screen_width() - 62, 4, 1)
         djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
         djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - 32, 4, 1)
     end
 end
 
-function tutorial_hud()
-    hud_hide()
-end
-
+-- Still WIP
 function cannon_hud()
+    if stuck == false then
+        xCursorIndex = 1
+        yCursorIndex = 1
+    end
     if not stuckHud then return end
     m = gMarioStates[0]
     if m.playerIndex ~= 0 then return end
 
-    if m.controller.buttonPressed & R_JPAD ~= 0 then
-        curWorldSelected = curWorldSelected + 1
+    if m.controller.stickX > 0 and stickMoved == false then
+        if xCursorIndex == 1 then
+            xCursorIndex = 2
+        elseif xCursorIndex == 2 then
+            xCursorIndex = 1
+        end
+        stickMoved = true
     end
 
-    if m.controller.buttonPressed & L_JPAD ~= 0 then
-        curWorldSelected = curWorldSelected - 1
+    if m.controller.stickX == 0 and stickMoved then
+        stickMoved = false
     end
 
-    if curWorldSelected == 0 then
-        curWorldSelected = 8
-    end
-    if curWorldSelected > 8 then
-        curWorldSelected = 1
+    if m.controller.stickX < 0 and stickMoved == false then
+        if xCursorIndex == 2 then
+            xCursorIndex = 1
+        elseif xCursorIndex == 1 then
+            xCursorIndex = 2
+        end
+        stickMoved = true
     end
 
-    djui_hud_set_resolution(RESOLUTION_DJUI)
-    djui_hud_set_font(FONT_COUNT)
-    djui_hud_print_text("World " .. curWorldSelected, 0, 400, 6)
+    worldSelected = xCursorIndex * yCursorIndex
+
+    djui_hud_print_text("Warp", (djui_hud_get_screen_width() / 2) - 42, 48, 1)
+    djui_hud_print_text("To", (djui_hud_get_screen_width() / 2) + 20, 48, 1)
+    if xCursorIndex == 1 then
+        djui_hud_print_text("@", (djui_hud_get_screen_width() / 2) - 122, 71, 1)
+    elseif xCursorIndex == 2 then
+        djui_hud_print_text("@", (djui_hud_get_screen_width() / 2) + 8, 71, 1)
+    end
+    djui_hud_print_text("World 1", (djui_hud_get_screen_width() / 2) - 106, 71, 1)
+    --if operation(COURSE_JRB, 0) ~= TEX_UNCOLLECTED_STAR then
+        djui_hud_print_text("World 2", (djui_hud_get_screen_width() / 2) + 24, 71, 1)
+    --end
 end
 
+-- Power Meter display (EXTREMELY WIP)
+--function power_meter()
+    --if gMarioStates[0].health <= 2047 then
+        --hud_render_power_meter(gMarioStates[0].health, (djui_hud_get_screen_width() / 2) - 74, 13, 64, 64)
+        --(djui_hud_get_screen_width() / 2) - 74, 21,
+    --end
+--end
+
 function on_hud_render_behind()
+    hud_hide()
+    djui_hud_set_resolution(RESOLUTION_N64)
+    djui_hud_set_font(FONT_HUD)
     lobby_hud()
     level_hud()
     toad_house_hud()
     cannon_hud()
+    --power_meter()
+
     hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) & ~HUD_DISPLAY_FLAG_LIVES)
     hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) & ~HUD_DISPLAY_FLAG_COIN_COUNT)
     hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) & ~HUD_DISPLAY_FLAG_TIMER)
@@ -199,6 +227,7 @@ function on_hud_render_behind()
     hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) & ~HUD_DISPLAY_FLAG_CAMERA)
 end
 
+--hook_event(HOOK_UPDATE, power_meter)
 hook_event(HOOK_ON_HUD_RENDER_BEHIND, on_hud_render_behind)
 hook_event(HOOK_MARIO_UPDATE, mario_update)
 hook_event(HOOK_UPDATE, worldCheck)
