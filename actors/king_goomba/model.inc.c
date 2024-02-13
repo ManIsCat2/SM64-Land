@@ -16,17 +16,17 @@ Lights1 king_goomba_Material_4_f3d_lights = gdSPDefLights1(
 
 Gfx king_goomba__2_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 king_goomba__2_rgba16[] = {
-	#include "actors/mario/_2.rgba16.inc.c"
+	#include "actors/king_goomba/_2.rgba16.inc.c"
 };
 
 Gfx king_goomba__0_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 king_goomba__0_rgba16[] = {
-	#include "actors/mario/_0.rgba16.inc.c"
+	#include "actors/king_goomba/_0.rgba16.inc.c"
 };
 
 Gfx king_goomba__4_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 king_goomba__4_rgba16[] = {
-	#include "actors/mario/_4.rgba16.inc.c"
+	#include "actors/king_goomba/_4.rgba16.inc.c"
 };
 
 Vtx king_goomba_000_displaylist_mesh_layer_1_vtx_0[4] = {

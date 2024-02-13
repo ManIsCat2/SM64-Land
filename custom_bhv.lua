@@ -351,3 +351,31 @@ function fake_pipe_loop(o)
 end
 
 id_bhvFakeWarpPipe = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_fake_pipe_init, fake_pipe_loop)
+
+
+--- gombba :D
+--E_MODEL_GOOMBOSS = smlua_model_util_get_id("king_goomba_geo")
+
+---@param o Object
+function bhv_goomboss_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.header.gfx.skipInViewCheck = true
+    o.oAnimations = gObjectAnimations.goomba_seg8_anims_0801DA4C
+    o.hitboxRadius = 320
+    o.hitboxHeight = 300
+    cur_obj_init_animation(0)
+end
+
+ACT_GOOMBOSS_TALKING = 0
+ACT_GOOMBA_BOSS_RUNNING_TO_WALL = 1
+ACT_GOOMBA_BOSS_ON_GROUND = 2
+
+---@param o Object
+function bhv_goomboss_loop(o)
+    o.oInteractStatus = 0
+    if o.oAction == ACT_GOOMBOSS_TALKING then
+        o.oInteractType = INTERACT_TEXT
+    end
+end
+
+id_bhvGoomboss = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_goomba_init, bhv_goomboss_loop)
