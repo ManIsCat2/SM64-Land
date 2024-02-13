@@ -16,6 +16,7 @@ local math_floor = math.floor
 -- initialize actions --
 ------------------------
 
+ACT_FAKE_FREEFALL = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR | ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
 ACT_GROUND_POUND_JUMP = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR |
     ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
 ACT_SPIN_JUMP = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR | ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
@@ -186,6 +187,13 @@ local function mario_update_spin_input(m)
     e.lastIntendedMag = m.intendedMag
 end
 
+local function act_fake_freefall(m)
+    if m.playerIndex ~= 0 then return end
+
+    common_air_action_step(m, ACT_FREEFALL, MARIO_ANIM_GENERAL_FALL,
+    AIR_STEP_CHECK_LEDGE_GRAB | AIR_STEP_CHECK_HANG)
+end
+
 local function act_spin_jump(m)
     local e = gMarioStateExtras[m.playerIndex]
     if m.actionTimer == 0 then
@@ -193,8 +201,6 @@ local function act_spin_jump(m)
         if e.spinDirection < 0 then
             m.actionState = 1
         end
-    elseif m.actionTimer == 1 or m.actionTimer == 4 then
-        play_sound(SOUND_ACTION_TWIRL, m.marioObj.header.gfx.cameraToObject)
     end
 
     local spinDirFactor = 1 -- negative for clockwise, positive for counter-clockwise
@@ -202,28 +208,33 @@ local function act_spin_jump(m)
         spinDirFactor = -1
     end
 
-    if (m.input & INPUT_B_PRESSED) ~= 0 then
-        return set_mario_action(m, ACT_DIVE, 0)
+    if SPIN_RISE_TIMER % 10 == 0 and SPIN_RISE_TIMER ~= 30 then
+        play_sound(SOUND_ACTION_TWIRL, m.marioObj.header.gfx.cameraToObject)
     end
-
-    play_mario_sound(m, SOUND_ACTION_TERRAIN_JUMP, CHAR_SOUND_YAHOO)
 
     common_air_action_step(m, ACT_DOUBLE_JUMP_LAND, MARIO_ANIM_TWIRL,
         AIR_STEP_CHECK_HANG)
 
     if m.action == ACT_SPIN_JUMP then
         SPIN_RISE_TIMER = SPIN_RISE_TIMER + 1
-        if SPIN_RISE_TIMER <= 25 then
-            m.vel.y = 15
+        if SPIN_RISE_TIMER <= 30 then
+            m.vel.y = 10
+            if m.forwardVel > 15 then
+                m.forwardVel = 15
+            end
         else
-            set_mario_action(m, ACT_FREEFALL, 0)
+            set_mario_action(m, ACT_FAKE_FREEFALL, 0)
             SPIN_RISE_TIMER = 0
         end
+    else
+        SPIN_RISE_TIMER = 0
     end
 
     e.rotAngle = e.rotAngle + 0x2867
-    if (e.rotAngle > 0x10000) then e.rotAngle = e.rotAngle - 0x10000 end
-    if (e.rotAngle < -0x10000) then e.rotAngle = e.rotAngle + 0x10000 end
+    if (e.rotAngle > 0x1000) then e.rotAngle = e.rotAngle - 0x1000 end
+
+    m.marioBodyState.handState = MARIO_HAND_OPEN
+
     m.marioObj.header.gfx.angle.y = limit_angle(m.marioObj.header.gfx.angle.y + (e.rotAngle * spinDirFactor))
 
     m.actionTimer = m.actionTimer + 1
@@ -404,8 +415,7 @@ local function act_ground_pound_jump(m)
     if (m.controller.buttonPressed & Z_TRIG) ~= 0 then
         set_mario_action(m, ACT_GROUND_POUND, 0)
     end
-    common_air_action_step(m, ACT_JUMP_LAND, MARIO_ANIM_TRIPLE_JUMP,
-        AIR_STEP_CHECK_HANG)
+    set_mario_action(m, ACT_TRIPLE_JUMP, 0)
     m.actionTimer = m.actionTimer + 1
     return 0
 end
@@ -419,6 +429,7 @@ local function mario_on_set_action(m)
 
     if e.spinInput ~= 0 and (m.input & INPUT_ABOVE_SLIDE) == 0 then
         if SPINACTIONS[m.action] or m.controller.buttonPressed == X_BUTTON or m.action == ACT_FAKE_JUMP then
+            if stuck then return end
             if (m.action == ACT_FAKE_JUMP or m.action == ACT_WALL_KICK_AIR or m.action == ACT_WALL_SLIDE or m.action == ACT_FREEFALL) and didSpin then return end
             set_mario_action(m, ACT_SPIN_JUMP, 1)
             m.vel.y = 65.0
@@ -426,6 +437,7 @@ local function mario_on_set_action(m)
             didSpin = true
         end
     end
+    
     if m.action & ACT_FLAG_AIR == 0 then
         didSpin = false
     end
@@ -463,11 +475,12 @@ local function mario_update(m)
         mario_set_forward_vel(m, 20.0)
         m.vel.y = 35.0
         set_mario_action(m, ACT_DIVE, 0)
-        play_sound(SOUND_ACTION_SPIN, m.marioObj.header.gfx.cameraToObject)
+        play_sound(SOUND_GENERAL_SWISH_WATER, m.marioObj.header.gfx.cameraToObject)
     end
 
     -- spin
     if (SPINACTIONS[m.action] or m.action == ACT_FAKE_JUMP) and e.spinInput ~= 0 or (m.controller.buttonPressed == X_BUTTON and (SPINACTIONS[m.action] or m.action == ACT_FAKE_JUMP)) then
+        if stuck then return end
         if (m.action == ACT_FAKE_JUMP or m.action == ACT_WALL_KICK_AIR or m.action == ACT_WALL_SLIDE or m.action == ACT_FREEFALL) and didSpin then return end
         set_mario_action(m, ACT_SPIN_JUMP, 1)
         m.vel.y = 65.0
@@ -478,7 +491,6 @@ local function mario_update(m)
 
     -- ground pound jump
     if m.action == ACT_GROUND_POUND_LAND and (m.input & INPUT_A_PRESSED) ~= 0 then
-        play_sound(SOUND_ACTION_TWIRL, m.marioObj.header.gfx.cameraToObject)
         set_mario_action(m, ACT_GROUND_POUND_JUMP, 0)
         m.vel.y = 70
     end
@@ -499,6 +511,7 @@ hook_event(HOOK_MARIO_UPDATE, no_fall_damage)
 hook_event(HOOK_ON_SET_MARIO_ACTION, mario_on_set_action)
 hook_event(HOOK_BEFORE_SET_MARIO_ACTION, before_set_mario_action)
 
+hook_mario_action(ACT_FAKE_FREEFALL, { every_frame = act_fake_freefall })
 hook_mario_action(ACT_SPIN_JUMP, { every_frame = act_spin_jump, gravity = act_spin_jump_gravity })
 hook_mario_action(ACT_GROUND_POUND_JUMP, { every_frame = act_ground_pound_jump })
 hook_mario_action(ACT_WALL_SLIDE, { every_frame = act_wall_slide, gravity = act_wall_slide_gravity })
