@@ -96,7 +96,7 @@ function world_cannon_warp()
     if gMarioStates[0].area.warpNodes.node.id == 11 and gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) then
         set_mario_action(gMarioStates[0], ACT_SHOT_FROM_CANNON, 0)
     end
-    djui_chat_message_create(tostring(gMarioStates[0].area.warpNodes.node.id))
+   -- djui_chat_message_create(tostring(gMarioStates[0].area.warpNodes.node.id))
 end
 
 hook_event(HOOK_ON_WARP, world_cannon_warp)
