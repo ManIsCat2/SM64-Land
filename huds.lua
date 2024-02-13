@@ -12,6 +12,7 @@ local yCursorIndex = 1
 local stickMoved = false
 
 curWorldStars = 0
+worldsUnlocked = 1
 
 function worldCheck()
     if gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS) then
@@ -49,6 +50,13 @@ function world_unlocked(world)
             return false
         end
     end
+end
+
+function worlds_unlocked()
+    if world_unlocked(2)  then
+        worldsUnlocked = worldsUnlocked + 1
+    end
+    return worldsUnlocked
 end
 
 local TEX_SEPERATOR = get_texture_info("custom_hud_slash.rgba16")
@@ -166,7 +174,7 @@ function cannon_hud()
     m = gMarioStates[0]
     if m.playerIndex ~= 0 then return end
 
-    if m.controller.stickX > 0 and stickMoved == false then
+    if m.controller.stickX > 0 and not stickMoved and world_unlocked(xCursorIndex + 1) then
         xCursorIndex = xCursorIndex + 1
         stickMoved = true
     end
@@ -175,16 +183,16 @@ function cannon_hud()
         stickMoved = false
     end
 
-    if m.controller.stickX < 0 and stickMoved == false then
+    if m.controller.stickX < 0 and not stickMoved and world_unlocked(xCursorIndex - 1) then
         xCursorIndex = xCursorIndex - 1
         stickMoved = true
     end
 
     if xCursorIndex == 0 then
-        xCursorIndex = 2
+        xCursorIndex = worlds_unlocked()
     end
 
-    if xCursorIndex == 3 then
+    if xCursorIndex == (worlds_unlocked() + 1) then
         xCursorIndex = 1
     end
 
