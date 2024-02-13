@@ -354,7 +354,7 @@ id_bhvFakeWarpPipe = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_fake_pipe_in
 
 
 --- gombba :D
---E_MODEL_GOOMBOSS = smlua_model_util_get_id("king_goomba_geo")
+E_MODEL_GOOMBOSS = smlua_model_util_get_id("king_goomba_geo")
 
 ---@param o Object
 function bhv_goomboss_init(o)
