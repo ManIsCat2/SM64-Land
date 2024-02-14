@@ -1,0 +1,12 @@
+extern const GeoLayout bouncy_platform_geo[];
+extern Lights1 bouncy_platform_Material_0_f3d_lights;
+extern Lights1 bouncy_platform_Material_1_f3d_lights;
+extern u8 bouncy_platform__0_rgba16[];
+extern u8 bouncy_platform__1_rgba16[];
+extern Vtx bouncy_platform_Bone_mesh_layer_1_vtx_0[63];
+extern Gfx bouncy_platform_Bone_mesh_layer_1_tri_0[];
+extern Vtx bouncy_platform_Bone_mesh_layer_1_vtx_1[28];
+extern Gfx bouncy_platform_Bone_mesh_layer_1_tri_1[];
+extern Gfx mat_bouncy_platform_Material_0_f3d[];
+extern Gfx mat_bouncy_platform_Material_1_f3d[];
+extern Gfx bouncy_platform_Bone_mesh_layer_1[];

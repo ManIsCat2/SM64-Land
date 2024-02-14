@@ -119,7 +119,7 @@ function lobby_hud()
 end
 
 function level_hud()
-    if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_COTMC) and (gNetworkPlayers[0].currLevelNum == LEVEL_BOB and gNetworkPlayers[0].currAreaIndex ~= 3) then
+    if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_COTMC) --[[and (gNetworkPlayers[0].currLevelNum == LEVEL_BOB and gNetworkPlayers[0].currAreaIndex ~= 3)]] then
 
         djui_hud_render_texture(TEX_SCORE, 8, 4, 1, 1)
         djui_hud_print_text(string.format(("%.05d"), math.floor(scoreCounter)), 24, 4, 1)
@@ -147,12 +147,18 @@ function level_hud()
             djui_hud_render_texture(operation(COURSE_CCM, 2), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
         end
 
+        if gNetworkPlayers[0].currLevelNum == LEVEL_JRB and gNetworkPlayers[0].currAreaIndex == 1 then
+            djui_hud_render_texture(operation(COURSE_JRB, 0), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_JRB, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_JRB, 2), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
+        end
+
         djui_hud_render_texture(TEX_TIMER, ((djui_hud_get_screen_width() / 2) + 46), 4, 1, 1)
         djui_hud_print_text(string.format(("%.03d"), math.floor(timer)), djui_hud_get_screen_width() / 2 + 57, 4, 1)
         djui_hud_print_text("$", djui_hud_get_screen_width() - 62, 4, 1)
         djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
         djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - 32, 4, 1)
-    end
+   end
 end
 
 function toad_house_hud()

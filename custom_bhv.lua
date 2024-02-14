@@ -395,3 +395,17 @@ function bhv_goomboss_loop(o)
 end
 
 id_bhvGoomboss = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_goomba_init, bhv_goomboss_loop)
+
+--bouncer
+
+COL_BOUNCY_PLATFROM = smlua_collision_util_get("bouncy_platform")
+E_MODEL_BOUNCY_PLATFORM = smlua_model_util_get_id("bouncy_platform_geo")
+
+function bhv_bouncy_platform_init(o)
+    o.header.gfx.skipInViewCheck = true
+    o.collisionData = COL_BOUNCY_PLATFROM
+    o.oCollisionDistance = 2000
+    obj_set_model_extended(o, E_MODEL_BOUNCY_PLATFORM)
+end
+
+id_bhvBouncyPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_bouncy_platform_init, bhv_mushroom_loop)
