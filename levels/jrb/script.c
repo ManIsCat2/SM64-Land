@@ -56,6 +56,21 @@ const LevelScript level_jrb_entry[] = {
 	OBJECT(E_MODEL_RED_COIN, 383, 2051, -5244, 0, 0, 0, 0x00000000, id_bhvRedCoin),
 	OBJECT(E_MODEL_RED_COIN, -2708, -409, -7998, 0, 0, 0, 0x00000000, id_bhvRedCoin),
 	OBJECT(E_MODEL_RED_COIN, -587, -409, -6074, 0, 0, 0, 0x00000000, id_bhvRedCoin),
+	OBJECT(E_MODEL_BOUNCY_PLATFORM, 1767, 4723, -2522, 0, 90, 0, (8 << 8), id_bhvBouncyPlatform),
+	OBJECT(E_MODEL_BOUNCY_PLATFORM, 1767, 6850, -800, 0, 90, 0, (8 << 8), id_bhvBouncyPlatform),
+	OBJECT(E_MODEL_NONE, -9156, -1493, -7452, 0, 90, 0, 0x00000000, id_bhvCoinFormation),
+	OBJECT(E_MODEL_NONE, 1445, 3377, -516, 0, 0, 0, 0x00000000, id_bhvCoinFormation),
+	OBJECT(E_MODEL_NONE, 1702, -1, -9288, 0, 90, 0, 0x00000000, id_bhvCoinFormation),
+	OBJECT(E_MODEL_NONE, -3955, -411, -5665, 0, 0, 0, (17 << 16), id_bhvCoinFormation),
+	OBJECT(E_MODEL_NONE, 398, -409, -5257, 0, 0, 0, (17 << 16), id_bhvCoinFormation),
+	OBJECT(E_MODEL_NONE, 4308, 1899, 2153, 0, 90, 0, (0 << 16), id_bhvCoinFormation),
+	OBJECT(E_MODEL_NONE, 15497, 12266, -2986, 0, 0, 0, (2 << 16), id_bhvCoinFormation),
+	// next object, no acts, doesnt exist
+	// this exists
+	OBJECT_WITH_ACTS(E_MODEL_EXCLAMATION_BOX, -8366, -1181, -7919, 0, 0, 0, 0x10000, id_bhvExclamationBox, 31),
+	OBJECT(E_MODEL_NONE, -7903, -368, -7469, 0, 0, 0, (0 << 16), id_bhvCoinFormation),
+	// 9 BLUE COINS will be done later
+	// whats 0xf7 bhv??
 	TERRAIN(jrb_area_1_collision),
 	MACRO_OBJECTS(jrb_area_1_macro_objs),
 	SET_BACKGROUND_MUSIC(0x00, SEQ_LEVEL_GRASS),
