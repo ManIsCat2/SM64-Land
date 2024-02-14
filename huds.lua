@@ -44,7 +44,7 @@ function world_unlocked(world)
     end
 
     if world == 2 then
-        if operation(COURSE_BOB, 3) == gTextures.star then
+        if operation(COURSE_JRB, 0) == gTextures.star then
             return true
         else
             return false
