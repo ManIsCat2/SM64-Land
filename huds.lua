@@ -165,7 +165,7 @@ end
 
 -- Still WIP
 function cannon_hud()
-    djui_chat_message_create(tostring(xCursorIndex))
+   -- djui_chat_message_create(tostring(xCursorIndex))
     if stuck == false then
         xCursorIndex = 1
         yCursorIndex = 1
