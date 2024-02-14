@@ -6,7 +6,7 @@ function surface_check(m)
 
     if m.floor and m.floor.type == SURFACE_BOUNCY_CUSTOM and m.floorHeight == m.pos.y then
         set_mario_action(m, ACT_DOUBLE_JUMP, 0)
-        m.vel.y = 115
+        m.vel.y = 140
     end
 
     if m.floor and m.floor.type == SURFACE_CANNON_CUSTOM and m.floorHeight == m.pos.y then

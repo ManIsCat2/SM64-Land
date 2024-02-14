@@ -398,14 +398,37 @@ id_bhvGoomboss = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_goomba_init, bh
 
 --bouncer
 
-COL_BOUNCY_PLATFROM = smlua_collision_util_get("bouncy_platform")
+COL_BOUNCY_PLATFROM = smlua_collision_util_get("bouncy_platform_collision")
 E_MODEL_BOUNCY_PLATFORM = smlua_model_util_get_id("bouncy_platform_geo")
 
 function bhv_bouncy_platform_init(o)
     o.header.gfx.skipInViewCheck = true
     o.collisionData = COL_BOUNCY_PLATFROM
-    o.oCollisionDistance = 2000
     obj_set_model_extended(o, E_MODEL_BOUNCY_PLATFORM)
 end
 
-id_bhvBouncyPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_bouncy_platform_init, bhv_mushroom_loop)
+function bhv_bouncy_platform_loop(obj)
+    load_object_collision_model()
+    local m = gMarioStates[0]
+    local y_spd = 64
+
+    if cur_obj_is_mario_on_platform() == 1 and not is_bubbled(m) then
+        m.peakHeight = m.pos.y
+        m.faceAngle.y = m.intendedYaw
+        --this is awful -- It really is -Sunk
+        -- Jump. If A is pressed during the jump, increase y_spd.
+        if m.controller.buttonDown & A_BUTTON ~= 0 then
+            y_spd = y_spd + 45 -- I feel like this should increase with oBehParams2ndByte
+            spawn_mist_particles()
+        end
+        set_mario_action(m, ACT_DOUBLE_JUMP, 0)
+
+        -- Calculates y speed
+        local intermediate_y_spd = repack(y_spd, "f", "I")
+        intermediate_y_spd = intermediate_y_spd + (obj.oBehParams2ndByte << 16)
+        y_spd = repack(intermediate_y_spd, "I", "f")
+        m.vel.y = y_spd
+    end
+end
+
+id_bhvBouncyPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_bouncy_platform_init, bhv_bouncy_platform_loop)
