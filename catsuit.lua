@@ -48,7 +48,7 @@ id_bhvMetalCap = hook_behavior(id_bhvMetalCap, OBJ_LIST_GENACTOR, true, bhv_cats
 function catsuit_power_loop(m)
     if m.playerIndex == 0 then
         if catsuit then
-            if m.controller.buttonDown & Y_BUTTON ~= 0 and m.action & ACT_FLAG_AIR ~= 0 then
+            if m.controller.buttonDown & B_BUTTON ~= 0 and m.action & ACT_FLAG_AIR ~= 0 then
                 set_mario_action(m, ACT_CAT_DIVE, 0)
             end
         end
@@ -62,7 +62,7 @@ function cat_dive(m)
     perform_air_step(m, 0)
     set_mario_animation(m, MARIO_ANIM_DIVE)
     m.forwardVel = 20
-    if m.controller.buttonDown & Y_BUTTON == 0 then
+    if m.controller.buttonDown & B_BUTTON == 0 then
         return set_mario_action(m, ACT_FREEFALL, 0)
     end
 

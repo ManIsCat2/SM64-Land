@@ -80,7 +80,7 @@ function world_cannon_loop(o)
         stuckTimer = 0
     end
 
-    if m.controller.buttonPressed & Y_BUTTON ~= 0 and world_unlocked(worldSelected) and m.pos.y == (o.oPosY + 400) then
+    if m.controller.buttonPressed & A_BUTTON ~= 0 and world_unlocked(worldSelected) and m.pos.y == (o.oPosY + 400) then
         stuckHud = false
         stuck = false
         soundPlayed = false
