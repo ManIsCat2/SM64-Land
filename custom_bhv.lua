@@ -76,7 +76,8 @@ function world_cannon_loop(o)
     end
 
     if stuckTimer > 50 then
-        warp_to_warpnode(warpsforlevels[worldSelected].level, warpsforlevels[worldSelected].area, 1, warpsforlevels[worldSelected].warpid)
+        warp_to_warpnode(warpsforlevels[worldSelected].level, warpsforlevels[worldSelected].area, 1,
+            warpsforlevels[worldSelected].warpid)
         stuckTimer = 0
     end
 
@@ -96,7 +97,7 @@ function world_cannon_warp()
     if gMarioStates[0].area.warpNodes.node.id == 11 and gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) then
         set_mario_action(gMarioStates[0], ACT_SHOT_FROM_CANNON, 0)
     end
-   -- djui_chat_message_create(tostring(gMarioStates[0].area.warpNodes.node.id))
+    -- djui_chat_message_create(tostring(gMarioStates[0].area.warpNodes.node.id))
 end
 
 hook_event(HOOK_ON_WARP, world_cannon_warp)
@@ -374,6 +375,7 @@ E_MODEL_GOOMBOSS = smlua_model_util_get_id("king_goomba_geo")
 
 ---@param o Object
 function bhv_goomboss_init(o)
+    o.oInteractType = INTERACT_DAMAGE
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     o.header.gfx.skipInViewCheck = true
     o.oAnimations = gObjectAnimations.goomba_seg8_anims_0801DA4C
@@ -382,19 +384,37 @@ function bhv_goomboss_init(o)
     cur_obj_init_animation(0)
 end
 
-ACT_GOOMBOSS_TALKING = 0
-ACT_GOOMBA_BOSS_RUNNING_TO_WALL = 1
-ACT_GOOMBA_BOSS_ON_GROUND = 2
+ACT_GOOMBA_BOSS_RUNNING_TO_WALL = 0
+ACT_GOOMBA_BOSS_ON_GROUND = 1
 
 ---@param o Object
 function bhv_goomboss_loop(o)
     o.oInteractStatus = 0
-    if o.oAction == ACT_GOOMBOSS_TALKING then
-        o.oInteractType = INTERACT_TEXT
+    local m = gMarioStates[0]
+    object_step()
+    if o.oAction == ACT_GOOMBA_BOSS_RUNNING_TO_WALL then
+        o.oForwardVel = 30
+        o.oSubAction = o.oSubAction + 1
+    end
+
+    if o.oAction == ACT_GOOMBA_BOSS_ON_GROUND then
+        o.header.gfx.angle.x = 16384
+        o.oForwardVel = 0
+    end
+
+    if o.oSubAction > 50 then
+        o.oAction = ACT_GOOMBA_BOSS_ON_GROUND
+        o.oSubAction = 0
+    end
+
+    -- other
+
+    if o.oAction == ACT_GOOMBA_BOSS_ON_GROUND and m.action == ACT_GROUND_POUND and dist_between_objects(o, m.marioObj) < 100 then
+        o.oAction = 3
     end
 end
 
-id_bhvGoomboss = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_goomba_init, bhv_goomboss_loop)
+id_bhvGoomboss = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_goomboss_init, bhv_goomboss_loop)
 
 --bouncer
 
