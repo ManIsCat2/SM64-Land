@@ -778,9 +778,6 @@ const GeoLayout tanooki_mario_geo[] = {
 				GEO_ASM(1, geo_mirror_mario_backface_culling),
 			GEO_CLOSE_NODE(),
 		GEO_CLOSE_NODE(),
-		GEO_DISPLAY_LIST(LAYER_OPAQUE, tanooki_mario_material_revert_render_settings),
-		GEO_DISPLAY_LIST(LAYER_ALPHA, tanooki_mario_material_revert_render_settings),
-		GEO_DISPLAY_LIST(LAYER_TRANSPARENT, tanooki_mario_material_revert_render_settings),
 	GEO_CLOSE_NODE(),
 	GEO_END(),
 };
