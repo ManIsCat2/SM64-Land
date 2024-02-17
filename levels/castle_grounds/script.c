@@ -24,7 +24,7 @@
 const LevelScript level_castle_grounds_entry[] = {
 	INIT_LEVEL(),
 	LOAD_MIO0(0x7, _castle_grounds_segment_7SegmentRomStart, _castle_grounds_segment_7SegmentRomEnd), 
-	LOAD_MIO0(0xa, _water_skybox_mio0SegmentRomStart, _water_skybox_mio0SegmentRomEnd),
+	LOAD_MIO0(0xa, _water_skybox_mio0SegmentRomStart, _water_skybox_mio0SegmentRomEnd), 
 	LOAD_MIO0(8,_common0_mio0SegmentRomStart,_common0_mio0SegmentRomEnd),
 	LOAD_RAW(15,_common0_geoSegmentRomStart,_common0_geoSegmentRomEnd),
 	LOAD_MIO0(5,_group10_mio0SegmentRomStart,_group10_mio0SegmentRomEnd),
@@ -33,9 +33,9 @@ const LevelScript level_castle_grounds_entry[] = {
 	LOAD_RAW(13,_group13_geoSegmentRomStart,_group13_geoSegmentRomEnd), 
 	ALLOC_LEVEL_POOL(),
 	MARIO(MODEL_MARIO, 0x00000001, bhvMario),
-JUMP_LINK(script_func_global_1),
-JUMP_LINK(script_func_global_11),
-JUMP_LINK(script_func_global_14),
+	JUMP_LINK(script_func_global_1),
+	JUMP_LINK(script_func_global_11),
+	JUMP_LINK(script_func_global_14),
 	/* Fast64 begin persistent block [level commands] */
 	/* Fast64 end persistent block [level commands] */
 
