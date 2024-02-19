@@ -1,5 +1,9 @@
 -- Hud Types --
 
+local powerTimer = 45
+local Py = 5 -100
+local prevPy = 5 -100
+
 curWorld = 1
 worldSelected = 1
 warpsforlevels = {
@@ -16,6 +20,8 @@ function get_center_offset()
     xMid = djui_hud_get_screen_width() / 2
     yOff = 16
 end
+
+
 
 hook_event(HOOK_UPDATE, get_center_offset)
 
@@ -319,13 +325,45 @@ function cannon_hud()
     end
 end
 
--- Power Meter display (EXTREMELY WIP)
---function power_meter()
-    --if gMarioStates[0].health <= 2047 then
-        --hud_render_power_meter(gMarioStates[0].health, xMid - 74, 13, 64, 64)
-        --xMid - 74, 21,
-    --end
---end
+-- Power Meter display --
+
+function power_meter()
+    local powerState = m.health >> 8 < 8 or m.action & ACT_GROUP_MASK == ACT_GROUP_SUBMERGED
+    prevPy = Py
+    x = xMid / 2
+    y = -11
+    if powerTimer > 0 then
+        powerTimer = powerTimer - 1 --counting
+    elseif powerState then
+        if Py < -11 then
+        Py = 23 --appear on screen and start ascending
+        prevPy = 23
+        if m.health >> 8 < 8 then
+            powerTimer = 45 --if you lose health, start a timer to not move the meter
+        end
+        elseif Py >= 12 and powerTimer == 0 then
+            Py = Py - 5 --start moving upwards
+        elseif Py >= -2 then
+            Py = Py - 3 --slows down
+        elseif Py >= -7 then
+            Py = Py - 2 --slows down
+        elseif Py > -11 then
+            Py = Py - 1 --slows down and stops at 5
+        end
+    else
+        if Py == -11 and RunOnce == 0 then
+            powerTimer = 45 --restart the timer if powerState is false
+            RunOnce = 1
+        elseif Py > -11 -100 and powerTimer == 0 then
+            Py = Py - 20 --go offscreen when it's done counting and don't let it ascend infinitely
+            RunOnce = 0
+        end
+    end
+    if gMarioStates[0].controller.buttonPressed == X_BUTTON then
+        djui_chat_message_create(tostring(Py))
+    end
+    hud_render_power_meter_interpolated(gMarioStates[0].health, x, prevPy, 64, 64, x, Py, 64, 64)
+end
 
 function on_hud_render_behind()
     hud_hide()
@@ -335,7 +373,7 @@ function on_hud_render_behind()
     level_hud()
     toad_house_hud()
     cannon_hud()
-    --power_meter()
+    power_meter()
 
     hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) & ~HUD_DISPLAY_FLAG_LIVES)
     hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) & ~HUD_DISPLAY_FLAG_COIN_COUNT)
@@ -344,7 +382,6 @@ function on_hud_render_behind()
     hud_set_value(HUD_DISPLAY_FLAGS, hud_get_value(HUD_DISPLAY_FLAGS) & ~HUD_DISPLAY_FLAG_CAMERA)
 end
 
---hook_event(HOOK_UPDATE, power_meter)
 hook_event(HOOK_ON_HUD_RENDER_BEHIND, on_hud_render_behind)
 hook_event(HOOK_MARIO_UPDATE, mario_update)
 hook_event(HOOK_UPDATE, worldCheck)
