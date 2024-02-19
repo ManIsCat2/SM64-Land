@@ -1,6 +1,6 @@
 -- Hud Types --
 
-local curWorld = 1
+curWorld = 1
 worldSelected = 1
 warpsforlevels = {
     { level = 16, area = 1, warpid = 11 },
@@ -10,6 +10,14 @@ warpsforlevels = {
 local xCursorIndex = 1
 local yCursorIndex = 1
 local stickMoved = false
+
+function get_center_offset()
+    djui_hud_set_resolution(RESOLUTION_N64)
+    xMid = djui_hud_get_screen_width() / 2
+    yOff = 16
+end
+
+hook_event(HOOK_UPDATE, get_center_offset)
 
 curWorldStars = 0
 worldsUnlocked = 1
@@ -50,6 +58,28 @@ function world_unlocked(world)
             return false
         end
     end
+
+    -- WIP Worlds --
+
+    if world == 3 then
+        return false
+    end
+    if world == 4 then
+        return false
+    end
+    if world == 5 then
+        return false
+    end
+    if world == 6 then
+        return false
+    end
+    if world == 7 then
+        return false
+    end
+    if world == 8 then
+        return false
+    end
+    
 end
 
 function worlds_unlocked()
@@ -66,17 +96,36 @@ local TEX_SCORE = get_texture_info("hud_score")
 local TEX_TIMER = get_texture_info("hud_timer")
 
 -- World Specific Hud Stars
+
+    -- Normal Stars
+
 local TEX_WORLD_2_STAR = get_texture_info("hud_star_world_2")
+local TEX_WORLD_3_STAR = get_texture_info("hud_star_world_3")
+local TEX_WORLD_4_STAR = get_texture_info("hud_star_world_4")
+local TEX_WORLD_5_STAR = get_texture_info("hud_star_world_5")
+local TEX_WORLD_6_STAR = get_texture_info("hud_star_world_6")
+local TEX_WORLD_7_STAR = get_texture_info("hud_star_world_7")
+local TEX_WORLD_8_STAR = get_texture_info("hud_star_world_8")
+
+    -- P Stars
+
+local TEX_P_WORLD_2_STAR = get_texture_info("hud_star_p_world_2")
+local TEX_P_WORLD_3_STAR = get_texture_info("hud_star_p_world_3")
+local TEX_P_WORLD_4_STAR = get_texture_info("hud_star_p_world_4")
+local TEX_P_WORLD_5_STAR = get_texture_info("hud_star_p_world_5")
+local TEX_P_WORLD_6_STAR = get_texture_info("hud_star_p_world_6")
+local TEX_P_WORLD_7_STAR = get_texture_info("hud_star_p_world_7")
+local TEX_P_WORLD_8_STAR = get_texture_info("hud_star_p_world_8")
 
 local worldSpecific = {
-    { "World 1", 14, nil },
-    { "World 2", 16, TEX_WORLD_2_STAR },
-    { "World 3", 15 },
-    { "World 4", 15 },
-    { "World 5", 16 },
-    { "World 6", 14 },
-    { "World 7", 14 },
-    { "World 8", 18 },
+    { "World 1", 14, nil, nil },
+    { "World 2", 16, TEX_WORLD_2_STAR, TEX_P_WORLD_2_STAR },
+    { "World 3", 15, TEX_WORLD_3_STAR, TEX_P_WORLD_3_STAR },
+    { "World 4", 15, TEX_WORLD_4_STAR, TEX_P_WORLD_4_STAR },
+    { "World 5", 16, TEX_WORLD_5_STAR, TEX_P_WORLD_5_STAR },
+    { "World 6", 14, TEX_WORLD_6_STAR, TEX_P_WORLD_6_STAR },
+    { "World 7", 14, TEX_WORLD_7_STAR, TEX_P_WORLD_7_STAR },
+    { "World 8", 18, TEX_WORLD_8_STAR, TEX_P_WORLD_8_STAR },
 }
 
 function operation(course, star, is100star)
@@ -113,8 +162,12 @@ function lobby_hud()
             djui_hud_render_texture(worldSpecific[curWorld][3], 68, 3, 1, 1)
         end
         djui_hud_print_text("*", djui_hud_get_screen_width() - 62, 4, 1)
-        djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
-        djui_hud_print_text(tostring(numStars), djui_hud_get_screen_width() - 32, 4, 1)
+        if numStars < 100 then
+            djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
+            djui_hud_print_text(tostring(numStars), djui_hud_get_screen_width() - 32, 4, 1)
+        else
+            djui_hud_print_text(tostring(numStars), djui_hud_get_screen_width() - 46, 4, 1)
+        end
     end
 end
 
@@ -142,15 +195,15 @@ function level_hud()
         end
 
         if gNetworkPlayers[0].currLevelNum == LEVEL_CCM and gNetworkPlayers[0].currAreaIndex == 1 then
-            djui_hud_render_texture(operation(COURSE_CCM, 0), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_CCM, 2), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_CCM, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_CCM, 2), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_CCM, 0), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
         end
 
         if gNetworkPlayers[0].currLevelNum == LEVEL_JRB and gNetworkPlayers[0].currAreaIndex == 1 then
-            djui_hud_render_texture(operation(COURSE_JRB, 0), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_JRB, 2), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_JRB, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_JRB, 2), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_JRB, 0), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
         end
 
         djui_hud_render_texture(TEX_TIMER, ((djui_hud_get_screen_width() / 2) + 46), 4, 1, 1)
@@ -179,18 +232,41 @@ function cannon_hud()
     if not stuckHud then return end
     m = gMarioStates[0]
     if m.playerIndex ~= 0 then return end
-
-    if m.controller.stickX > 0 and not stickMoved and world_unlocked(xCursorIndex + 1) then
-        xCursorIndex = xCursorIndex + 1
-        stickMoved = true
-    end
-
-    if m.controller.stickX == 0 and stickMoved then
+    
+    if m.controller.stickX == 0 and m.controller.stickY == 0 and stickMoved then
         stickMoved = false
     end
 
-    if m.controller.stickX < 0 and not stickMoved and world_unlocked(xCursorIndex - 1) then
+    if m.controller.stickX > 0 and not stickMoved then
+        xCursorIndex = xCursorIndex + 1
+        if xCursorIndex > 2 then
+            xCursorIndex = 1
+        end
+        stickMoved = true
+    end
+
+    if m.controller.stickX < 0 and not stickMoved then
         xCursorIndex = xCursorIndex - 1
+        if xCursorIndex < 1 then
+            xCursorIndex = 2
+        end
+        stickMoved = true
+    end
+
+    if m.controller.stickY < 0 and not stickMoved then
+        if yCursorIndex > math.ceil(worlds_unlocked() / 2) then return end
+        yCursorIndex = yCursorIndex + 1
+        if yCursorIndex > 4 then
+            yCursorIndex = 1
+        end
+        stickMoved = true
+    end
+
+    if m.controller.stickY > 0 and not stickMoved then
+        yCursorIndex = yCursorIndex - 1
+        if yCursorIndex < 1 then
+            yCursorIndex = 4
+        end
         stickMoved = true
     end
 
@@ -202,26 +278,52 @@ function cannon_hud()
         xCursorIndex = 1
     end
 
-    worldSelected = xCursorIndex * yCursorIndex
-
-    djui_hud_print_text("Warp", (djui_hud_get_screen_width() / 2) - 42, 48, 1)
-    djui_hud_print_text("To", (djui_hud_get_screen_width() / 2) + 20, 48, 1)
-    if xCursorIndex == 1 then
-        djui_hud_print_text("@", (djui_hud_get_screen_width() / 2) - 122, 71, 1)
-    elseif xCursorIndex == 2 then
-        djui_hud_print_text("@", (djui_hud_get_screen_width() / 2) + 8, 71, 1)
+    if xCursorIndex == 2 then
+        worldSelected = xCursorIndex * yCursorIndex
+    else
+        worldSelected = ((xCursorIndex + 1) * yCursorIndex) - 1
     end
-    djui_hud_print_text("World 1", (djui_hud_get_screen_width() / 2) - 106, 71, 1)
+    yCursorOffset = 72 + ((yOff * yCursorIndex) - 16)
+
+    djui_hud_print_text("Warp", xMid - 42, 48, 1)
+    djui_hud_print_text("To", xMid + 20, 48, 1)
+    if xCursorIndex == 1 then
+        djui_hud_print_text("@", xMid - 122, yCursorOffset, 1)
+    elseif xCursorIndex == 2 then
+        djui_hud_print_text("@", xMid + 8, yCursorOffset, 1)
+    end
+    djui_hud_print_text("World 1", xMid - 106, 72, 1)
     if world_unlocked(2) then
-        djui_hud_print_text("World 2", (djui_hud_get_screen_width() / 2) + 24, 71, 1)
+        djui_hud_print_text("World 2", xMid + 24, 72, 1)
+    end
+
+    -- Doesn't show up since it's not done yet
+
+    if world_unlocked(3) then
+        djui_hud_print_text("World 3", xMid - 106, 72 + yOff, 1)
+    end
+    if world_unlocked(4) then
+        djui_hud_print_text("World 4", xMid + 24, 72 + yOff, 1)
+    end
+    if world_unlocked(5) then
+        djui_hud_print_text("World 5", xMid - 106, 72 + (yOff * 2), 1)
+    end
+    if world_unlocked(6) then    
+        djui_hud_print_text("World 6", xMid + 24, 72 + (yOff * 2), 1)
+    end
+    if world_unlocked(7) then
+        djui_hud_print_text("World 7", xMid - 106, 72 + (yOff * 3), 1)
+    end
+    if world_unlocked(8) then
+        djui_hud_print_text("World 8", xMid + 24, 72 + (yOff * 3), 1)
     end
 end
 
 -- Power Meter display (EXTREMELY WIP)
 --function power_meter()
     --if gMarioStates[0].health <= 2047 then
-        --hud_render_power_meter(gMarioStates[0].health, (djui_hud_get_screen_width() / 2) - 74, 13, 64, 64)
-        --(djui_hud_get_screen_width() / 2) - 74, 21,
+        --hud_render_power_meter(gMarioStates[0].health, xMid - 74, 13, 64, 64)
+        --xMid - 74, 21,
     --end
 --end
 
