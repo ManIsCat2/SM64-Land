@@ -359,9 +359,6 @@ function power_meter()
             RunOnce = 0
         end
     end
-    if gMarioStates[0].controller.buttonPressed == X_BUTTON then
-        djui_chat_message_create(tostring(Py))
-    end
     hud_render_power_meter_interpolated(gMarioStates[0].health, x, prevPy, 64, 64, x, Py, 64, 64)
 end
 
