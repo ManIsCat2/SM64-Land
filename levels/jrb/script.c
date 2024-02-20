@@ -71,9 +71,11 @@ const LevelScript level_jrb_entry[] = {
 	OBJECT(E_MODEL_NONE, -7903, -368, -7469, 0, 0, 0, (0 << 16), id_bhvCoinFormation),
 	// 9 BLUE COINS will be done later
 	// whats 0xf7 bhv??
+	OBJECT(E_MODEL_BITS_WARP_PIPE, -6111, -73, -8721, 90, 0, 0, (0 << 16), id_bhvFakeWarpPipe),
+	OBJECT(E_MODEL_BITS_WARP_PIPE, -6111, -93, -5241, 270, 0, 0, (21 << 16), id_bhvFakeWarpPipe),
 	TERRAIN(jrb_area_1_collision),
 	MACRO_OBJECTS(jrb_area_1_macro_objs),
-	SET_BACKGROUND_MUSIC(0x00, SEQ_LEVEL_GRASS),
+	SET_BACKGROUND_MUSIC(0x00, 8),
 	TERRAIN_TYPE(TERRAIN_GRASS),
 	/* Fast64 begin persistent block [area commands] */
 	/* Fast64 end persistent block [area commands] */

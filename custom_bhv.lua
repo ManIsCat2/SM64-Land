@@ -356,6 +356,17 @@ end
 ---@param o Object
 function fake_pipe_loop(o)
     load_object_collision_model()
+    if o.oBehParams2ndByte == 0 then
+        o.oSubAction = o.oSubAction + 1
+    end
+
+    if o.oSubAction > 100 then
+        spawn_sync_object(id_bhvAnt, E_MODEL_ANT, o.oPosX, o.oPosY, -8443, function(o)
+            
+        end)
+        o.oSubAction = 0
+    end
+
     if operation(COURSE_BOB, 1) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 1 then
         obj_set_model_extended(o, E_MODEL_BITS_WARP_PIPE)
     end
@@ -452,3 +463,54 @@ function bhv_bouncy_platform_loop(obj)
 end
 
 id_bhvBouncyPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_bouncy_platform_init, bhv_bouncy_platform_loop)
+
+
+---@param o Object
+function bhv_ant_init(o)
+    o.oInteractType = INTERACT_BOUNCE_TOP
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_MOVE_XZ_USING_FVEL | OBJ_FLAG_SET_FACE_ANGLE_TO_MOVE_ANGLE
+    o.header.gfx.skipInViewCheck = true
+    o.oAnimations = gObjectAnimations.goomba_seg8_anims_0801DA4C
+    o.oForwardVel = 10
+    o.hitboxRadius = 72
+    o.hitboxHeight = 50
+    o.oIntangibleTimer = 0
+    o.oNumLootCoins = 0
+    o.oGraphYOffset = -45
+    obj_scale(o, 2.5)
+    cur_obj_init_animation(0)
+end
+
+hit_acts = {
+    [ACT_PUNCHING] = true,
+    [ACT_MOVE_PUNCHING] = true,
+    [ACT_JUMP_KICK] = true,
+    [ACT_GROUND_POUND_LAND] = true,
+    [ACT_DIVE] = true
+}
+
+E_MODEL_ANT = smlua_model_util_get_id("ant_geo")
+
+---@param o Object
+function bhv_ant_loop(o)
+    o.oInteractStatus = 0
+    o.oMoveAnglePitch = 90
+    o.oMoveAngleYaw = 90
+    m = gMarioStates[0]
+    if obj_check_hitbox_overlap(o, m.marioObj) then
+        if hit_acts[m.action] then
+            o.oAction = 1
+        end
+    end
+
+    if o.oAction == 1 or o.oInteractStatus == 49155 then
+        o.oHealth = 0
+        obj_die_if_health_non_positive()
+    end
+
+    if o.oPosZ > -5322 then
+        obj_mark_for_deletion(o)
+    end
+end
+
+id_bhvAnt = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_ant_init, bhv_ant_loop, nil)

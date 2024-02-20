@@ -3,6 +3,7 @@ smlua_audio_utils_replace_sequence(72, 26, 75, "1-2_Puzzle_Plank")
 smlua_audio_utils_replace_sequence(37, 26, 75, "Space1")
 smlua_audio_utils_replace_sequence(71, 26, 75, "SSBTargetTest_Andy_NI26")
 smlua_audio_utils_replace_sequence(6, 16, 75, "Super Mario 3D Land - World 7 (SM64Land)")
+smlua_audio_utils_replace_sequence(8, 12, 75, "Kalamari Desert - Mario Kart 64 (Final) 12")
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom")
