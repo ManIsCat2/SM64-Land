@@ -26,10 +26,6 @@ function surface_check(m)
         bounceMultiplier = 1
     end
 
-    if m.controller.buttonPressed == Y_BUTTON then
-        djui_chat_message_create(tostring(bounceMultiplier))
-    end
-
     if m.floor and m.floor.type == SURFACE_CANNON_CUSTOM and m.floorHeight == m.pos.y then
         stuckHud = true
         stuck = true
