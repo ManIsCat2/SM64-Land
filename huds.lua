@@ -215,16 +215,24 @@ function level_hud()
         djui_hud_render_texture(TEX_TIMER, ((djui_hud_get_screen_width() / 2) + 46), 4, 1, 1)
         djui_hud_print_text(string.format(("%.03d"), math.floor(timer)), djui_hud_get_screen_width() / 2 + 57, 4, 1)
         djui_hud_print_text("$", djui_hud_get_screen_width() - 62, 4, 1)
-        djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
-        djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - 32, 4, 1)
+        if numCoins < 100 then
+            djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
+            djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - 32, 4, 1)
+        else
+            djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - 46, 4, 1)
+        end
    end
 end
 
 function toad_house_hud()
     if gNetworkPlayers[0].currLevelNum == (LEVEL_COTMC) then
         djui_hud_print_text("$", djui_hud_get_screen_width() - 62, 4, 1)
-        djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
-        djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - 32, 4, 1)
+        if numCoins < 100 then
+            djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
+            djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - 32, 4, 1)
+        else
+            djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - 46, 4, 1)
+        end
     end
 end
 
