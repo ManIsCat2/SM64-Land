@@ -475,7 +475,7 @@ function bhv_ant_init(o)
     o.hurtboxRadius = 72
     o.hurtboxHeight = 50
     o.oIntangibleTimer = 0
-    o.oNumLootCoins = 0
+    o.oNumLootCoins = 1
     o.oGraphYOffset = -45
     obj_scale(o, 2.5)
     cur_obj_init_animation(0)
@@ -486,7 +486,8 @@ hit_acts = {
     [ACT_MOVE_PUNCHING] = true,
     [ACT_JUMP_KICK] = true,
     [ACT_GROUND_POUND_LAND] = true,
-    [ACT_DIVE] = true
+    [ACT_DIVE] = true,
+    [ACT_CAT_DIVE] = true
 }
 
 E_MODEL_ANT = smlua_model_util_get_id("ant_geo")
