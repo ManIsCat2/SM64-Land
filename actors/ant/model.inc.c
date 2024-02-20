@@ -6,6 +6,10 @@ Lights1 ant_f3dlite_material_002_lights = gdSPDefLights1(
 	0x7F, 0x7F, 0x7F,
 	0xFF, 0xFF, 0xFF, 0x49, 0x49, 0x49);
 
+Lights1 ant_f3dlite_material_lights = gdSPDefLights1(
+	0x7F, 0x0, 0x0,
+	0xFF, 0x0, 0x0, 0x49, 0x49, 0x49);
+
 Gfx ant__08006788_ci8_aligner[] = {gsSPEndDisplayList()};
 u8 ant__08006788_ci8[] = {
 	0x00, 0x00, 0x01, 0x01, 0x01, 0x01, 0x02, 0x00, 
@@ -876,6 +880,14 @@ Gfx mat_revert_ant_f3dlite_material_002[] = {
 	gsSPEndDisplayList(),
 };
 
+Gfx mat_ant_f3dlite_material[] = {
+	gsDPPipeSync(),
+	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
+	gsSPTexture(65535, 65535, 0, 0, 1),
+	gsSPSetLights1(ant_f3dlite_material_lights),
+	gsSPEndDisplayList(),
+};
+
 Gfx ant_000_offset_002_mesh_layer_1[] = {
 	gsSPDisplayList(mat_ant_f3dlite_material_012),
 	gsSPDisplayList(ant_000_offset_002_mesh_layer_1_tri_0),
@@ -898,16 +910,14 @@ Gfx ant_000_offset_002_mesh_layer_4[] = {
 };
 
 Gfx ant_000_offset_003_mesh_layer_1[] = {
-	gsSPDisplayList(mat_ant_f3dlite_material_012),
+	gsSPDisplayList(mat_ant_f3dlite_material),
 	gsSPDisplayList(ant_000_offset_003_mesh_layer_1_tri_0),
-	gsSPDisplayList(mat_revert_ant_f3dlite_material_012),
 	gsSPEndDisplayList(),
 };
 
 Gfx ant_000_offset_004_mesh_layer_1[] = {
-	gsSPDisplayList(mat_ant_f3dlite_material_012),
+	gsSPDisplayList(mat_ant_f3dlite_material),
 	gsSPDisplayList(ant_000_offset_004_mesh_layer_1_tri_0),
-	gsSPDisplayList(mat_revert_ant_f3dlite_material_012),
 	gsDPPipeSync(),
 	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPClearGeometryMode(G_TEXTURE_GEN),
