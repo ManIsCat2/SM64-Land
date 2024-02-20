@@ -1,6 +1,8 @@
 --// Catsuit behavior and abilities. //--
 
 catsuit = false
+didDive = false
+
 E_MODEL_CAT_MARIO = smlua_model_util_get_id("cat_mario_geo")
 E_MDOEL_SUPER_BELL = smlua_model_util_get_id("super_bell_geo")
 
@@ -13,8 +15,8 @@ function bhv_catsuit_init(obj)
     obj_set_model_extended(obj, E_MDOEL_SUPER_BELL)
     obj_scale(obj, 0.5)
     obj.oFaceAngleYaw = obj.oFaceAngleYaw - 32768 -- watchr is so not awesome
-    obj.hitboxRadius = 100
-    obj.hitboxHeight = 100
+    obj.hitboxRadius = 50
+    obj.hitboxHeight = 50
     obj.oGravity = 3
     obj.oFriction = 0.8
     obj.oBuoyancy = 1
@@ -26,10 +28,8 @@ function bhv_catsuit_loop(obj)
     object_step()
     load_object_collision_model()
     local m = gMarioStates[0]
-    local distance = dist_between_objects(obj, m.marioObj)
-    if distance < 50 then
+    if obj_check_hitbox_overlap(m.marioObj,obj) then
         obj_mark_for_deletion(obj)
-        play_sound(SOUND_GENERAL_COLLECT_1UP, m.marioObj.header.gfx.cameraToObject)
         cloud = false
         bee = false
         fludd = false
@@ -42,39 +42,67 @@ function bhv_catsuit_loop(obj)
     end
 end
 
-id_bhvMetalCap = hook_behavior(id_bhvMetalCap, OBJ_LIST_GENACTOR, true, bhv_catsuit_init, bhv_catsuit_loop)
+id_bhvSuperBell = hook_behavior(id_bhvMetalCap, OBJ_LIST_GENACTOR, true, bhv_catsuit_init, bhv_catsuit_loop)
 
 ---@param m MarioState
 function catsuit_power_loop(m)
     if m.playerIndex == 0 then
         if catsuit then
-            if m.controller.buttonDown & B_BUTTON ~= 0 and m.action & ACT_FLAG_AIR ~= 0 then
-                set_mario_action(m, ACT_CAT_DIVE, 0)
+            if m.pos.y > (m.floorHeight + 100) and not didDive then
+                if m.controller.buttonPressed & B_BUTTON ~= 0 and m.action & ACT_FLAG_AIR ~= 0 then
+                    set_mario_action(m, ACT_CAT_DIVE, 0)
+                    didDive = true
+                end
+            end
+            if m.action & ACT_FLAG_AIR == 0 and didDive then
+                didDive = false
             end
         end
     end
 end
 
 function cat_dive(m)
-    update_walking_speed(m)
-    perform_air_step(m, 0)
     m.actionTimer = m.actionTimer + 1
-    perform_air_step(m, 0)
-    set_mario_animation(m, MARIO_ANIM_DIVE)
-    m.forwardVel = 20
-    if m.controller.buttonDown & B_BUTTON == 0 then
-        return set_mario_action(m, ACT_FREEFALL, 0)
+    
+    if m.prevAction ~= ACT_DIVE then
+        if m.actionTimer == 2 then
+            common_air_action_step(m, ACT_GROUND_POUND, MARIO_ANIM_GROUND_POUND,
+            AIR_STEP_CHECK_HANG)
+            m.forwardVel = 0
+        elseif m.actionTimer >= 6 then
+            play_mario_sound(m, CHAR_SOUND_HOOHOO, CHAR_SOUND_HOOHOO)
+            common_air_action_step(m, ACT_DIVE, MARIO_ANIM_DIVE,
+            AIR_STEP_CHECK_HANG)
+            m.forwardVel = 40
+        end
+    else
+        if m.actionTimer == 2 then
+            common_air_action_step(m, ACT_GROUND_POUND, MARIO_ANIM_START_GROUND_POUND,
+            AIR_STEP_CHECK_HANG)
+            m.forwardVel = 0
+        elseif m.actionTimer >= 6 then
+            common_air_action_step(m, ACT_DIVE, MARIO_ANIM_DIVE,
+            AIR_STEP_CHECK_HANG)
+            m.forwardVel = 40
+        end
+    end
+    
+
+    if m.controller.buttonPressed == Z_TRIG then
+        set_mario_action(m, ACT_GROUND_POUND, 0)
     end
 
     if perform_air_step(m, 0) == AIR_STEP_LANDED then
         set_mario_action(m, ACT_FREEFALL_LAND, 0)
     end
-
-    return 0
 end
 
 function cat_dive_gravity(m)
-    m.vel.y = m.vel.y - 4.5
+    if m.pos.y < (m.floorHeight + 100) then
+        m.vel.y = m.vel.y 
+    else
+        m.vel.y = -10
+    end
 end
 
 hook_event(HOOK_MARIO_UPDATE, catsuit_power_loop)

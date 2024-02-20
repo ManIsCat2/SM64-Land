@@ -34,6 +34,8 @@ local SPIN_RISE_TIMER = 0
 
 local didSpin = false
 
+local climbTimer = 4
+
 local SPINACTIONS = {
     [ACT_JUMP] = true,
     [ACT_DOUBLE_JUMP] = true,
@@ -106,6 +108,7 @@ hook_event(HOOK_MARIO_UPDATE, responsive_ground_pound_turn)
 ----------
 
 local function mario_update_spin_input(m)
+    if m.action & ACT_FLAG_AIR == 0 then return end
     local e = gMarioStateExtras[m.playerIndex]
     local rawAngle = atan2s(-m.controller.stickY, m.controller.stickX)
     e.spinInput = 0
@@ -329,7 +332,7 @@ function act_wall_slide(m)
             m.pos.x = e.lastPos.x
             m.pos.y = e.lastPos.y
             m.pos.z = e.lastPos.z
-            set_mario_action(m, ACT_WALL_SLIDE_CLIMB, 0)
+            set_mario_action(m, ACT_WALL_SLIDE, 0)
         end
 
         f = 55
@@ -348,7 +351,8 @@ end
 
 local function act_wall_slide_gravity(m)
     if catsuit then
-        m.vel.y = m.vel.y + 4
+        climbTimer = math.sqrt(climbTimer)
+        m.vel.y = m.vel.y + climbTimer
 
         if m.vel.y > 15 then
             m.vel.y = 15
@@ -375,13 +379,12 @@ local function act_air_hit_wall(m)
         m.faceAngle.y = limit_angle(m.faceAngle.y + 0x8000)
         return set_mario_action(m, ACT_WALL_KICK_AIR, 0)
     elseif m.forwardVel >= 38.0 then
-        m.wallKickTimer = 5
         if m.vel.y > 0.0 then
             m.vel.y = 0.0
         end
-
+        m.faceAngle.y = limit_angle(m.faceAngle.y + 0x8000)
         m.particleFlags = m.particleFlags | PARTICLE_VERTICAL_STAR
-        return set_mario_action(m, ACT_BACKWARD_AIR_KB, 0)
+        return set_mario_action(m, ACT_WALL_SLIDE, 0)
     else
         m.faceAngle.y = limit_angle(m.faceAngle.y + 0x8000)
         return set_mario_action(m, ACT_WALL_SLIDE, 0)

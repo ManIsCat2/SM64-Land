@@ -13,7 +13,8 @@ end
 local function is_bubbled(m)
     return m.action == ACT_BUBBLED
 end
-
+local platformTimer = 0
+local soundPlayed = false
 
 E_MODEL_RED_WARP_PIPE = smlua_model_util_get_id("warp_pipe_red_geo")
 E_MODEL_BLUE_WARP_PIPE = smlua_model_util_get_id("warp_pipe_blue_geo")
@@ -356,7 +357,7 @@ end
 ---@param o Object
 function fake_pipe_loop(o)
     load_object_collision_model()
-    if o.oBehParams2ndByte == 0 then
+if o.oBehParams2ndByte == 0 then
         o.oSubAction = o.oSubAction + 1
     end
 
@@ -441,24 +442,23 @@ end
 function bhv_bouncy_platform_loop(obj)
     load_object_collision_model()
     local m = gMarioStates[0]
-    local y_spd = 64
+
+    obj.oPosX = obj.oPosX
 
     if cur_obj_is_mario_on_platform() == 1 and not is_bubbled(m) then
-        m.peakHeight = m.pos.y
-        m.faceAngle.y = m.intendedYaw
-        --this is awful -- It really is -Sunk
-        -- Jump. If A is pressed during the jump, increase y_spd.
-        if m.controller.buttonDown & A_BUTTON ~= 0 then
-            y_spd = y_spd + 45 -- I feel like this should increase with oBehParams2ndByte
-            spawn_mist_particles()
+        if m.action == ACT_GROUND_POUND_LAND then
+            set_anim_to_frame(m, 0)
+            set_mario_action(m, ACT_TRIPLE_JUMP, 0)
+            m.vel.y = 140
+            bounceMultiplier = 3
+        else
+            set_anim_to_frame(m, 0)
+            set_mario_action(m, ACT_TRIPLE_JUMP, 0)
+            m.vel.y = (140 / 3) * bounceMultiplier
+            if bounceMultiplier < 3 then
+                bounceMultiplier = bounceMultiplier + 1
+            end
         end
-        set_mario_action(m, ACT_DOUBLE_JUMP, 0)
-
-        -- Calculates y speed
-        local intermediate_y_spd = repack(y_spd, "f", "I")
-        intermediate_y_spd = intermediate_y_spd + (obj.oBehParams2ndByte << 16)
-        y_spd = repack(intermediate_y_spd, "I", "f")
-        m.vel.y = y_spd
     end
 end
 
@@ -472,8 +472,8 @@ function bhv_ant_init(o)
     o.header.gfx.skipInViewCheck = true
     o.oAnimations = gObjectAnimations.goomba_seg8_anims_0801DA4C
     o.oForwardVel = 10
-    o.hitboxRadius = 72
-    o.hitboxHeight = 50
+    o.hurtboxRadius = 72
+    o.hurtboxHeight = 50
     o.oIntangibleTimer = 0
     o.oNumLootCoins = 0
     o.oGraphYOffset = -45

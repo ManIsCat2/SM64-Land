@@ -61,8 +61,8 @@ function bhv_leaf_init(obj)
     obj_set_model_extended(obj, E_MODEL_TANOOK_LEAF)
     obj_scale(obj, 0.5)
     obj.oFaceAngleYaw = obj.oFaceAngleYaw - 32768 -- watchr is so not awesome
-    obj.hitboxRadius = 1500
-    obj.hitboxHeight = 1500
+    obj.hitboxRadius = 30
+    obj.hitboxHeight = 30
     obj.oGravity = 3
     obj.oFriction = 0.8
     obj.oBuoyancy = 1
@@ -74,10 +74,8 @@ function bhv_leaf_loop(obj)
     object_step()
     load_object_collision_model()
     local m = gMarioStates[0]
-    local distance = dist_between_objects(obj, m.marioObj)
-    if distance < 50 then
+    if obj_check_hitbox_overlap(m.marioObj,obj) then
         obj_mark_for_deletion(obj)
-        play_sound(SOUND_GENERAL_COLLECT_1UP, m.marioObj.header.gfx.cameraToObject)
         cloud = false
         bee = false
         fludd = false
@@ -90,7 +88,7 @@ function bhv_leaf_loop(obj)
     end
 end
 
-id_bhvWingCap = hook_behavior(id_bhvWingCap, OBJ_LIST_GENACTOR, true, bhv_leaf_init, bhv_leaf_loop)
+id_bhvSuperLeaf = hook_behavior(id_bhvWingCap, OBJ_LIST_GENACTOR, true, bhv_leaf_init, bhv_leaf_loop)
 
 function tanooki_loop(m)
     if m.playerIndex == 0 then
