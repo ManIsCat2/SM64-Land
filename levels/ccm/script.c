@@ -77,7 +77,6 @@ const LevelScript level_ccm_entry[] = {
 	WARP_NODE(240, 26, 1, 83, 0),
 	WARP_NODE(241, 26, 1, 93, 0),
 	MARIO_POS(0x01, 0, 0, 2, 0),
-	,
 	OBJECT_WITH_ACTS(0, -12429, 860, 13230, 0, 90, 0, 0xa0000, bhvSpinAirborneWarp, 31),
 	OBJECT_WITH_ACTS(55, -10939, 1193, 12662, 0, 90, 0, 0x30000, bhvSeesawPlatform, 31),
 	OBJECT_WITH_ACTS(55, -10021, 1312, 13164, 0, 90, 0, 0x30000, bhvSeesawPlatform, 31),
