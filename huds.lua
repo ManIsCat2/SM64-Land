@@ -206,10 +206,23 @@ function level_hud()
             djui_hud_render_texture(operation(COURSE_CCM, 0), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
         end
 
+        if gNetworkPlayers[0].currLevelNum == LEVEL_CCM and gNetworkPlayers[0].currAreaIndex == 2 then
+            djui_hud_render_texture(operation(COURSE_CCM, 4), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_CCM, 3), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_CCM, 6), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
+        end
+
+
         if gNetworkPlayers[0].currLevelNum == LEVEL_JRB and gNetworkPlayers[0].currAreaIndex == 1 then
             djui_hud_render_texture(operation(COURSE_JRB, 2), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_JRB, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_JRB, 0), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
+        end
+
+        if gNetworkPlayers[0].currLevelNum == LEVEL_JRB and gNetworkPlayers[0].currAreaIndex == 2 then
+            djui_hud_render_texture(operation(COURSE_JRB, 3), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_JRB, 5), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_JRB, 4), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
         end
 
         djui_hud_render_texture(TEX_TIMER, ((djui_hud_get_screen_width() / 2) + 46), 4, 1, 1)
