@@ -68,3 +68,58 @@ u8 jrb_dl__14_rgba16[] = {
 	#include "levels/jrb/_14.rgba16.inc.c"
 };
 
+Gfx jrb_dl__0_2_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 jrb_dl__0_2_rgba16[] = {
+	#include "levels/jrb/_0_2.rgba16.inc.c"
+};
+
+Gfx jrb_dl__1_2_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 jrb_dl__1_2_rgba16[] = {
+	#include "levels/jrb/_1_2.rgba16.inc.c"
+};
+
+Gfx jrb_dl__2_2_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 jrb_dl__2_2_rgba16[] = {
+	#include "levels/jrb/_2_2.rgba16.inc.c"
+};
+
+Gfx jrb_dl__3_2_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 jrb_dl__3_2_rgba16[] = {
+	#include "levels/jrb/_3_2.rgba16.inc.c"
+};
+
+Gfx jrb_dl__4_2_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 jrb_dl__4_2_rgba16[] = {
+	#include "levels/jrb/_4_2.rgba16.inc.c"
+};
+
+Gfx jrb_dl__5_2_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 jrb_dl__5_2_rgba16[] = {
+	#include "levels/jrb/_5_2.rgba16.inc.c"
+};
+
+Gfx jrb_dl__6_2_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 jrb_dl__6_2_rgba16[] = {
+	#include "levels/jrb/_6_2.rgba16.inc.c"
+};
+
+Gfx jrb_dl__7_2_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 jrb_dl__7_2_rgba16[] = {
+	#include "levels/jrb/_7_2.rgba16.inc.c"
+};
+
+Gfx jrb_dl__8_2_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 jrb_dl__8_2_rgba16[] = {
+	#include "levels/jrb/_8_2.rgba16.inc.c"
+};
+
+Gfx jrb_dl__9_2_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 jrb_dl__9_2_rgba16[] = {
+	#include "levels/jrb/_9_2.rgba16.inc.c"
+};
+
+Gfx jrb_dl__10_2_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 jrb_dl__10_2_rgba16[] = {
+	#include "levels/jrb/_10_2.rgba16.inc.c"
+};
+
