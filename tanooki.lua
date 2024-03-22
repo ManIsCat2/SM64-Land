@@ -1,6 +1,5 @@
 -- Tanooki Leaf Powerup --
 
-E_MODEL_TANOOKI_MARIO = smlua_model_util_get_id("tanooki_mario_geo")
 E_MODEL_TANOOK_LEAF = smlua_model_util_get_id("tanooki_leaf_geo")
 smlua_anim_util_register_animation("anim_flutter",
     0,
@@ -34,7 +33,6 @@ smlua_anim_util_register_animation("anim_flutter",
         0x003A, 0x0001, 0x003B, 0x0001, 0x003C, 0x0001, 0x003D, 0x0001, 0x003E,
         0x000A, 0x003F, 0x000A, 0x0049, 0x000A, 0x0053, })
 
-local tanooki = false
 local flutterTimer = 40
 local wallSlideTimer = 0
 
@@ -76,57 +74,47 @@ function bhv_leaf_loop(obj)
     local m = gMarioStates[0]
     if obj_check_hitbox_overlap(m.marioObj,obj) then
         obj_mark_for_deletion(obj)
-        cloud = false
-        bee = false
-        fludd = false
-        catsuit = false
-        tanooki = true
-        powerup = true
-    end
-    if tanooki then
-        gPlayerSyncTable[0].modelId = E_MODEL_TANOOKI_MARIO
+        activePowerup = TANOOKI
     end
 end
 
 id_bhvSuperLeaf = hook_behavior(id_bhvWingCap, OBJ_LIST_GENACTOR, true, bhv_leaf_init, bhv_leaf_loop)
 
-function tanooki_loop(m)
-    if m.playerIndex == 0 then
-        if gPlayerSyncTable[0].modelId == E_MODEL_TANOOKI_MARIO and tanooki then
-            if m.action == ACT_WALL_SLIDE then
+function tanooki_update(m)
+    if m.playerIndex ~= 0 then return end
+    if activePowerup ~= TANOOKI then return end
+    if m.action == ACT_WALL_SLIDE then
+        wallSlideTimer = 0
+    elseif m.action == ACT_WALL_KICK_AIR then
+        wallSlideTimer = wallSlideTimer + 1
+    else
+        wallSlideTimer = 0
+    end
+    if flutterActions[m.action] then
+        if m.controller.buttonPressed & A_BUTTON ~= 0 and m.action & ACT_FLAG_AIR ~= 0 then
+            startTimer = false
+            if m.pos.y > (m.floorHeight + 100) then
+                if wallSlideTimer < 4 and m.action == ACT_WALL_KICK_AIR then return end
+                set_mario_action(m, ACT_FAKE_JUMP, 0)
                 wallSlideTimer = 0
-            elseif m.action == ACT_WALL_KICK_AIR then
-                wallSlideTimer = wallSlideTimer + 1
+                play_sound(SOUND_ACTION_SPIN, m.marioObj.header.gfx.cameraToObject)
+                startTimer = true
+                flutterTimer = 0
+            end
+        end
+        if startTimer then
+            flutterTimer = flutterTimer + 1
+            if flutterTimer < 10 then
+                if m.vel.y < -7.5 then
+                    m.vel.y = -7.5
+                    smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
+                end
             else
-                wallSlideTimer = 0
+                startTimer = false
+                flutterTimer = 0
             end
-            if flutterActions[m.action] then
-                if m.controller.buttonPressed & A_BUTTON ~= 0 and m.action & ACT_FLAG_AIR ~= 0 then
-                    startTimer = false
-                    if m.pos.y > (m.floorHeight + 100) then
-                        if wallSlideTimer < 4 and m.action == ACT_WALL_KICK_AIR then return end
-                        set_mario_action(m, ACT_FAKE_JUMP, 0)
-                        wallSlideTimer = 0
-                        play_sound(SOUND_ACTION_SPIN, m.marioObj.header.gfx.cameraToObject)
-                        startTimer = true
-                        flutterTimer = 0
-                    end
-                end
-                if startTimer then
-                    flutterTimer = flutterTimer + 1
-                    if flutterTimer < 10 then
-                        if m.vel.y < -7.5 then
-                            m.vel.y = -7.5
-                            smlua_anim_util_set_animation(m.marioObj, "anim_flutter")
-                        end
-                    else
-                        startTimer = false
-                        flutterTimer = 0
-                    end
-                else
-                    flutterTimer = 0
-                end
-            end
+        else
+            flutterTimer = 0
         end
     end
 end
@@ -152,4 +140,4 @@ end
 
 hook_mario_action(ACT_FAKE_JUMP, { every_frame = act_fake_jump })
 
-hook_event(HOOK_MARIO_UPDATE, tanooki_loop)
+hook_event(HOOK_MARIO_UPDATE, tanooki_update)
