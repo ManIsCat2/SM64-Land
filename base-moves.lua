@@ -290,11 +290,7 @@ function act_wall_slide(m)
     end
 
     -- attempt to stick to the wall a bit. if it's 0, sometimes you'll get kicked off of slightly sloped walls
-    if catsuit then
-        mario_set_forward_vel(m, -4)
-    else
-        mario_set_forward_vel(m, -1)
-    end
+    mario_set_forward_vel(m, -1)
 
     m.particleFlags = m.particleFlags | PARTICLE_DUST
 
@@ -311,60 +307,17 @@ function act_wall_slide(m)
     m.actionTimer = m.actionTimer + 1
     if not m.wall and m.actionTimer > 2 then
         mario_set_forward_vel(m, 0.0)
-        if catsuit then
-            m.faceAngle.y = m.faceAngle.y + 32768
-        end
         return set_mario_action(m, ACT_FREEFALL, 0)
-    end
-
-    -- thank steven from minecraft
-
-    if catsuit then
-        set_mario_animation(m, MARIO_ANIM_CRAWLING)
-        set_anim_to_frame(m, e.animFrame)
-        if e.animFrame >= m.marioObj.header.gfx.animInfo.curAnim.loopEnd then
-            e.animFrame = 0
-        else
-            e.animFrame = e.animFrame + math.abs(m.vel.y)
-        end
-
-        if m.vel.y <= 0 then
-            m.pos.x = e.lastPos.x
-            m.pos.y = e.lastPos.y
-            m.pos.z = e.lastPos.z
-            set_mario_action(m, ACT_WALL_SLIDE, 0)
-        end
-
-        f = 55
-
-        X = m.pos.x - (f * sins(m.faceAngle.y))
-        Z = m.pos.z - (f * coss(m.faceAngle.y))
-
-        m.marioObj.header.gfx.angle.x = -18000
-        m.marioObj.header.gfx.angle.y = m.marioObj.header.gfx.angle.y + 0x8000
-        m.marioObj.header.gfx.pos.x = X
-        m.marioObj.header.gfx.pos.z = Z
     end
 
     return 0
 end
 
 local function act_wall_slide_gravity(m)
-    if catsuit then
-        climbTimer = math.sqrt(climbTimer)
-        m.vel.y = m.vel.y + climbTimer
+    m.vel.y = m.vel.y - 2
 
-        if m.vel.y > 15 then
-            m.vel.y = 15
-        end
-    end
-
-    if not catsuit then
-        m.vel.y = m.vel.y - 2
-
-        if m.vel.y < -15 then
-            m.vel.y = -15
-        end
+    if m.vel.y < -15 then
+        m.vel.y = -15
     end
 end
 
@@ -382,9 +335,13 @@ local function act_air_hit_wall(m)
         if m.vel.y > 0.0 then
             m.vel.y = 0.0
         end
-        m.faceAngle.y = limit_angle(m.faceAngle.y + 0x8000)
-        m.particleFlags = m.particleFlags | PARTICLE_VERTICAL_STAR
-        return set_mario_action(m, ACT_WALL_SLIDE, 0)
+        if activePowerup ~= CAT then
+            m.faceAngle.y = limit_angle(m.faceAngle.y + 0x8000)
+            m.particleFlags = m.particleFlags | PARTICLE_VERTICAL_STAR
+            return set_mario_action(m, ACT_WALL_SLIDE, 0)
+        else
+            return set_mario_action(m, ACT_CAT_CLIMB, 0)
+        end
     else
         m.faceAngle.y = limit_angle(m.faceAngle.y + 0x8000)
         return set_mario_action(m, ACT_WALL_SLIDE, 0)
