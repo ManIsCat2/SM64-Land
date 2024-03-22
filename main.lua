@@ -4,8 +4,10 @@
 
 m = gMarioStates[0]
 
-function inf_lives(m)
+local function mario_update(m)
+    if m.playerIndex ~= 0 then return end
     m.numLives = 100
+    vec3f_set(gLevelValues.starPositions.KingBobombStarPos, m.pos.x, m.pos.y + 200, m.pos.z) -- Makes the star spawn above the player like the romhack
 end
 
 if m.numStars > 0 then
@@ -22,12 +24,10 @@ gLevelValues.metalCapDurationCotmc = 1
 gServerSettings.stayInLevelAfterStar = true
 gLevelValues.disableActs = true
 
-vec3f_set(gLevelValues.starPositions.KingBobombStarPos, 0, 70, 0)
-
 camera_set_use_course_specific_settings(false)
 
 save_file_set_flags(SAVE_FLAG_HAVE_METAL_CAP)
 save_file_set_flags(SAVE_FLAG_HAVE_VANISH_CAP)
 save_file_set_flags(SAVE_FLAG_HAVE_WING_CAP)
 
-hook_event(HOOK_MARIO_UPDATE, inf_lives)
+hook_event(HOOK_MARIO_UPDATE, mario_update)
