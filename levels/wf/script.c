@@ -6,39 +6,53 @@
 #include "dialog_ids.h"
 #include "segment_symbols.h"
 #include "level_commands.h"
-
 #include "game/level_update.h"
-
 #include "levels/scripts.h"
-
-/* Fast64 begin persistent block [includes] */
-/* Fast64 end persistent block [includes] */
-
+#include "actors/common1.h"
 #include "make_const_nonconst.h"
+
+#include "areas/1/custom.model.inc.h"
+#include "areas/2/custom.model.inc.h"
 #include "levels/wf/header.h"
-
-/* Fast64 begin persistent block [scripts] */
-/* Fast64 end persistent block [scripts] */
-
+extern u8 _wf_segment_ESegmentRomStart[]; 
+extern u8 _wf_segment_ESegmentRomEnd[];
 const LevelScript level_wf_entry[] = {
-	INIT_LEVEL(),
-	LOAD_MIO0(0x7, _wf_segment_7SegmentRomStart, _wf_segment_7SegmentRomEnd),
-	LOAD_MIO0(0xa, _water_skybox_mio0SegmentRomStart, _water_skybox_mio0SegmentRomEnd),
-	ALLOC_LEVEL_POOL(),
-	MARIO(MODEL_MARIO, 0x00000001, bhvMario),
-	JUMP_LINK(script_func_global_1),
-	JUMP_LINK(script_func_global_12),
-	JUMP_LINK(script_func_global_15),
-
-	/* Fast64 begin persistent block [level commands] */
-	/* Fast64 end persistent block [level commands] */
-
-	AREA(1, wf_area_1),
-	WARP_NODE(10, 9, 1, 0, 0),
-	WARP_NODE(240, 16, 1, 22, 0),
-	WARP_NODE(241, 16, 1, 32, 0),
-	MARIO_POS(1, 0, 0, 0, 0),
-	OBJECT_WITH_ACTS(0, 13157, 105, -7977, 0, 270, 0, 0xa0000, bhvSpinAirborneWarp, 31),
+INIT_LEVEL(),
+LOAD_RAW(0x0E, _wf_segment_ESegmentRomStart, _wf_segment_ESegmentRomEnd),
+LOAD_MIO0(0xA,_SkyboxCustom21020000_skybox_mio0SegmentRomStart,_SkyboxCustom21020000_skybox_mio0SegmentRomEnd),
+LOAD_MIO0(8,_common0_mio0SegmentRomStart,_common0_mio0SegmentRomEnd),
+LOAD_RAW(15,_common0_geoSegmentRomStart,_common0_geoSegmentRomEnd),
+LOAD_MIO0(5,_group11_mio0SegmentRomStart,_group11_mio0SegmentRomEnd),
+LOAD_RAW(12,_group11_geoSegmentRomStart,_group11_geoSegmentRomEnd),
+LOAD_MIO0(6,_group14_mio0SegmentRomStart,_group14_mio0SegmentRomEnd),
+LOAD_RAW(13,_group14_geoSegmentRomStart,_group14_geoSegmentRomEnd),
+ALLOC_LEVEL_POOL(),
+MARIO(/*model*/ MODEL_MARIO, /*behParam*/ 0x00000001, /*beh*/ bhvMario),
+JUMP_LINK(script_func_global_1),
+JUMP_LINK(script_func_global_12),
+JUMP_LINK(script_func_global_15),
+JUMP_LINK(local_area_wf_1_),
+JUMP_LINK(local_area_wf_2_),
+FREE_LEVEL_POOL(),
+MARIO_POS(1,0,0,0,0),
+CALL(/*arg*/ 0, /*func*/ lvl_init_or_update),
+CALL_LOOP(/*arg*/ 1, /*func*/ lvl_init_or_update),
+CLEAR_LEVEL(),
+SLEEP_BEFORE_EXIT(/*frames*/ 1),
+EXIT(),
+};
+const LevelScript local_area_wf_1_[] = {
+AREA(1,Geo_wf_1_0x1430ea0),
+TERRAIN(col_wf_1_0xe05cb10),
+SET_BACKGROUND_MUSIC(0,72),
+TERRAIN_TYPE(0),
+JUMP_LINK(local_objects_wf_1_),
+JUMP_LINK(local_warps_wf_1_),
+END_AREA(),
+RETURN()
+};
+const LevelScript local_objects_wf_1_[] = {
+OBJECT_WITH_ACTS(0, 13157, 105, -7977, 0, 270, 0, 0xa0000, bhvSpinAirborneWarp, 31),
 	OBJECT_WITH_ACTS(E_MODEL_STRAIGHT_MUSHROOM, 10614, 273, -7830, 0, 0, 0, 0, id_bhvStraightMushroom, 31),
 	OBJECT_WITH_ACTS(E_MODEL_STRAIGHT_MUSHROOM, 9398, 1228, -876, 0, 0, 0, 0x785a0000, id_bhvStraightMushroom, 31),
 	OBJECT_WITH_ACTS(129, 8970, 1766, -5680, 0, 0, 0, 0x0, bhvBreakableBox, 31),
@@ -117,19 +131,27 @@ const LevelScript level_wf_entry[] = {
 	OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x1004e20, 0x1300003c, 31),
 	OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x0, 0x0040eb54, 31),*/
 	OBJECT_WITH_ACTS(195, 9986, 93, -19958, 0, 0, 0, 0x4d0000, bhvBobombBuddy, 31),
-	TERRAIN(wf_area_1_collision),
-	MACRO_OBJECTS(wf_area_1_macro_objs),
-	SET_BACKGROUND_MUSIC(0x00, 72),
-	TERRAIN_TYPE(TERRAIN_GRASS),
-	/* Fast64 begin persistent block [area commands] */
-	/* Fast64 end persistent block [area commands] */
-	END_AREA(),
-
-	AREA(2, wf_area_2),
-	WARP_NODE(10, 9, 2, 0, WARP_NO_CHECKPOINT),
-	WARP_NODE(0xF0, 16, 1, 23, WARP_NO_CHECKPOINT),
-	WARP_NODE(0xF1, 16, 1, 33, WARP_NO_CHECKPOINT),
-	OBJECT_WITH_ACTS(0, -6152, 1620, -16460, 0, 90, 0, 0xa0000, bhvSpinAirborneWarp, 31),
+OBJECT_WITH_ACTS(0,53,-32748,3,0,0,0,0xe023e10, RM_Scroll_Texture,31),
+RETURN()
+};
+const LevelScript local_warps_wf_1_[] = {
+WARP_NODE(10,9,1,0,0),
+WARP_NODE(240,16,1,22,0),
+WARP_NODE(241,16,1,32,0),
+RETURN()
+};
+const LevelScript local_area_wf_2_[] = {
+AREA(2,Geo_wf_2_0x1431080),
+TERRAIN(col_wf_2_0xe0423d0),
+SET_BACKGROUND_MUSIC(0,37),
+TERRAIN_TYPE(0),
+JUMP_LINK(local_objects_wf_2_),
+JUMP_LINK(local_warps_wf_2_),
+END_AREA(),
+RETURN()
+};
+const LevelScript local_objects_wf_2_[] = {
+OBJECT_WITH_ACTS(0, -6152, 1620, -16460, 0, 90, 0, 0xa0000, bhvSpinAirborneWarp, 31),
 	OBJECT_WITH_ACTS(E_MODEL_GREEN_SEESAW, -5026, 1620, -16370, 0, 0, 0, 0x1000000, id_bhvGreenSeesaw, 31),
 	OBJECT_WITH_ACTS(E_MODEL_GREEN_SEESAW, 3341, 1230, -14435, 0, 0, 0, 0x130001bc, id_bhvGreenSeesaw, 31),
 	OBJECT_WITH_ACTS(E_MODEL_GREEN_SEESAW, 4401, 1230, -13026, 0, 0, 0, 0x0, id_bhvGreenSeesaw, 31),
@@ -222,19 +244,14 @@ const LevelScript level_wf_entry[] = {
 	OBJECT_WITH_ACTS(215, -8686, 3269, 4, 0, 0, 0, 0x0, bhvRedCoin, 31),
 	OBJECT_WITH_ACTS(180, -12935, 3184, 3095, 0, 0, 0, 0x0, bhvFireSpitter, 31),
 	OBJECT_WITH_ACTS(180, -13681, 3250, -1430, 0, 0, 0, 0x0, bhvFireSpitter, 31),
-	TERRAIN(wf_area_2_collision),
-	MACRO_OBJECTS(wf_area_2_macro_objs),
-	SET_BACKGROUND_MUSIC(0x00, 37),
-	TERRAIN_TYPE(TERRAIN_GRASS),
-	/* Fast64 begin persistent block [area commands] */
-	/* Fast64 end persistent block [area commands] */
-	END_AREA(),
-
-	FREE_LEVEL_POOL(),
-	MARIO_POS(0x01, 0, 54864, -808, -19024),
-	CALL(0, lvl_init_or_update),
-	CALL_LOOP(1, lvl_init_or_update),
-	CLEAR_LEVEL(),
-	SLEEP_BEFORE_EXIT(1),
-	EXIT(),
+OBJECT_WITH_ACTS(0,696,-32748,60,0,0,0,0xe00e9f0, RM_Scroll_Texture,31),
+OBJECT_WITH_ACTS(0,446,-32748,60,0,0,0,0xe011570, RM_Scroll_Texture,31),
+OBJECT_WITH_ACTS(0,355,-32748,60,0,0,0,0xe013150, RM_Scroll_Texture,31),
+RETURN()
+};
+const LevelScript local_warps_wf_2_[] = {
+WARP_NODE(10,9,2,0,0),
+WARP_NODE(240,16,1,23,0),
+WARP_NODE(241,16,1,33,0),
+RETURN()
 };
