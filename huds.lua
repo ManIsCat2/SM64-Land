@@ -21,8 +21,6 @@ function get_center_offset()
     yOff = 16
 end
 
-
-
 hook_event(HOOK_UPDATE, get_center_offset)
 
 curWorldStars = 0
@@ -124,14 +122,14 @@ local TEX_P_WORLD_7_STAR = get_texture_info("hud_star_p_world_7")
 local TEX_P_WORLD_8_STAR = get_texture_info("hud_star_p_world_8")
 
 local worldSpecific = {
-    { "World 1", 14, nil, nil },
-    { "World 2", 16, TEX_WORLD_2_STAR, TEX_P_WORLD_2_STAR },
-    { "World 3", 15, TEX_WORLD_3_STAR, TEX_P_WORLD_3_STAR },
-    { "World 4", 15, TEX_WORLD_4_STAR, TEX_P_WORLD_4_STAR },
-    { "World 5", 16, TEX_WORLD_5_STAR, TEX_P_WORLD_5_STAR },
-    { "World 6", 14, TEX_WORLD_6_STAR, TEX_P_WORLD_6_STAR },
-    { "World 7", 14, TEX_WORLD_7_STAR, TEX_P_WORLD_7_STAR },
-    { "World 8", 18, TEX_WORLD_8_STAR, TEX_P_WORLD_8_STAR },
+    { "World 1", stars = 14, nil, nil },
+    { "World 2", stars = 16, starIcon = TEX_WORLD_2_STAR, pStarIcon = TEX_P_WORLD_2_STAR },
+    { "World 3", stars = 15, starIcon = TEX_WORLD_3_STAR, pStarIcon = TEX_P_WORLD_3_STAR },
+    { "World 4", stars = 15, starIcon = TEX_WORLD_4_STAR, pStarIcon = TEX_P_WORLD_4_STAR },
+    { "World 5", stars = 16, starIcon = TEX_WORLD_5_STAR, pStarIcon = TEX_P_WORLD_5_STAR },
+    { "World 6", stars = 14, starIcon = TEX_WORLD_6_STAR, pStarIcon = TEX_P_WORLD_6_STAR },
+    { "World 7", stars = 14, starIcon = TEX_WORLD_7_STAR, pStarIcon = TEX_P_WORLD_7_STAR },
+    { "World 8", stars = 18, starIcon = TEX_WORLD_8_STAR, pStarIcon = TEX_P_WORLD_8_STAR },
 }
 
 function operation(course, star, is100star)
@@ -158,14 +156,14 @@ function lobby_hud()
         djui_hud_print_text(string.format("%.02d", curWorldStars), 8, 4, 1)
         djui_hud_render_texture(TEX_SEPERATOR, 28, 4, 1, 1)
         if curWorld ~= nil then
-            djui_hud_print_text(tostring(worldSpecific[curWorld][2]), 40, 4, 1)
+            djui_hud_print_text(tostring(worldSpecific[curWorld].stars), 40, 4, 1)
         else
             djui_hud_print_text("NIL", 40, 4, 1)
         end
-        if worldSpecific[curWorld][3] == nil then
+        if worldSpecific[curWorld].starIcon == nil then
             djui_hud_print_text("*", 68, 3, 1)
         else
-            djui_hud_render_texture(worldSpecific[curWorld][3], 68, 3, 1, 1)
+            djui_hud_render_texture(worldSpecific[curWorld].starIcon, 68, 3, 1, 1)
         end
         djui_hud_print_text("*", djui_hud_get_screen_width() - 62, 4, 1)
         if numStars < 100 then
