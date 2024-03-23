@@ -77,6 +77,13 @@ const LevelScript level_castle_courtyard_entry[] = {
 	OBJECT(MODEL_NONE, 5416, 791, 1888, 0, 0, 0, (108 << 16), bhvDeathWarp),
 	OBJECT(MODEL_NONE, 5416, 791, 1888, 0, 0, 0, (109 << 16), bhvDeathWarp),
 	OBJECT(MODEL_NONE, -68, 771, -697, 0, 0, 0, (241 << 16), bhvDeathWarp),
+	// gg
+	OBJECT(E_MODEL_8_STAR_CAGE, 5412, 590, 1549, 0, 180, 0, (2 << 16), bhv8StarCage),
+	// World 3 Pipe Cover
+	OBJECT(E_MODEL_PIPE_COVER, 5820, 790, 2737, 0, 180, 0, (2 << 16), bhvPipeCover),
+	// World 3 Pipe Cover End
+	OBJECT(E_MODEL_BLUE_WARP_PIPE, 5820, 590, 2737, 0, 180, 0, (15 << 16), id_bhvWarpPipe),
+	OBJECT(E_MODEL_RED_WARP_PIPE, 5412, 590, 1549, 0, 180, 0, (2 << 16), id_bhvWarpPipe),
 	TERRAIN(castle_courtyard_area_1_collision),
 	MACRO_OBJECTS(castle_courtyard_area_1_macro_objs),
 	SET_BACKGROUND_MUSIC(0x00, 6),

@@ -153,7 +153,7 @@ end
 
 function lobby_hud()
     if gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS) or gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) then
-        djui_hud_print_text(string.format("%.02d", curWorldStars), 8, 4, 1)
+        djui_hud_print_text(string.format("%.02d", get_world_star_count(curWorld)), 8, 4, 1)
         djui_hud_render_texture(TEX_SEPERATOR, 28, 4, 1, 1)
         if curWorld ~= nil then
             djui_hud_print_text(tostring(worldSpecific[curWorld].stars), 40, 4, 1)

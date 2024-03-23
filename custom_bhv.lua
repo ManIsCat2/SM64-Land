@@ -67,6 +67,10 @@ function eight_star_cage_loop(o)
     if get_world_star_count(1) >= 8 and o.oBehParams2ndByte == 1 then
         obj_mark_for_deletion(o)
     end
+
+    if get_world_star_count(2) >= 8 and o.oBehParams2ndByte == 2 then
+        obj_mark_for_deletion(o)
+    end
 end
 
 ---@param o Object
@@ -138,16 +142,11 @@ end
 
 function pipe_cover_loop(o)
     load_object_collision_model()
-    if operation(COURSE_BOB, 1) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 1 then
+    if operation(COURSE_BOB, 3) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 1 then
         obj_mark_for_deletion(o)
     end
-    if operation(COURSE_WF, 0) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 2 then
-        obj_mark_for_deletion(o)
-    end
-    if operation(COURSE_WF, 4) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 3 then
-        obj_mark_for_deletion(o)
-    end
-    if operation(COURSE_BOB, 3) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 4 then
+
+    if operation(COURSE_CCM, 5) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 2 then
         obj_mark_for_deletion(o)
     end
 end
