@@ -4,6 +4,31 @@ function get_star_count()
     return save_file_get_total_star_count(get_current_save_file_num() - 1, courseMin - 1, courseMax - 1)
 end
 
+function get_world_star_count(world)
+    local course1
+    local course2
+    local stars_world = 0
+    if world == 1 then
+        course1 = COURSE_BOB
+        course2 = COURSE_WF
+    end
+
+    if world == 2 then
+        course1 = COURSE_JRB
+        course2 = COURSE_CCM
+    end
+
+    for i = course1, course2 do
+        local starFlags = save_file_get_star_flags(get_current_save_file_num() - 1, i - 1)
+        for star = 0, 6 do
+            if starFlags & (1 << star) ~= 0 then
+                stars_world = stars_world + 1
+            end
+        end
+    end
+    return stars_world
+end
+
 local repack = function(value, pack_fmt, unpack_fmt)
     return string.unpack(unpack_fmt, string.pack(pack_fmt, value))
 end
@@ -37,8 +62,9 @@ function eight_star_cage_init(o)
 end
 
 function eight_star_cage_loop(o)
+    --djui_chat_message_create(tostring(get_world_star_count(2)))
     load_object_collision_model()
-    if get_star_count() >= 8 then
+    if get_world_star_count(1) >= 8 and o.oBehParams2ndByte == 1 then
         obj_mark_for_deletion(o)
     end
 end

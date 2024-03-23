@@ -73,7 +73,7 @@ const LevelScript local_objects_castle_grounds_1_[] = {
 		OBJECT(E_MODEL_BLOCKED_WARP_PIPE, 6027, 136, -3383, 0, 0, 0, (3 << 16), id_bhvFakeWarpPipe),
 		// 1-4 Pipe End
 		OBJECT(E_MODEL_RED_WARP_PIPE, 7364, 136, -1632, 0, 0, 0, (0 << 24) | (18 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
-		OBJECT(E_MODEL_8_STAR_CAGE, 7364, 136, -1632, 0, 0, 0, 0x00000000, bhv8StarCage),
+		OBJECT(E_MODEL_8_STAR_CAGE, 7364, 136, -1632, 0, 0, 0, (1 << 16), bhv8StarCage),
 		OBJECT(E_MODEL_WORLD_CANNON, -7172, 136, 1052, 0, 0, 0, 0x00000000, bhvWorldCannon),
 		MARIO_POS(0x01, 0, -10827, 136, -187),
 		OBJECT(0, -7430, 250, -1334, 0, -180, 0,  0x150000, bhvAirborneStarCollectWarp),
