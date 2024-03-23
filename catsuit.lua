@@ -5,7 +5,7 @@ didDive = false
 local animFrame = 0
 slowDownTimer = 0
 
-E_MDOEL_SUPER_BELL = smlua_model_util_get_id("super_bell_geo")
+E_MODEL_SUPER_BELL = smlua_model_util_get_id("super_bell_geo")
 
 ACT_CAT_DIVE = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR | ACT_FLAG_MOVING | ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
 ACT_CAT_CLIMB = allocate_mario_action(ACT_FLAG_AIR | ACT_GROUP_AIRBORNE)
@@ -18,7 +18,7 @@ end
 ---@param obj Object
 function bhv_catsuit_init(obj)
     obj.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
-    obj_set_model_extended(obj, E_MDOEL_SUPER_BELL)
+    obj_set_model_extended(obj, E_MODEL_SUPER_BELL)
     obj_scale(obj, 0.5)
     obj.oFaceAngleYaw = obj.oFaceAngleYaw - 32768 -- watchr is so not awesome
     obj.hitboxRadius = 50
