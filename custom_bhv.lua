@@ -147,11 +147,20 @@ end
 
 function pipe_cover_loop(o)
     load_object_collision_model()
-    if operation(COURSE_BOB, 3) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 1 then
+    if operation(COURSE_BOB, 1) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 1 then
+        obj_mark_for_deletion(o)
+    end
+    if operation(COURSE_WF, 0) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 2 then
+        obj_mark_for_deletion(o)
+    end
+    if operation(COURSE_WF, 4) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 3 then
+        obj_mark_for_deletion(o)
+    end
+    if operation(COURSE_BOB, 3) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 4 then
         obj_mark_for_deletion(o)
     end
 
-    if operation(COURSE_CCM, 5) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 2 then
+    if operation(COURSE_CCM, 5) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 8 then
         obj_mark_for_deletion(o)
     end
 end
@@ -387,13 +396,13 @@ end
 ---@param o Object
 function fake_pipe_loop(o)
     load_object_collision_model()
-if o.oBehParams2ndByte == 0 then
+    if o.oBehParams2ndByte == 0 then
         o.oSubAction = o.oSubAction + 1
     end
 
     if o.oSubAction > 100 then
         spawn_sync_object(id_bhvAnt, E_MODEL_ANT, o.oPosX, o.oPosY, -8443, function(o)
-            
+
         end)
         o.oSubAction = 0
     end
