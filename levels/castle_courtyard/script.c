@@ -80,7 +80,7 @@ const LevelScript level_castle_courtyard_entry[] = {
 	// gg
 	OBJECT(E_MODEL_8_STAR_CAGE, 5412, 590, 1549, 0, 180, 0, (2 << 16), bhv8StarCage),
 	// World 3 Pipe Cover
-	OBJECT(E_MODEL_PIPE_COVER, 5820, 790, 2737, 0, 180, 0, (2 << 16), bhvPipeCover),
+	OBJECT(E_MODEL_PIPE_COVER, 5820, 790, 2737, 0, 180, 0, (8 << 16), bhvPipeCover),
 	// World 3 Pipe Cover End
 	OBJECT(E_MODEL_BLUE_WARP_PIPE, 5820, 590, 2737, 0, 180, 0, (15 << 16), id_bhvWarpPipe),
 	OBJECT(E_MODEL_RED_WARP_PIPE, 5412, 590, 1549, 0, 180, 0, (2 << 16), id_bhvWarpPipe),

@@ -128,7 +128,7 @@ const LevelScript local_objects_castle_grounds_1_[] = {
 		OBJECT(E_MODEL_STAR, -2690, 1630, -2470, 0, 0, 0, (0 << 24) | (0 << 16) | (0 << 8) | (0), id_bhvStar),
 		OBJECT(MODEL_NONE, -10827, 136, -187, 0, 0, 0, (0 << 24) | (9 << 16) | (0 << 8) | (0), bhvSpinAirborneWarp),
 		// World 2 Pipe Cover
-		OBJECT(E_MODEL_PIPE_COVER, 9170, 336, -1717, 0, 0, 0, (1 << 16), bhvPipeCover),
+		OBJECT(E_MODEL_PIPE_COVER, 9170, 336, -1717, 0, 0, 0, (4 << 16), bhvPipeCover),
 		// World 2 Pipe Cover End
 		OBJECT(E_MODEL_BLUE_WARP_PIPE, 9170, 136, -1717, 0, 0, 0, (0 << 24) | (1 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
 OBJECT_WITH_ACTS(0,4,-32748,3,0,0,0,0xe0148a0, RM_Scroll_Texture,31),
