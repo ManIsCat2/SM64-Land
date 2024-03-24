@@ -18,6 +18,11 @@ function get_world_star_count(world)
         course2 = COURSE_CCM
     end
 
+    if world == 3 then
+        course1 = COURSE_BBH
+        course2 = COURSE_SSL
+    end
+
     for i = course1, course2 do
         local starFlags = save_file_get_star_flags(get_current_save_file_num() - 1, i - 1)
         for star = 0, 6 do
