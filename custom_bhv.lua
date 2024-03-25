@@ -368,6 +368,7 @@ id_bhvPeachCustom = hook_behavior(nil, OBJ_LIST_GENACTOR, true, function(o)
     bhv_toad_message_init()
 end, function(o)
     o.oIntangibleTimer = 0
+    djui_chat_message_create(tostring(o.oOpacity))
     bhv_toad_message_loop()
 end)
 

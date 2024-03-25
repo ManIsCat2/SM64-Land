@@ -38,7 +38,7 @@ const LevelScript level_castle_inside_entry[] = {
 		WARP_NODE(0xF1, 6, 1, 100, WARP_NO_CHECKPOINT),
 		MARIO_POS(0x01, 0, 1000, -600, 0),
 		OBJECT(MODEL_NONE, 1000, -600, 0, 0, 0, 0, 0x000A0000, bhvSpinAirborneWarp),
-		OBJECT(E_MODEL_PEACH, 294, -593, -30, 0, 90, 0, (50 << 16), id_bhvPeachCustom),
+		OBJECT(E_MODEL_PEACH, 294, -593, -30, 0, 90, 0, DIALOG_050 << 24, id_bhvPeachCustom),
 		OBJECT(E_MODEL_CASTLE_CASTLE_DOOR, -9244, 3225, 79, 0, 90, 0, (1 << 16), id_bhvDoorWarp),
 		OBJECT(E_MODEL_CASTLE_CASTLE_DOOR, -9244, 3225, 79, 0, 90, 0, (1 << 16), id_bhvDoorWarp),
 		OBJECT(E_MODEL_CASTLE_CASTLE_DOOR, -9244, 3225, -79, 0, -90, 0, (1 << 16), id_bhvDoorWarp),
