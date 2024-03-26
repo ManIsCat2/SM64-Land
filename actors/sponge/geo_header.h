@@ -1,0 +1,12 @@
+extern const GeoLayout sponge_geo[];
+extern Lights1 sponge_Material_0_f3d_lights;
+extern Lights1 sponge_Material_1_f3d_lights;
+extern u8 sponge__0_rgba16[];
+extern u8 sponge__1_rgba16[];
+extern Vtx sponge_Bone_mesh_layer_1_vtx_0[8];
+extern Gfx sponge_Bone_mesh_layer_1_tri_0[];
+extern Vtx sponge_Bone_mesh_layer_1_vtx_1[25];
+extern Gfx sponge_Bone_mesh_layer_1_tri_1[];
+extern Gfx mat_sponge_Material_0_f3d[];
+extern Gfx mat_sponge_Material_1_f3d[];
+extern Gfx sponge_Bone_mesh_layer_1[];

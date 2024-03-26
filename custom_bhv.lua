@@ -555,3 +555,51 @@ function bhv_ant_loop(o)
 end
 
 id_bhvAnt = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_ant_init, bhv_ant_loop, nil)
+
+E_MODEL_SPONGE = smlua_model_util_get_id("sponge_geo")
+
+function bhv_spong_init(o)
+    o.collisionData = smlua_collision_util_get("sponge_collision")
+    o.oCollisionDistance = 5000
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.header.gfx.skipInViewCheck = true
+end
+
+function bhv_spong_loop(o)
+    load_object_collision_model()
+end
+
+id_bhvSponge = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_spong_init, bhv_spong_loop)
+
+-- jelly :D
+
+COL_JELLY = smlua_collision_util_get("jelly_collision")
+E_MODEL_JELLY = smlua_model_util_get_id("jelly_geo")
+
+function bhv_jelly_init(o)
+    o.header.gfx.skipInViewCheck = true
+    o.collisionData = COL_JELLY
+    obj_set_model_extended(o, E_MODEL_JELLY)
+end
+
+id_bhvJelly = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_jelly_init, bhv_bouncy_platform_loop)
+
+-- spinning food
+COL_SPIN_FOOD = smlua_collision_util_get("spin_food_collision")
+E_MODEL_SPIN_FOOD = smlua_model_util_get_id("spin_food_geo")
+
+
+function bhv_spinning_food_init(o)
+    o.header.gfx.skipInViewCheck = true
+    o.collisionData = COL_SPIN_FOOD
+    o.oCollisionDistance = 5000
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    obj_set_model_extended(o, E_MODEL_SPIN_FOOD)
+end
+
+function bhv_spinning_food_loop(o)
+    load_object_collision_model()
+    o.oFaceAngleYaw = o.oFaceAngleYaw + 0x40
+end
+
+id_bhvSpinningFood = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_spinning_food_init, bhv_spinning_food_loop)
