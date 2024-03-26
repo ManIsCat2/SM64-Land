@@ -31,9 +31,9 @@ const LevelScript level_bbh_entry[] = {
 	/* Fast64 end persistent block [level commands] */
 
 	AREA(1, bbh_area_1),
-	WARP_NODE(0x0A, LEVEL_BOB, 0x01, 0x0A, WARP_NO_CHECKPOINT),
-	WARP_NODE(0xF0, LEVEL_BOB, 0x01, 0x0A, WARP_NO_CHECKPOINT),
-	WARP_NODE(0xF1, LEVEL_BOB, 0x01, 0x0A, WARP_NO_CHECKPOINT),
+	WARP_NODE(10, 9, 1, 0, WARP_NO_CHECKPOINT),
+	WARP_NODE(0xF0, 16, 2, 31, WARP_NO_CHECKPOINT),
+	WARP_NODE(0xF1, 16, 2, 41, WARP_NO_CHECKPOINT),
 	MARIO_POS(0x01, 0, 0, 2189, 0),
 	OBJECT(MODEL_NONE, -722, 1006, 6128, 0, 180, 0, (10 << 16), bhvSpinAirborneWarp),
 	OBJECT(E_MODEL_EXCLAMATION_BOX, -717, 1423, -1973, 0, 0, 0, (2 << 16), id_bhvExclamationBox),
