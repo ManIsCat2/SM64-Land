@@ -3,14 +3,16 @@
 
 -- Models
 
-E_MODEL_CAT_MARIO = smlua_model_util_get_id("cat_mario_geo")
 E_MODEL_TANOOKI_MARIO = smlua_model_util_get_id("tanooki_mario_geo")
+E_MODEL_CAT_MARIO = smlua_model_util_get_id("cat_mario_geo")
+E_MODEL_BEE_MARIO = smlua_model_util_get_id("bee_mario_geo")
 
 -- Powerups enum
 
 NORMAL = 0
 TANOOKI = 1
 CAT = 2
+BEE = 3
 
 activePowerup = NORMAL -- Current Powerup, set to NORMAL to disable any powerup
 
@@ -18,7 +20,8 @@ activePowerup = NORMAL -- Current Powerup, set to NORMAL to disable any powerup
 powerupStates = {
     [NORMAL] = {modelId = nil},
     [TANOOKI] = {modelId = E_MODEL_TANOOKI_MARIO},
-    [CAT] = {modelId = E_MODEL_CAT_MARIO}
+    [CAT] = {modelId = E_MODEL_CAT_MARIO},
+    [BEE] = {modelId = E_MODEL_BEE_MARIO}
 }
 
 -- Powerup Model Functions --
@@ -53,6 +56,9 @@ end
 function damage_check(m)
     if m.playerIndex ~= 0 then return end
     if m.hurtCounter > 0 or m.action == ACT_BURNING_GROUND or m.action == ACT_BURNING_JUMP then
+        activePowerup = NORMAL
+    end
+    if m.action & ACT_FLAG_SWIMMING ~= 0 and activePowerup == BEE then
         activePowerup = NORMAL
     end
 end
