@@ -52,24 +52,29 @@ E_MODEL_BLOCKED_WARP_PIPE = smlua_model_util_get_id("warp_pipe_blocked_geo")
 E_MODEL_PIPE_COVER = smlua_model_util_get_id("pipe_cover_geo")
 COL_PIPE_COVER = smlua_collision_util_get("pipe_cover_collision")
 
--- custom cage for boss
+-- Boss Star Cages
 
-COL_CAGE = smlua_collision_util_get("eight_star_cage_collision")
-E_MODEL_8_STAR_CAGE = smlua_model_util_get_id("eight_star_cage_geo")
+COL_CAGE = smlua_collision_util_get("eight_star_cage_collision") -- Used by all cages
+E_MODEL_8_STAR_CAGE = smlua_model_util_get_id("eight_star_cage_geo") -- World 1
+
+-- Per World Boss Cage Table
+worldCage = {
+    {cageModelID = E_MODEL_8_STAR_CAGE, starsNeeded = 8}
+}
+
 COL_WORLD_CANNON = smlua_collision_util_get("world_cannon_collision")
 E_MODEL_WORLD_CANNON = smlua_model_util_get_id("world_cannon_geo")
 
 ---@param o Object
-function eight_star_cage_init(o)
+function star_cage_init(o)
     o.oIntangibleTimer = 0
     o.header.gfx.skipInViewCheck = true
     o.collisionData = COL_CAGE
 end
 
-function eight_star_cage_loop(o)
-    --djui_chat_message_create(tostring(get_world_star_count(2)))
+function star_cage_loop(o)
     load_object_collision_model()
-    if get_world_star_count(1) >= 8 and o.oBehParams2ndByte == 1 then
+    if get_star_count() >= worldCage[curWorld].starsNeeded and obj_has_model_extended(o, worldCage[curWorld].cageModelID) == 0 then
         obj_mark_for_deletion(o)
     end
 
@@ -582,6 +587,31 @@ function bhv_jelly_init(o)
     obj_set_model_extended(o, E_MODEL_JELLY)
 end
 
+-- WIP Jelly bhv
+
+function bhv_jelly_loop(obj)
+    load_object_collision_model()
+    local m = gMarioStates[0]
+
+    obj.oPosX = obj.oPosX
+
+    if cur_obj_is_mario_on_platform() == 1 and not is_bubbled(m) then
+        if m.action == ACT_GROUND_POUND_LAND then
+            set_anim_to_frame(m, 0)
+            set_mario_action(m, ACT_TRIPLE_JUMP, 0)
+            m.vel.y = 140
+            bounceMultiplier = 3
+        else
+            set_anim_to_frame(m, 0)
+            set_mario_action(m, ACT_TRIPLE_JUMP, 0)
+            m.vel.y = (140 / 3) * bounceMultiplier
+            if bounceMultiplier < 3 then
+                bounceMultiplier = bounceMultiplier + 1
+            end
+        end
+    end
+end
+
 id_bhvJelly = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_jelly_init, bhv_bouncy_platform_loop)
 
 -- spinning food
@@ -599,6 +629,7 @@ end
 
 function bhv_spinning_food_loop(o)
     load_object_collision_model()
+    o.oAngleVelYaw = 0x40
     o.oFaceAngleYaw = o.oFaceAngleYaw + 0x40
 end
 
