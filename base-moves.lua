@@ -34,8 +34,6 @@ local SPIN_RISE_TIMER = 0
 
 local didSpin = false
 
-local climbTimer = 4
-
 local SPINACTIONS = {
     [ACT_JUMP] = true,
     [ACT_DOUBLE_JUMP] = true,
@@ -388,9 +386,9 @@ local function mario_on_set_action(m)
     end
 
     if e.spinInput ~= 0 and (m.input & INPUT_ABOVE_SLIDE) == 0 then
-        if SPINACTIONS[m.action] or m.controller.buttonPressed == X_BUTTON or m.action == ACT_FAKE_JUMP then
+        if SPINACTIONS[m.action] or m.controller.buttonPressed & X_BUTTON ~= 0 or (m.action == ACT_FLUTTER or m.action == ACT_FLY) then
             if stuck then return end
-            if (m.action == ACT_FAKE_JUMP or m.action == ACT_WALL_KICK_AIR or m.action == ACT_WALL_SLIDE or m.action == ACT_FREEFALL) and didSpin then return end
+            if (m.action == ACT_FLUTTER or m.action == ACT_FLY or m.action == ACT_WALL_KICK_AIR or m.action == ACT_WALL_SLIDE or m.action == ACT_FREEFALL) and didSpin then return end
             set_mario_action(m, ACT_SPIN_JUMP, 1)
             m.vel.y = 65.0
             m.faceAngle.y = m.intendedYaw
@@ -439,9 +437,9 @@ local function mario_update(m)
     end
 
     -- spin
-    if (SPINACTIONS[m.action] or m.action == ACT_FAKE_JUMP) and e.spinInput ~= 0 or (m.controller.buttonPressed == X_BUTTON and (SPINACTIONS[m.action] or m.action == ACT_FAKE_JUMP)) then
+    if (SPINACTIONS[m.action] or m.action == ACT_FLUTTER or m.action == ACT_FLY) and (e.spinInput ~= 0 or m.controller.buttonPressed & X_BUTTON ~= 0) then
         if stuck then return end
-        if (m.action == ACT_FAKE_JUMP or m.action == ACT_WALL_KICK_AIR or m.action == ACT_WALL_SLIDE or m.action == ACT_FREEFALL) and didSpin then return end
+        if (m.action == ACT_FLUTTER or m.action == ACT_FLY or m.action == ACT_WALL_KICK_AIR or m.action == ACT_WALL_SLIDE or m.action == ACT_FREEFALL) and didSpin then return end
         set_mario_action(m, ACT_SPIN_JUMP, 1)
         m.vel.y = 65.0
         m.faceAngle.y = m.intendedYaw

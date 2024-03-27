@@ -1,4 +1,4 @@
---// Catsuit behavior and abilities. //--
+-- Cat Powerup --
 
 catsuit = false
 didDive = false

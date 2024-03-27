@@ -1,6 +1,6 @@
--- Tanooki Leaf Powerup --
+-- Tanooki Powerup --
 
-E_MODEL_TANOOK_LEAF = smlua_model_util_get_id("tanooki_leaf_geo")
+E_MODEL_TANOOKI_LEAF = smlua_model_util_get_id("tanooki_leaf_geo")
 smlua_anim_util_register_animation("anim_flutter",
     0,
     0,
@@ -36,7 +36,7 @@ smlua_anim_util_register_animation("anim_flutter",
 local flutterTimer = 40
 local wallSlideTimer = 0
 
-ACT_FAKE_JUMP = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR | ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
+ACT_FLUTTER = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR | ACT_FLAG_ALLOW_VERTICAL_WIND_ACTION)
 local flutterActions = {
     [ACT_JUMP] = true,
     [ACT_DOUBLE_JUMP] = true,
@@ -47,7 +47,7 @@ local flutterActions = {
     [ACT_FORWARD_ROLLOUT] = true,
     [ACT_BACKWARD_ROLLOUT] = true,
     [ACT_WALL_KICK_AIR] = true,
-    [ACT_FAKE_JUMP] = true,
+    [ACT_FLUTTER] = true,
     [ACT_FREEFALL] = true,
     [ACT_FAKE_FREEFALL] = true,
     [ACT_BACKFLIP] = true
@@ -56,7 +56,7 @@ local flutterActions = {
 ---@param obj Object
 function bhv_leaf_init(obj)
     obj.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
-    obj_set_model_extended(obj, E_MODEL_TANOOK_LEAF)
+    obj_set_model_extended(obj, E_MODEL_TANOOKI_LEAF)
     obj_scale(obj, 0.5)
     obj.oFaceAngleYaw = obj.oFaceAngleYaw - 32768 -- watchr is so not awesome
     obj.hitboxRadius = 30
@@ -119,9 +119,7 @@ function tanooki_update(m)
     end
 end
 
-local function act_fake_jump(m)
-    if m.playerIndex ~= 0 then return end
-
+function act_flutter(m)
     if m.controller.buttonPressed & B_BUTTON ~= 0 then
         if m.forwardVel >= 28 then
             set_mario_action(m, ACT_DIVE, 0)
@@ -138,6 +136,6 @@ local function act_fake_jump(m)
     AIR_STEP_CHECK_LEDGE_GRAB | AIR_STEP_CHECK_HANG)
 end
 
-hook_mario_action(ACT_FAKE_JUMP, { every_frame = act_fake_jump })
+hook_mario_action(ACT_FLUTTER, { every_frame = act_flutter })
 
 hook_event(HOOK_MARIO_UPDATE, tanooki_update)
