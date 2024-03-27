@@ -95,7 +95,7 @@ function tanooki_update(m)
             startTimer = false
             if m.pos.y > (m.floorHeight + 100) then
                 if wallSlideTimer < 4 and m.action == ACT_WALL_KICK_AIR then return end
-                set_mario_action(m, ACT_FAKE_JUMP, 0)
+                set_mario_action(m, ACT_FLUTTER, 0)
                 wallSlideTimer = 0
                 play_sound(SOUND_ACTION_SPIN, m.marioObj.header.gfx.cameraToObject)
                 startTimer = true
