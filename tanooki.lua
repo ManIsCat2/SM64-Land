@@ -120,6 +120,7 @@ function tanooki_update(m)
 end
 
 function act_flutter(m)
+    if m.playerIndex ~= 0 then return end
     if m.controller.buttonPressed & B_BUTTON ~= 0 then
         if m.forwardVel >= 28 then
             set_mario_action(m, ACT_DIVE, 0)

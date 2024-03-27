@@ -115,7 +115,7 @@ function bee_hud()
 end
 
 function act_fly(m)
-
+    if m.playerIndex ~= 0 then return end
     if m.controller.buttonPressed & B_BUTTON ~= 0 then
         m.marioObj.header.gfx.angle.y = m.faceAngle.y
         return set_mario_action(m, ACT_DIVE, 0)

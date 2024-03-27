@@ -62,6 +62,7 @@ function cat_update(m)
 end
 
 function act_cat_climb(m)
+    if m.playerIndex ~= 0 then return end
     if (m.input & INPUT_A_PRESSED) ~= 0 then
         m.vel.y = 52.0
         m.faceAngle.y = limit_angle(m.faceAngle.y + 0x8000)
@@ -127,6 +128,7 @@ function act_cat_climb(m)
 end
 
 function act_cat_dive(m)
+    if m.playerIndex ~= 0 then return end
     m.actionTimer = m.actionTimer + 1
 
     if m.prevAction ~= ACT_DIVE then
@@ -162,6 +164,7 @@ function act_cat_dive(m)
 end
 
 function act_cat_dive_gravity(m)
+    if m.playerIndex ~= 0 then return end
     if m.pos.y - m.floorHeight < 150 then
         return set_mario_action(m, ACT_DIVE, 0)
     else
@@ -170,6 +173,7 @@ function act_cat_dive_gravity(m)
 end
 
 function act_cat_slide(m)
+    if m.playerIndex ~= 0 then return end
     if m.actionTimer == 0 then
         animFrame = 0
     end
@@ -206,6 +210,7 @@ function act_cat_slide(m)
 end
 
 function act_cat_slide_gravity(m)
+    if m.playerIndex ~= 0 then return end
     m.vel.y = m.vel.y - 2
 
     if m.vel.y < -15 then
