@@ -126,6 +126,9 @@ const LevelScript level_bob_entry[] = {
 
 	AREA(2, bob_area_2),
 	MARIO_POS(0x03, 0, 0, 1, 0),
+	WARP_NODE(10, 9, 2, 0, WARP_NO_CHECKPOINT),
+	WARP_NODE(240, 16, 1, 24, WARP_NO_CHECKPOINT),
+	WARP_NODE(241, 16, 1, 34, WARP_NO_CHECKPOINT),
 	OBJECT(MODEL_NONE, -10345, 500, -21, 0, 90, 0, (10 << 16), bhvSpinAirborneWarp),
 	OBJECT(E_MODEL_STAR, -9006, 558, -28971, 0, 0, 0, (5 << 24), id_bhvStar),
 	OBJECT(MODEL_NONE, -2522, 4499, -4482, 0, 0, 0, (4 << 24), bhvBowserCourseRedCoinStar),
