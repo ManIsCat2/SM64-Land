@@ -128,7 +128,7 @@ function act_fly(m)
     end
 
     if m.controller.buttonDown & A_BUTTON ~= 0 and energyBar > 0 then
-        m.vel.y = 2
+        m.vel.y = 10
         energyBar = energyBar - 1
     end
 
