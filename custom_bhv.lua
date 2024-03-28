@@ -408,8 +408,8 @@ function fake_pipe_loop(o)
     end
 
     if o.oSubAction > 100 then
-        spawn_sync_object(id_bhvAnt, E_MODEL_ANT, o.oPosX, o.oPosY, -8443, function(o)
-
+        spawn_sync_object(id_bhvAnt, E_MODEL_ANT, o.oPosX, o.oPosY + 100, o.oPosZ, function(obj)
+            obj.parentObj = o
         end)
         o.oSubAction = 0
     end
@@ -517,12 +517,13 @@ function bhv_ant_init(o)
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_MOVE_XZ_USING_FVEL | OBJ_FLAG_SET_FACE_ANGLE_TO_MOVE_ANGLE
     o.header.gfx.skipInViewCheck = true
     o.oAnimations = gObjectAnimations.goomba_seg8_anims_0801DA4C
+    o.oGravity = 3
+    o.oFriction = 1
     o.oForwardVel = 10
     o.hurtboxRadius = 72
     o.hurtboxHeight = 50
     o.oIntangibleTimer = 0
     o.oNumLootCoins = 1
-    o.oGraphYOffset = -45
     obj_scale(o, 2.5)
     cur_obj_init_animation(0)
 end
@@ -540,10 +541,8 @@ E_MODEL_ANT = smlua_model_util_get_id("ant_geo")
 
 ---@param o Object
 function bhv_ant_loop(o)
-    o.oInteractStatus = 0
-    o.oMoveAnglePitch = 90
-    o.oMoveAngleYaw = 90
-    m = gMarioStates[0]
+    object_step()
+    o.oMoveAngleYaw = o.parentObj.oFaceAngleYaw
     if obj_check_hitbox_overlap(o, m.marioObj) then
         if hit_acts[m.action] then
             o.oAction = 1
@@ -555,7 +554,11 @@ function bhv_ant_loop(o)
         obj_die_if_health_non_positive()
     end
 
-    if o.oPosZ > -5322 then
+    if o.oPosZ > -5322 and gNetworkPlayers[0].currLevelNum == LEVEL_JRB then
+        obj_mark_for_deletion(o)
+    end
+
+    if o.oPosY < -1000 then
         obj_mark_for_deletion(o)
     end
 end
