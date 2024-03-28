@@ -113,6 +113,11 @@ u8 bob_dl__22_rgba16[] = {
 	#include "levels/bob/_22.rgba16.inc.c"
 };
 
+Gfx bob_dl__23_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl__23_rgba16[] = {
+	#include "levels/bob/_23.rgba16.inc.c"
+};
+
 Gfx bob_dl__24_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 bob_dl__24_rgba16[] = {
 	#include "levels/bob/_24.rgba16.inc.c"
