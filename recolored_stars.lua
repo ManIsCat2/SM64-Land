@@ -21,26 +21,26 @@ local worldSpecificStarModels = {
     E_MODEL_STAR_W8
 }
 
-local courseToStarModel = {
-    [COURSE_BOB] = E_MODEL_STAR,
-    [COURSE_WF] = E_MODEL_STAR,
-    [COURSE_CCM] = E_MODEL_STAR_W2,
-    [COURSE_JRB] = E_MODEL_STAR_W2,
-    [COURSE_BBH] = E_MODEL_STAR_W3,
-    [COURSE_LLL] = E_MODEL_STAR_W3,
-    [COURSE_SSL] = E_MODEL_STAR_W3,
-    [COURSE_HMC] = E_MODEL_STAR_W3,
-}
 
 -- Model Replacement Function --
 
 function bhv_star_loop(o)
-    if obj_has_model_extended(o, E_MODEL_TRANSPARENT_STAR) ~= 0 then return end
+    if obj_has_model_extended(o, E_MODEL_TRANSPARENT_STAR) == 0 then
+        if (gNetworkPlayers[0].currLevelNum == LEVEL_CASTLE_GROUNDS or gNetworkPlayers[0].currLevelNum == LEVEL_CASTLE_COURTYARD) and worldSpecificStarModels[curWorld] ~= nil then
+            obj_set_model_extended(o, worldSpecificStarModels[curWorld])
+        end
 
-    if (gNetworkPlayers[0].currLevelNum == LEVEL_CASTLE_GROUNDS or gNetworkPlayers[0].currLevelNum == LEVEL_CASTLE_COURTYARD) and worldSpecificStarModels[curWorld] ~= nil then
-        obj_set_model_extended(o, worldSpecificStarModels[curWorld])
-    else
-        obj_set_model_extended(o, courseToStarModel[gNetworkPlayers[0].currCourseNum])
+        if gNetworkPlayers[0].currLevelNum == LEVEL_BOB or gNetworkPlayers[0].currLevelNum == LEVEL_WF then
+            obj_set_model_extended(o, E_MODEL_STAR)
+        end
+
+        if gNetworkPlayers[0].currLevelNum == LEVEL_CCM or gNetworkPlayers[0].currLevelNum == LEVEL_JRB then
+            obj_set_model_extended(o, E_MODEL_STAR_W2)
+        end
+
+        if gNetworkPlayers[0].currLevelNum == LEVEL_BBH then
+            obj_set_model_extended(o, E_MODEL_STAR_W3)
+        end
     end
 end
 

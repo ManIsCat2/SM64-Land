@@ -37,11 +37,8 @@ function world_map_cam(m)
     if m.playerIndex ~= 0 then return end
     if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) then return camera_unfreeze() end
     if m.action == ACT_READING_NPC_DIALOG or m.action == ACT_READING_SIGN then return camera_unfreeze() end
-    camera_freeze()
-    vec3f_copy(gLakituState.focus, m.pos)
-    gLakituState.pos.x = m.pos.x
-    gLakituState.pos.y = m.pos.y + 1500
-    gLakituState.pos.z = m.pos.z + 4350
+    gLakituState.curPos.y = m.pos.y + 4000
+    gLakituState.curPos.z = 5000
 end
 
-hook_event(HOOK_MARIO_UPDATE, world_map_cam)
+--hook_event(HOOK_MARIO_UPDATE, world_map_cam)

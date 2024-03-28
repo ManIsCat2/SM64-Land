@@ -69,12 +69,13 @@ E_MODEL_WORLD_CANNON = smlua_model_util_get_id("world_cannon_geo")
 function star_cage_init(o)
     o.oIntangibleTimer = 0
     o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 3000
     o.collisionData = COL_CAGE
 end
 
 function star_cage_loop(o)
     load_object_collision_model()
-    if get_star_count() >= worldCage[curWorld].starsNeeded and obj_has_model_extended(o, worldCage[curWorld].cageModelID) == 0 then
+    if get_world_star_count(1) >= 8 and o.oBehParams2ndByte == 1 then
         obj_mark_for_deletion(o)
     end
 
@@ -171,7 +172,7 @@ function pipe_cover_loop(o)
 end
 
 bhvPipeCover = hook_behavior(nil, OBJ_LIST_SURFACE, true, pipe_cover_init, pipe_cover_loop)
-bhv8StarCage = hook_behavior(nil, OBJ_LIST_SURFACE, true, eight_star_cage_init, eight_star_cage_loop)
+bhv8StarCage = hook_behavior(nil, OBJ_LIST_SURFACE, true, star_cage_init, star_cage_loop)
 bhvWorldCannon = hook_behavior(nil, OBJ_LIST_SURFACE, true, world_cannon_init, world_cannon_loop)
 
 -- big mushrooms
