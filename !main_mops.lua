@@ -131,7 +131,7 @@ local string_unpack = string.unpack
 ---@param value number
 ---@param pack_fmt string
 ---@param unpack_fmt string
-local repack = function (value, pack_fmt, unpack_fmt)
+local repack = function(value, pack_fmt, unpack_fmt)
     return string_unpack(unpack_fmt, string_pack(pack_fmt, value))
 end
 
@@ -212,8 +212,8 @@ local function is_current_area_sync_valid()
     local np = gNetworkPlayers
     for i = 1, MAX_PLAYERS - 1, 1 do
         if np[i] and np[i].connected and
-        (not np[i].currLevelSyncValid or not np[i].currAreaSyncValid) and
-        is_player_in_local_area(gMarioStates[i]) ~= 0 then
+            (not np[i].currLevelSyncValid or not np[i].currAreaSyncValid) and
+            is_player_in_local_area(gMarioStates[i]) ~= 0 then
             return false
         end
     end
@@ -356,11 +356,10 @@ function bhv_flip_block_loop(obj)
         -- Flip whenever it becomes attacked
         local next_position = m.pos.y + m.vel.y + 160
         if not is_bubbled(m) and cur_obj_was_attacked_or_ground_pounded() ~= 0
-        -- Hacky fix to allow Mario to hit flipblocks from below
-        or (mario_is_within_rectangle(obj.oPosX - 100, obj.oPosX + 100, obj.oPosZ - 100, obj.oPosZ + 100) ~= 0
-            and m.vel.y > 0 and (m.ceil and m.ceil.object) and m.ceil.object == obj
-            and (next_position > m.ceilHeight and next_position < obj.oPosY + 100)) then
-
+            -- Hacky fix to allow Mario to hit flipblocks from below
+            or (mario_is_within_rectangle(obj.oPosX - 100, obj.oPosX + 100, obj.oPosZ - 100, obj.oPosZ + 100) ~= 0
+                and m.vel.y > 0 and (m.ceil and m.ceil.object) and m.ceil.object == obj
+                and (next_position > m.ceilHeight and next_position < obj.oPosY + 100)) then
             obj.oAction = FLIP_BLOCK_ACT_FLIPPING
             obj.oIntangibleTimer = FLIP_TIMER
             m.vel.y = m.vel.y > 0 and 0 or m.vel.y
@@ -401,9 +400,9 @@ function bhv_noteblock_loop(obj)
 
         -- Calculates y speed
         local intermediate_y_spd = repack(y_spd, "f", "I")
-		intermediate_y_spd = intermediate_y_spd + (obj.oBehParams2ndByte << 16)
-		y_spd = repack(intermediate_y_spd, "I", "f")
-		m.vel.y = y_spd
+        intermediate_y_spd = intermediate_y_spd + (obj.oBehParams2ndByte << 16)
+        y_spd = repack(intermediate_y_spd, "I", "f")
+        m.vel.y = y_spd
 
         obj.oAction = NOTEBLOCK_ACT_BOUNCING
     end
@@ -481,13 +480,14 @@ local FLIP_SPEED_MULTIPLIER = 0.5
 ---@param obj Object
 function bhv_flipswap_init(obj)
     -- Spawns the border
-    local childObj = spawn_non_sync_object(id_bhvFlipswap_Platform_Border_MOP, E_MODEL_FLIPSWAP_PLATFORM_BORDER, obj.oPosX, obj.oPosY, obj.oPosZ,
-    ---@param o Object
-    function (o)
-        -- Probably overdone but just to be safe
-        obj_set_face_angle(o, obj.oFaceAnglePitch, obj.oFaceAngleYaw, obj.oFaceAngleRoll)
-        obj_set_move_angle(o, obj.oMoveAnglePitch, obj.oMoveAngleYaw, obj.oMoveAngleRoll)
-    end)
+    local childObj = spawn_non_sync_object(id_bhvFlipswap_Platform_Border_MOP, E_MODEL_FLIPSWAP_PLATFORM_BORDER,
+        obj.oPosX, obj.oPosY, obj.oPosZ,
+        ---@param o Object
+        function(o)
+            -- Probably overdone but just to be safe
+            obj_set_face_angle(o, obj.oFaceAnglePitch, obj.oFaceAngleYaw, obj.oFaceAngleRoll)
+            obj_set_move_angle(o, obj.oMoveAnglePitch, obj.oMoveAngleYaw, obj.oMoveAngleRoll)
+        end)
     childObj.parentObj = obj
     obj_set_model_extended(obj, E_MODEL_FLIPSWAP_PLATFORM)
 end
@@ -512,7 +512,7 @@ function bhv_flipswap_loop(obj)
         -- Flip the platform
         if obj.oTimer < 16 * FLIP_SPEED_MULTIPLIER ^ -1 then
             obj.oFaceAngleRoll = obj.oFaceAngleRoll + obj.oMoveAngleRoll
-        -- Disallow flipping again until Mario lands
+            -- Disallow flipping again until Mario lands
         elseif m.action & ACT_GROUP_MASK ~= ACT_GROUP_AIRBORNE then
             obj.oAction = FLIPSWAP_PLATFORM_ACT_IDLE
         end
@@ -549,28 +549,28 @@ function bhv_checkpoint_flag_loop(obj)
         stored_2nd_byte = obj.oBehParams2ndByte
 
         local ltc = last_touched_checkpoint
-        play_sound(SOUND_MENU_CHANGE_SELECT + (1 << 16), {x = ltc.oPosX, y = ltc.oPosY, z = ltc.oPosZ})
+        play_sound(SOUND_MENU_CHANGE_SELECT + (1 << 16), { x = ltc.oPosX, y = ltc.oPosY, z = ltc.oPosZ })
         spawn_non_sync_object(id_bhvSparkle, E_MODEL_SPARKLES, ltc.oPosX, ltc.oPosY, ltc.oPosZ,
-        ---@param o Object
-        function (o)
-            obj_scale(o, 5)
-        end)
+            ---@param o Object
+            function(o)
+                obj_scale(o, 5)
+            end)
     end
 end
 
 hook_event(HOOK_ON_SYNC_VALID,
-function ()
-    if not last_touched_checkpoint then return end
+    function()
+        if not last_touched_checkpoint then return end
 
-    if count_objects_with_behavior(bhvCheckpoint_Flag_MOP) > 0 then
-        local ltc = last_touched_checkpoint
-        local m = gMarioStates[0]
-        -- Warps to the particular object noted down if it shares the same 2nd byte
-        if ltc.behavior == bhvCheckpoint_Flag_MOP and ltc.oBehParams2ndByte == stored_2nd_byte then
-            vec3f_set(m.pos, ltc.oPosX, ltc.oPosY, ltc.oPosZ)
+        if count_objects_with_behavior(bhvCheckpoint_Flag_MOP) > 0 then
+            local ltc = last_touched_checkpoint
+            local m = gMarioStates[0]
+            -- Warps to the particular object noted down if it shares the same 2nd byte
+            if ltc.behavior == bhvCheckpoint_Flag_MOP and ltc.oBehParams2ndByte == stored_2nd_byte then
+                vec3f_set(m.pos, ltc.oPosX, ltc.oPosY, ltc.oPosZ)
+            end
         end
-    end
-end)
+    end)
 
 --id_bhvCheckpoint_Flag_MOP = hook_behavior(nil, OBJ_LIST_GENACTOR, false, bhv_checkpoint_flag_init, bhv_checkpoint_flag_loop, "bhvCheckpoint_Flag_MOP")
 
@@ -606,6 +606,15 @@ function bhv_green_switchboard_loop(obj)
         local dHz = obj.oPosZ - obj.oHomeZ
         local facingZ = coss(obj.oFaceAngleYaw)
         local facingX = sins(obj.oFaceAngleYaw)
+        local going_down_up_pos_y = ((obj.oBehParams >> 8) & 0xff) * 3.9
+        local invert = false
+        if ((obj.oBehParams >> 0) & 0xFF) == 2 then
+            invert = true
+            going_down_up_pos_y = 1.7
+        else
+            invert = false
+            going_down_up_pos_y = ((obj.oBehParams >> 8) & 0xff) * 3.9
+        end
 
         --if dot is positive, mario is on front arrow
         dot = facingZ * dz + facingX * dx
@@ -615,6 +624,11 @@ function bhv_green_switchboard_loop(obj)
             -- 1st byte determines how far the switchboard can go forwards
             if dotH < ((obj.oBehParams >> 24) & 0xFF) * 55 then
                 obj.oForwardVel = approach_by_increment(MAX_SPEED, obj.oForwardVel, SPEED_INC)
+                if not invert then
+                    obj.oPosY = obj.oPosY - going_down_up_pos_y
+                else
+                    obj.oPosY = obj.oPosY + going_down_up_pos_y
+                end
             else
                 obj.oForwardVel = 0
             end
@@ -623,12 +637,17 @@ function bhv_green_switchboard_loop(obj)
             -- 2nd byte determines how far the switchboard can go backwards
             if dotH > obj.oBehParams2ndByte * -16 then
                 obj.oForwardVel = approach_by_increment(-MAX_SPEED, obj.oForwardVel, SPEED_INC)
+                if not invert then
+                    obj.oPosY = obj.oPosY + going_down_up_pos_y
+                else
+                    obj.oPosY = obj.oPosY - going_down_up_pos_y
+                end
             else
                 obj.oForwardVel = 0
             end
             --this function doesn't work well with negatives thanks nintendo
             if (obj.oFaceAnglePitch > -2048) then
-                obj.oFaceAnglePitch = approach_by_increment( -2048.0, obj.oFaceAnglePitch, 128.0)
+                obj.oFaceAnglePitch = approach_by_increment(-2048.0, obj.oFaceAnglePitch, 128.0)
             end
         end
     else
@@ -648,13 +667,14 @@ local SHRINK_TIME = 150
 ---@param obj Object
 function bhv_shrinkplatform_init(obj)
     -- Spawns border
-    local childObj = spawn_non_sync_object(id_bhvShrink_Platform_Border_MOP, E_MODEL_SHRINK_PLATFORM_BORDER, obj.oPosX, obj.oPosY, obj.oPosZ,
-    ---@param o Object
-    function (o)
-        -- Overdone like the flipswap platform and for the same reason
-        obj_set_face_angle(o, obj.oFaceAnglePitch, obj.oFaceAngleYaw, obj.oFaceAngleRoll)
-        obj_set_move_angle(o, obj.oMoveAnglePitch, obj.oMoveAngleYaw, obj.oMoveAngleRoll)
-    end)
+    local childObj = spawn_non_sync_object(id_bhvShrink_Platform_Border_MOP, E_MODEL_SHRINK_PLATFORM_BORDER, obj.oPosX,
+        obj.oPosY, obj.oPosZ,
+        ---@param o Object
+        function(o)
+            -- Overdone like the flipswap platform and for the same reason
+            obj_set_face_angle(o, obj.oFaceAnglePitch, obj.oFaceAngleYaw, obj.oFaceAngleRoll)
+            obj_set_move_angle(o, obj.oMoveAnglePitch, obj.oMoveAngleYaw, obj.oMoveAngleRoll)
+        end)
     childObj.parentObj = obj
     obj_set_model_extended(obj, E_MODEL_SHRINK_PLATFORM)
 end
@@ -701,7 +721,7 @@ end
 
 local StarSpawned = false
 
-hook_event(HOOK_ON_LEVEL_INIT, function ()
+hook_event(HOOK_ON_LEVEL_INIT, function()
     StarSpawned = false
 end)
 
@@ -785,15 +805,15 @@ function bhv_flipswitch_panel_starspawn_loop(obj)
 end
 
 hook_event(HOOK_ON_OBJECT_UNLOAD,
----@param obj Object
-function (obj)
-    -- Force spawn star for newly entering players
-    if obj_has_behavior_id(obj, bhvFlipswitch_Panel_StarSpawn_MOP) == 1 and obj.oHiddenStarTriggerCounter ~= obj.oHealth and not StarSpawned then
-        local starspawn_obj = obj_get_first_with_behavior_id(bhvFlipswitch_Panel_StarSpawn_MOP)
-        spawn_red_coin_cutscene_star(starspawn_obj.oPosX, starspawn_obj.oPosY, starspawn_obj.oPosZ)
-        StarSpawned = true
-    end
-end)
+    ---@param obj Object
+    function(obj)
+        -- Force spawn star for newly entering players
+        if obj_has_behavior_id(obj, bhvFlipswitch_Panel_StarSpawn_MOP) == 1 and obj.oHiddenStarTriggerCounter ~= obj.oHealth and not StarSpawned then
+            local starspawn_obj = obj_get_first_with_behavior_id(bhvFlipswitch_Panel_StarSpawn_MOP)
+            spawn_red_coin_cutscene_star(starspawn_obj.oPosX, starspawn_obj.oPosY, starspawn_obj.oPosZ)
+            StarSpawned = true
+        end
+    end)
 
 --id_bhvFlipswitch_Panel_StarSpawn_MOP = hook_behavior(nil, OBJ_LIST_GENACTOR, false, bhv_flipswitch_panel_starspawn_init, bhv_flipswitch_panel_starspawn_loop, "bhvFlipswitch_Panel_StarSpawn_MOP")
 
@@ -877,15 +897,15 @@ end
 --id_bhvSwitchblock_Switch_MOP = hook_behavior(nil, OBJ_LIST_SURFACE, false, bhv_Switchblock_Switch_init, bhv_Switchblock_Switch_loop, "bhvSwitchblock_Switch_MOP")
 
 hook_event(HOOK_ON_PACKET_RECEIVE,
-function (datatable)
-    scalar_timer = datatable.timer
-    switch_block_state = datatable.state
-end)
+    function(datatable)
+        scalar_timer = datatable.timer
+        switch_block_state = datatable.state
+    end)
 
 hook_event(HOOK_ON_LEVEL_INIT,
-function ()
-    switch_block_state = START_STATE
-end)
+    function()
+        switch_block_state = START_STATE
+    end)
 
 ------ Moving Rotating Block ------
 -- Moves on a square path. Occationally flips.
@@ -967,7 +987,7 @@ local Paths = {
 function bhv_move_rotate_init(obj)
     -- 1st byte must be 0 or 1 for this to work
     obj.oTimer = obj.oTimer + 0x80 * (obj.oBehParams >> 24)
-	obj.oAnimState = (obj.oBehParams >> 24)
+    obj.oAnimState = (obj.oBehParams >> 24)
     obj.oUnk1A8 = 0
     -- Forces the 1st case
     obj.oUnk94 = 0
@@ -987,52 +1007,52 @@ function bhv_move_rotate_loop(obj)
     -- Warning
     if obj.oTimer == PLAT_FLIP_START_TIMER - 32 then
         obj.oAngleVelPitch = obj.oAngleVelPitch - PLAT_WARNING_SPEED
-    -- After a while, flip the platform
+        -- After a while, flip the platform
     elseif obj.oTimer == PLAT_FLIP_START_TIMER then
-		obj.oAngleVelPitch = obj.oAngleVelPitch + 0x400 + PLAT_WARNING_SPEED
-	elseif obj.oTimer == PLAT_FLIP_END_TIMER + 2 then
-		obj.oAngleVelPitch = 0
-		obj.oTimer = 0
+        obj.oAngleVelPitch = obj.oAngleVelPitch + 0x400 + PLAT_WARNING_SPEED
+    elseif obj.oTimer == PLAT_FLIP_END_TIMER + 2 then
+        obj.oAngleVelPitch = 0
+        obj.oTimer = 0
     end
 
     -- Adding 1 since lua uses 1 index rather than c which uses 0 index
-	direction = Paths[obj.oBehParams2ndByte + 1][obj.oUnk94 + 1] -- oUnk1A4 was replaced with oSyncDeath
+    direction = Paths[obj.oBehParams2ndByte + 1][obj.oUnk94 + 1] -- oUnk1A4 was replaced with oSyncDeath
 
     -- In this case, since there's a lot of possible states, a switch is faster
-	switch(direction, {
-        [ZPLUS] = function ()
+    switch(direction, {
+        [ZPLUS] = function()
             obj.oUnk1A8 = obj.oUnk1A8 + 1
-			obj.oVelZ = PLAT_SPEED
-			obj.oVelX = 0
+            obj.oVelZ = PLAT_SPEED
+            obj.oVelX = 0
         end,
-		[ZMINUS] = function ()
-			obj.oUnk1A8 = obj.oUnk1A8 + 1
-			obj.oVelZ = -PLAT_SPEED
-			obj.oVelX = 0
-        end,
-		[XPLUS] = function ()
+        [ZMINUS] = function()
             obj.oUnk1A8 = obj.oUnk1A8 + 1
-			obj.oVelX = PLAT_SPEED
-			obj.oVelZ = 0
+            obj.oVelZ = -PLAT_SPEED
+            obj.oVelX = 0
         end,
-		[XMINUS] = function ()
+        [XPLUS] = function()
             obj.oUnk1A8 = obj.oUnk1A8 + 1
-			obj.oVelX = -PLAT_SPEED
-			obj.oVelZ = 0
+            obj.oVelX = PLAT_SPEED
+            obj.oVelZ = 0
         end,
-		["default"] = function ()
+        [XMINUS] = function()
+            obj.oUnk1A8 = obj.oUnk1A8 + 1
+            obj.oVelX = -PLAT_SPEED
+            obj.oVelZ = 0
+        end,
+        ["default"] = function()
             obj.oUnk94 = 0
         end
-	})
+    })
 
     -- After moving in a direction for a while, move in the next
-	if obj.oUnk1A8 == PLAT_MOVEMENT_FRAMES then
-		obj.oUnk94 = obj.oUnk94 + 1
-		obj.oUnk1A8 = 0
+    if obj.oUnk1A8 == PLAT_MOVEMENT_FRAMES then
+        obj.oUnk94 = obj.oUnk94 + 1
+        obj.oUnk1A8 = 0
     end
 
-	cur_obj_rotate_face_angle_using_vel()
-	cur_obj_move_using_vel()
+    cur_obj_rotate_face_angle_using_vel()
+    cur_obj_move_using_vel()
 end
 
 --id_bhvMoving_Rotating_Block_MOP = hook_behavior(nil, OBJ_LIST_SURFACE, false, bhv_move_rotate_init, bhv_move_rotate_loop, "bhvMoving_Rotating_Block_MOP")
@@ -1211,25 +1231,25 @@ function bhv_blargg_loop(obj)
     ---@type MarioState
     local m = gMarioStates[0]
     -- In this case, since there's a lot of possible states, a switch is faster
-    switch (obj.oAction, {
-        [BLARGG_ACT_SWIM] = function ()
+    switch(obj.oAction, {
+        [BLARGG_ACT_SWIM] = function()
             blargg_act_swim(obj, m)
             blargg_step(obj)
         end,
-        [BLARGG_ACT_CHASE] = function ()
+        [BLARGG_ACT_CHASE] = function()
             blargg_act_chase_mario(obj, m)
             blargg_step(obj)
         end,
-        [BLARGG_ACT_KNOCKBACK] = function ()
+        [BLARGG_ACT_KNOCKBACK] = function()
             blargg_act_knockback(obj, m)
             blargg_step(obj)
         end,
-        [BLARGG_ACT_BACKUP] = function ()
+        [BLARGG_ACT_BACKUP] = function()
             obj.oForwardVel = 10.0
             blargg_act_back_up(obj)
             blargg_step(obj)
         end,
-        [BULLY_ACT_DEATH_PLANE_DEATH] = function ()
+        [BULLY_ACT_DEATH_PLANE_DEATH] = function()
             obj.activeFlags = ACTIVE_FLAG_DEACTIVATED
         end
     })
@@ -1329,21 +1349,21 @@ end
 -- Purple switch that converts coins to cork boxes and vice versa
 
 local function Swap_Coins_Box()
-	local box_obj = obj_get_first_with_behavior_id(id_bhvBreakableBox)
-	local coin_obj = obj_get_first_with_behavior_id(id_bhvYellowCoin)
-	-- Turn all breakable boxes into yellow coins...
-	while box_obj do
+    local box_obj = obj_get_first_with_behavior_id(id_bhvBreakableBox)
+    local coin_obj = obj_get_first_with_behavior_id(id_bhvYellowCoin)
+    -- Turn all breakable boxes into yellow coins...
+    while box_obj do
         box_obj.activeFlags = ACTIVE_FLAG_DEACTIVATED
-        spawn_object(box_obj , E_MODEL_YELLOW_COIN, id_bhvYellowCoin)
+        spawn_object(box_obj, E_MODEL_YELLOW_COIN, id_bhvYellowCoin)
         box_obj = obj_get_next_with_same_behavior_id(box_obj)
-	end
+    end
     -- ...and all yellow coins into breakable boxes
-	while coin_obj do
+    while coin_obj do
         coin_obj.activeFlags = ACTIVE_FLAG_DEACTIVATED
         coin_obj.oIntangibleTimer = -1
-        spawn_object(coin_obj , E_MODEL_BREAKABLE_BOX, id_bhvBreakableBox)
+        spawn_object(coin_obj, E_MODEL_BREAKABLE_BOX, id_bhvBreakableBox)
         coin_obj = obj_get_next_with_same_behavior_id(coin_obj)
-	end
+    end
 end
 
 ---@param obj Object
@@ -1357,14 +1377,14 @@ function bhv_pswitch_loop(obj)
     local m = gMarioStates[0]
     ---@type Object
     local m_obj = gMarioStates[0].marioObj
-    local sound_source = {x = 0, y = 0, z = 0}
+    local sound_source = { x = 0, y = 0, z = 0 }
     -- In this case, since there's a lot of possible states, a switch is faster
-    switch (obj.oAction, {
+    switch(obj.oAction, {
         --[[
          * Set the switch's model and scale. If Mario is standing near the
          * switch's middle section, transition to the pressed state.
          --]]
-        [PURPLE_SWITCH_IDLE] = function ()
+        [PURPLE_SWITCH_IDLE] = function()
             cur_obj_scale(1.0)
             if m_obj.platform == obj and m.action & MARIO_UNKNOWN_13 == 0 then
                 if lateral_dist_between_objects(obj, m_obj) < 127.5 then
@@ -1376,35 +1396,35 @@ function bhv_pswitch_loop(obj)
          * Collapse the switch downward, play a sound, and shake the screen.
          * Immediately transition to the ticking state.
          --]]
-        [PURPLE_SWITCH_PRESSED] = function ()
+        [PURPLE_SWITCH_PRESSED] = function()
             cur_obj_scale_over_time(2, 3, 1.0, 0.2)
             if obj.oTimer == 3 then
                 cur_obj_play_sound_2(SOUND_GENERAL2_PURPLE_SWITCH)
                 obj.oAction = PURPLE_SWITCH_TICKING
                 cur_obj_shake_screen(SHAKE_POS_SMALL)
-				Swap_Coins_Box()
-			end
+                Swap_Coins_Box()
+            end
         end,
         --[[
          * Play a continuous ticking sound that gets faster when time is almost
          * up. When time is up, move to a waiting-while-pressed state.
          --]]
-        [PURPLE_SWITCH_TICKING] = function ()
+        [PURPLE_SWITCH_TICKING] = function()
             if obj.oTimer < 360 then
-				play_sound(SOUND_GENERAL2_SWITCH_TICK_FAST, sound_source)
-			else
-				play_sound(SOUND_GENERAL2_SWITCH_TICK_SLOW, sound_source)
+                play_sound(SOUND_GENERAL2_SWITCH_TICK_FAST, sound_source)
+            else
+                play_sound(SOUND_GENERAL2_SWITCH_TICK_SLOW, sound_source)
             end
-			if obj.oTimer > 400 then
-				obj.oAction = PURPLE_SWITCH_WAIT_FOR_MARIO_TO_GET_OFF
-				Swap_Coins_Box()
+            if obj.oTimer > 400 then
+                obj.oAction = PURPLE_SWITCH_WAIT_FOR_MARIO_TO_GET_OFF
+                Swap_Coins_Box()
             end
         end,
         --[[
          * Make the switch look unpressed again, and transition back to the
          * idle state.
          --]]
-        [PURPLE_SWITCH_UNPRESSED] = function ()
+        [PURPLE_SWITCH_UNPRESSED] = function()
             cur_obj_scale_over_time(2, 3, 0.2, 1.0)
             if obj.oTimer == 3 then
                 obj.oAction = PURPLE_SWITCH_IDLE
@@ -1415,7 +1435,7 @@ function bhv_pswitch_loop(obj)
          * him to get off the switch, and when he does so, transition to the
          * unpressed state.
          --]]
-        [PURPLE_SWITCH_WAIT_FOR_MARIO_TO_GET_OFF] = function ()
+        [PURPLE_SWITCH_WAIT_FOR_MARIO_TO_GET_OFF] = function()
             if cur_obj_is_mario_on_platform() == 0 then
                 obj.oAction = PURPLE_SWITCH_UNPRESSED
             end
@@ -1429,11 +1449,14 @@ end
 -- No idea how they're made but they seem to copy the small breakable box
 -- However, since I really don't know how they work, they'll be deleted
 
-id_bhvShell_1_MOP = hook_behavior(nil, OBJ_LIST_UNIMPORTANT, false, function (obj) obj_mark_for_deletion(obj) end, nil, "bhvShell_1_MOP")
-id_bhvShell_2_MOP = hook_behavior(nil, OBJ_LIST_UNIMPORTANT, false, function (obj) obj_mark_for_deletion(obj) end, nil, "bhvShell_2_MOP")
+id_bhvShell_1_MOP = hook_behavior(nil, OBJ_LIST_UNIMPORTANT, false, function(obj) obj_mark_for_deletion(obj) end, nil,
+    "bhvShell_1_MOP")
+id_bhvShell_2_MOP = hook_behavior(nil, OBJ_LIST_UNIMPORTANT, false, function(obj) obj_mark_for_deletion(obj) end, nil,
+    "bhvShell_2_MOP")
 
 ------ Jukebox ------
 -- Allows the music to change within the same area
 -- Not possible in coop, or even regular pc port for that matter as far as I can tell
 
-id_bhvJukebox_MOP = hook_behavior(nil, OBJ_LIST_UNIMPORTANT, false, function (obj) obj_mark_for_deletion(obj) end, nil, "bhvJukebox_MOP")
+id_bhvJukebox_MOP = hook_behavior(nil, OBJ_LIST_UNIMPORTANT, false, function(obj) obj_mark_for_deletion(obj) end, nil,
+    "bhvJukebox_MOP")
