@@ -11,7 +11,6 @@
 
 #include "levels/scripts.h"
 
-
 /* Fast64 begin persistent block [includes] */
 /* Fast64 end persistent block [includes] */
 
@@ -23,30 +22,37 @@
 
 const LevelScript level_castle_inside_entry[] = {
 	INIT_LEVEL(),
-	LOAD_MIO0(0x7, _castle_inside_segment_7SegmentRomStart, _castle_inside_segment_7SegmentRomEnd), 
-	LOAD_MIO0(0xa, _water_skybox_mio0SegmentRomStart, _water_skybox_mio0SegmentRomEnd), 
+	LOAD_MIO0(0x7, _castle_inside_segment_7SegmentRomStart, _castle_inside_segment_7SegmentRomEnd),
+	LOAD_MIO0(0xa, _water_skybox_mio0SegmentRomStart, _water_skybox_mio0SegmentRomEnd),
 	ALLOC_LEVEL_POOL(),
 	MARIO(MODEL_MARIO, 0x00000001, bhvMario),
+	JUMP_LINK(script_func_global_1),
+	JUMP_LINK(script_func_global_11),
+	JUMP_LINK(script_func_global_13),
 
 	/* Fast64 begin persistent block [level commands] */
 	/* Fast64 end persistent block [level commands] */
 
 	AREA(1, castle_inside_area_1),
-		WARP_NODE(10, 16, 1, 71, WARP_NO_CHECKPOINT),
-		WARP_NODE(1, 16, 1, 9, WARP_NO_CHECKPOINT),
-		WARP_NODE(0xF0, 6, 1, 50, WARP_NO_CHECKPOINT),
-		WARP_NODE(0xF1, 6, 1, 100, WARP_NO_CHECKPOINT),
-		MARIO_POS(0x01, 0, 1000, -600, 0),
-		OBJECT(MODEL_NONE, 1000, -600, 0, 0, 0, 0, 0x000A0000, bhvSpinAirborneWarp),
-		OBJECT(E_MODEL_PEACH, 294, -593, -30, 0, 90, 0, DIALOG_050 << 24, id_bhvPeachCustom),
-		OBJECT(E_MODEL_CASTLE_CASTLE_DOOR, -9244, 3225, 79, 0, 90, 0, (1 << 16), id_bhvDoorWarp),
-		OBJECT(E_MODEL_CASTLE_CASTLE_DOOR, -9244, 3225, -79, 0, -90, 0, (1 << 16), id_bhvDoorWarp),
-		TERRAIN(castle_inside_area_1_collision),
-		MACRO_OBJECTS(castle_inside_area_1_macro_objs),
-		SET_BACKGROUND_MUSIC(0x00, 71),
-		TERRAIN_TYPE(TERRAIN_GRASS),
-		/* Fast64 begin persistent block [area commands] */
-		/* Fast64 end persistent block [area commands] */
+	WARP_NODE(10, 16, 1, 71, WARP_NO_CHECKPOINT),
+	WARP_NODE(1, 16, 1, 9, WARP_NO_CHECKPOINT),
+	WARP_NODE(0xF0, 6, 1, 50, WARP_NO_CHECKPOINT),
+	WARP_NODE(0xF1, 6, 1, 100, WARP_NO_CHECKPOINT),
+	MARIO_POS(0x01, 0, 1000, -600, 0),
+	OBJECT(MODEL_NONE, 1000, -600, 0, 0, 0, 0, 0x000A0000, bhvSpinAirborneWarp),
+	OBJECT(E_MODEL_PEACH, 294, -593, -30, 0, 90, 0, DIALOG_050 << 24, id_bhvPeachCustom),
+	OBJECT(E_MODEL_CASTLE_CASTLE_DOOR, -9244, 3225, 79, 0, 90, 0, (1 << 16), id_bhvDoorWarp),
+	OBJECT(E_MODEL_CASTLE_CASTLE_DOOR, -9244, 3225, -79, 0, -90, 0, (1 << 16), id_bhvDoorWarp),
+	OBJECT_WITH_ACTS(E_MODEL_TOAD, -2629, 750, 607, 0, 90, 0, 0x34000000, id_bhvToadMessage, 31),
+	OBJECT_WITH_ACTS(E_MODEL_TOAD, -5178, 2100, 639, 0, 90, 0, 0x35000000, id_bhvToadMessage, 31),
+	OBJECT_WITH_ACTS(E_MODEL_TOAD, -7347, 2550, 638, 0, 90, 0, 0x36000000, id_bhvToadMessage, 31),
+	OBJECT_WITH_ACTS(E_MODEL_TOAD, -587, -593, 578, 0, 90, 0, 0x33330000, id_bhvToadMessage, 31),
+	TERRAIN(castle_inside_area_1_collision),
+	MACRO_OBJECTS(castle_inside_area_1_macro_objs),
+	SET_BACKGROUND_MUSIC(0x00, 71),
+	TERRAIN_TYPE(TERRAIN_GRASS),
+	/* Fast64 begin persistent block [area commands] */
+	/* Fast64 end persistent block [area commands] */
 	END_AREA(),
 
 	FREE_LEVEL_POOL(),
