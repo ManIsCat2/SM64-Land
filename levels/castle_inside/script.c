@@ -40,7 +40,6 @@ const LevelScript level_castle_inside_entry[] = {
 		OBJECT(MODEL_NONE, 1000, -600, 0, 0, 0, 0, 0x000A0000, bhvSpinAirborneWarp),
 		OBJECT(E_MODEL_PEACH, 294, -593, -30, 0, 90, 0, DIALOG_050 << 24, id_bhvPeachCustom),
 		OBJECT(E_MODEL_CASTLE_CASTLE_DOOR, -9244, 3225, 79, 0, 90, 0, (1 << 16), id_bhvDoorWarp),
-		OBJECT(E_MODEL_CASTLE_CASTLE_DOOR, -9244, 3225, 79, 0, 90, 0, (1 << 16), id_bhvDoorWarp),
 		OBJECT(E_MODEL_CASTLE_CASTLE_DOOR, -9244, 3225, -79, 0, -90, 0, (1 << 16), id_bhvDoorWarp),
 		TERRAIN(castle_inside_area_1_collision),
 		MACRO_OBJECTS(castle_inside_area_1_macro_objs),
