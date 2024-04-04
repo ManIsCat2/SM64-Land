@@ -2,6 +2,13 @@
 #define WF_HEADER_H
 #include "types.h"
 #include "game/moving_texture.h"
+extern const LevelScript level_wf_entry[];
+extern const LevelScript local_area_wf_1_[];
+extern const LevelScript local_objects_wf_1_[];
+extern const LevelScript local_warps_wf_1_[];
+extern const LevelScript local_area_wf_2_[];
+extern const LevelScript local_objects_wf_2_[];
+extern const LevelScript local_warps_wf_2_[];
 extern const GeoLayout Geo_wf_1_0x1430ea0[];
 extern Gfx DL_wf_1_0xe0510f0[];
 extern Gfx DL_wf_1_0xe05c210[];
@@ -10,6 +17,13 @@ extern const Collision col_wf_1_0xe05cb10[];
 extern struct MovtexQuadCollection wf_1_Movtex_0[];
 extern struct MovtexQuadCollection wf_1_Movtex_1[];
 extern struct MovtexQuadCollection wf_1_Movtex_2[];
+extern const LevelScript level_wf_entry[];
+extern const LevelScript local_area_wf_1_[];
+extern const LevelScript local_objects_wf_1_[];
+extern const LevelScript local_warps_wf_1_[];
+extern const LevelScript local_area_wf_2_[];
+extern const LevelScript local_objects_wf_2_[];
+extern const LevelScript local_warps_wf_2_[];
 extern const GeoLayout Geo_wf_2_0x1431080[];
 extern Gfx DL_wf_2_0xe035620[];
 extern Gfx DL_wf_2_0xe0406d0[];
@@ -19,7 +33,7 @@ extern const Collision col_wf_2_0xe0423d0[];
 extern struct MovtexQuadCollection wf_2_Movtex_0[];
 extern struct MovtexQuadCollection wf_2_Movtex_1[];
 extern struct MovtexQuadCollection wf_2_Movtex_2[];
-extern const LevelScript level_wf_custom_entry[];
+extern const LevelScript level_wf_entry[];
 extern const LevelScript local_area_wf_1_[];
 extern const LevelScript local_objects_wf_1_[];
 extern const LevelScript local_warps_wf_1_[];
