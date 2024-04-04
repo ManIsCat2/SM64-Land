@@ -164,7 +164,7 @@ ALIGNED8 u8 rr_2__texture_0E00BA60[] = {
 #include "levels/rr/rr_2_0xe00ba60_custom.ci4.inc.c"
 };
 ALIGNED8 u8 rr_2__texture_0E00BC60 = {
-#include "levels/rr/rr_2_0xe00ba60_custom.ci4.pal.inc.c"
+#include "levels/rr/rr_2_0xe00ba60_custom.ci4.inc.c"
 };
 ALIGNED8 u8 rr_2__texture_0E002220[] = {
 #include "levels/rr/rr_2_0xe002220_custom.rgba16.inc.c"
