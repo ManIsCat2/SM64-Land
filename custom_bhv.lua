@@ -177,7 +177,7 @@ bhvWorldCannon = hook_behavior(nil, OBJ_LIST_SURFACE, true, world_cannon_init, w
 
 -- big mushrooms
 
-E_MODEL_STRAIGHT_MUSHROOM = smlua_model_util_get_id("straight_mushroom_geo")
+E_MODEL_STRAIGHT_MUSHROOM = smlua_model_util_get_id("custom_DL_19001000")
 COL_STRAIGHT_MUSHROOM = smlua_collision_util_get("straight_mushroom_collision")
 
 ---@param obj Object
@@ -219,7 +219,7 @@ id_bhvStraightMushroom = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mushroom
 
 -- another one :D
 
-E_MODEL_CURVED_MUSHROOM = smlua_model_util_get_id("curved_mushroom_geo")
+E_MODEL_CURVED_MUSHROOM = smlua_model_util_get_id("custom_DL_19001040")
 COL_CURVED_MUSHROOM = smlua_collision_util_get("curved_mushroom_collision")
 
 ---@param obj Object
