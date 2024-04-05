@@ -63,11 +63,15 @@ function world_unlocked(world)
         end
     end
 
-    -- WIP Worlds --
-
     if world == 3 then
-        return false
+        if operation(COURSE_CCM, 5) == gTextures.star then
+            return true
+        else
+            return false
+        end
     end
+
+
     if world == 4 then
         return false
     end
@@ -221,6 +225,18 @@ function level_hud()
             djui_hud_render_texture(operation(COURSE_JRB, 3), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_JRB, 5), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_JRB, 4), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
+        end
+        
+        if gNetworkPlayers[0].currLevelNum == LEVEL_BBH and gNetworkPlayers[0].currAreaIndex == 1 then
+            djui_hud_render_texture(operation(COURSE_BBH, 1), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_BBH, 2), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_BBH, 0), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
+        end
+
+        if gNetworkPlayers[0].currLevelNum == LEVEL_HMC and gNetworkPlayers[0].currAreaIndex == 1 then
+            djui_hud_render_texture(operation(COURSE_HMC, 0), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_HMC, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
+            djui_hud_render_texture(operation(COURSE_HMC, 2), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
         end
 
         djui_hud_render_texture(TEX_TIMER, ((djui_hud_get_screen_width() / 2) + 46), 4, 1, 1)

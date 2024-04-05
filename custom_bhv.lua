@@ -75,11 +75,7 @@ end
 
 function star_cage_loop(o)
     load_object_collision_model()
-    if get_world_star_count(1) >= 8 and o.oBehParams2ndByte == 1 then
-        obj_mark_for_deletion(o)
-    end
-
-    if get_world_star_count(2) >= 8 and o.oBehParams2ndByte == 2 then
+    if get_world_star_count(o.oBehParams2ndByte) >= 8 and o.oBehParams2ndByte == curWorld then
         obj_mark_for_deletion(o)
     end
 end
