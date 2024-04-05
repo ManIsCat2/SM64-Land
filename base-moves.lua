@@ -196,6 +196,7 @@ local function act_fake_freefall(m)
 end
 
 local function act_spin_jump(m)
+    if m.playerIndex ~= 0 then return end
     local e = gMarioStateExtras[m.playerIndex]
     if m.actionTimer == 0 then
         -- determine clockwise/counter-clockwise spin

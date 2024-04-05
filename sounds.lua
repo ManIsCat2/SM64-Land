@@ -6,6 +6,8 @@ smlua_audio_utils_replace_sequence(6, 16, 75, "Super Mario 3D Land - World 7 (SM
 smlua_audio_utils_replace_sequence(8, 12, 75, "Kalamari Desert - Mario Kart 64 (Final) 12")
 smlua_audio_utils_replace_sequence(78, 26, 75, "2-2_Piranha_Creeper_Creek")
 smlua_audio_utils_replace_sequence(36, 37, 75, "0x41 -sewer song Ninst37")
+smlua_audio_utils_replace_sequence(35, 23, 75, "0x38 giant desk theme Ninst23")
+smlua_audio_utils_replace_sequence(51, 26, 75, "3-4outside")
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom")
