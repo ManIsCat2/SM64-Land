@@ -11,105 +11,59 @@
 
 #include "levels/scripts.h"
 
-/* Fast64 begin persistent block [includes] */
-/* Fast64 end persistent block [includes] */
+#include "actors/common1.h"
 
 #include "make_const_nonconst.h"
 #include "levels/cotmc/header.h"
 
-/* Fast64 begin persistent block [scripts] */
-/* Fast64 end persistent block [scripts] */
+static const LevelScript script_func_local_1[] = {
+    OBJECT(/*model*/ MODEL_CAP_SWITCH, /*pos*/ 0,  363, -6144, /*angle*/ 0, 0, 0, /*behParam*/ 0x00010000, /*beh*/ bhvCapSwitch),
+    OBJECT(/*model*/ MODEL_NONE,       /*pos*/ 0,  500, -7373, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvWaterfallSoundLoop),
+    OBJECT(/*model*/ MODEL_NONE,       /*pos*/ 0,  500,  3584, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvWaterfallSoundLoop),
+    RETURN(),
+};
+
+static const LevelScript script_func_local_2[] = {
+    OBJECT(/*model*/ MODEL_NONE,       /*pos*/ 0, -200, -7000, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvHiddenRedCoinStar),
+    RETURN(),
+};
 
 const LevelScript level_cotmc_entry[] = {
-	INIT_LEVEL(),
-	LOAD_MIO0(0x7, _cotmc_segment_7SegmentRomStart, _cotmc_segment_7SegmentRomEnd),
-	LOAD_MIO0(0xa, _water_skybox_mio0SegmentRomStart, _water_skybox_mio0SegmentRomEnd),
-	ALLOC_LEVEL_POOL(),
-	MARIO(MODEL_MARIO, 0x00000001, bhvMario),
-	LOAD_MODEL_FROM_GEO(MODEL_BBH_HAUNTED_DOOR, haunted_door_geo),
-	LOAD_MODEL_FROM_GEO(MODEL_BBH_STAIRCASE_STEP, geo_bbh_0005B0),
-	LOAD_MODEL_FROM_GEO(MODEL_BBH_TILTING_FLOOR_PLATFORM, geo_bbh_0005C8),
-	LOAD_MODEL_FROM_GEO(MODEL_BBH_TUMBLING_PLATFORM, geo_bbh_0005E0),
-	LOAD_MODEL_FROM_GEO(MODEL_BBH_TUMBLING_PLATFORM_PART, geo_bbh_0005F8),
-	LOAD_MODEL_FROM_GEO(MODEL_BBH_MOVING_BOOKSHELF, geo_bbh_000610),
-	LOAD_MODEL_FROM_GEO(MODEL_BBH_MESH_ELEVATOR, geo_bbh_000628),
-	LOAD_MODEL_FROM_GEO(MODEL_BBH_MERRY_GO_ROUND, geo_bbh_000640),
-	LOAD_MODEL_FROM_GEO(MODEL_BBH_WOODEN_TOMB, geo_bbh_000658),
-	LOAD_MODEL_FROM_GEO(22, warp_pipe_geo),
-	LOAD_MODEL_FROM_GEO(23, bubbly_tree_geo),
-	LOAD_MODEL_FROM_GEO(24, spiky_tree_geo),
-	LOAD_MODEL_FROM_GEO(25, snow_tree_geo),
-	LOAD_MODEL_FROM_GEO(27, palm_tree_geo),
-	LOAD_MODEL_FROM_GEO(31, metal_door_geo),
-	LOAD_MODEL_FROM_GEO(32, hazy_maze_door_geo),
-	LOAD_MODEL_FROM_GEO(34, castle_door_0_star_geo),
-	LOAD_MODEL_FROM_GEO(35, castle_door_1_star_geo),
-	LOAD_MODEL_FROM_GEO(36, castle_door_3_stars_geo),
-	LOAD_MODEL_FROM_GEO(37, key_door_geo),
-	LOAD_MODEL_FROM_GEO(38, castle_door_geo),
-	// LOAD_MODEL_FROM_DL(132,0x08025f08,4),
-	// LOAD_MODEL_FROM_DL(158,0x0302c8a0,4),
-	// LOAD_MODEL_FROM_DL(159,0x0302bcd0,4),
-	// LOAD_MODEL_FROM_DL(161,0x0301cb00,4),
-	// LOAD_MODEL_FROM_DL(164,0x04032a18,4),
-	// LOAD_MODEL_FROM_DL(201,0x080048e0,4),
-	// LOAD_MODEL_FROM_DL(218,0x08024bb8,4),
-	// LOAD_MODEL_FROM_GEO(239,0x04008090),
-	// LOAD_MODEL_FROM_GEO(240,0x0040ef00),
-	// LOAD_MODEL_FROM_GEO(241,0x00405e00),
-	// LOAD_MODEL_FROM_GEO(242,0x0040eb80),
-	// LOAD_MODEL_FROM_GEO(243,0x0040fd50),
-	// LOAD_MODEL_FROM_GEO(244,0x0040ebd0),
-	// LOAD_MODEL_FROM_GEO(245,0x003767d4),
-	// LOAD_MODEL_FROM_GEO(246,0x0040ed50),
-	// LOAD_MODEL_FROM_GEO(247,0x00412a30),
-	// LOAD_MODEL_FROM_GEO(248,0x00413f50),
-	// LOAD_MODEL_FROM_GEO(249,0x0040eac0),
-	// LOAD_MODEL_FROM_GEO(250,0x0040e880),
-	JUMP_LINK(script_func_global_1),
-	JUMP_LINK(script_func_global_16),
+    INIT_LEVEL(),
+    LOAD_MIO0(        /*seg*/ 0x07, _cotmc_segment_7SegmentRomStart, _cotmc_segment_7SegmentRomEnd),
+    LOAD_MIO0_TEXTURE(/*seg*/ 0x09, _cave_mio0SegmentRomStart, _cave_mio0SegmentRomEnd),
+    LOAD_MIO0(        /*seg*/ 0x05, _group8_mio0SegmentRomStart, _group8_mio0SegmentRomEnd),
+    LOAD_RAW(         /*seg*/ 0x0C, _group8_geoSegmentRomStart,  _group8_geoSegmentRomEnd),
+    LOAD_MIO0(        /*seg*/ 0x06, _group17_mio0SegmentRomStart, _group17_mio0SegmentRomEnd),
+    LOAD_RAW(         /*seg*/ 0x0D, _group17_geoSegmentRomStart,  _group17_geoSegmentRomEnd),
+    LOAD_MIO0(        /*seg*/ 0x08, _common0_mio0SegmentRomStart, _common0_mio0SegmentRomEnd),
+    LOAD_RAW(         /*seg*/ 0x0F, _common0_geoSegmentRomStart,  _common0_geoSegmentRomEnd),
+    ALLOC_LEVEL_POOL(),
+    MARIO(/*model*/ MODEL_MARIO, /*behParam*/ 0x00000001, /*beh*/ bhvMario),
+    JUMP_LINK(script_func_global_9),
+    JUMP_LINK(script_func_global_18),
+    JUMP_LINK(script_func_global_1),
 
-	/* Fast64 begin persistent block [level commands] */
-	/* Fast64 end persistent block [level commands] */
+    AREA(/*index*/ 1, cotmc_geo_0001A0),
+        OBJECT(/*model*/ MODEL_NONE, /*pos*/ -4185, 1020, -47, /*angle*/ 0, 90, 0, /*behParam*/ 0x000A0000, /*beh*/ bhvAirborneWarp),
+        WARP_NODE(/*id*/ 0x0A, /*destLevel*/ LEVEL_COTMC, /*destArea*/ 0x01, /*destNode*/ 0x0A, /*flags*/ WARP_NO_CHECKPOINT),
+        WARP_NODE(/*id*/ 0xF0, /*destLevel*/ LEVEL_CASTLE, /*destArea*/ 0x03, /*destNode*/ 0x34, /*flags*/ WARP_NO_CHECKPOINT),
+        WARP_NODE(/*id*/ 0xF1, /*destLevel*/ LEVEL_CASTLE, /*destArea*/ 0x03, /*destNode*/ 0x66, /*flags*/ WARP_NO_CHECKPOINT),
+        WARP_NODE(/*id*/ 0xF3, /*destLevel*/ LEVEL_CASTLE_GROUNDS, /*destArea*/ 0x01, /*destNode*/ 0x14, /*flags*/ WARP_NO_CHECKPOINT),
+        JUMP_LINK(script_func_local_2),
+        JUMP_LINK(script_func_local_1),
+        TERRAIN(/*terrainData*/ cotmc_seg7_collision_level),
+        MACRO_OBJECTS(/*objList*/ cotmc_seg7_macro_objs),
+        SHOW_DIALOG(/*index*/ 0x00, DIALOG_130),
+        SET_BACKGROUND_MUSIC(/*settingsPreset*/ 0x0004, /*seq*/ SEQ_LEVEL_UNDERGROUND),
+        TERRAIN_TYPE(/*terrainType*/ TERRAIN_STONE),
+    END_AREA(),
 
-	AREA(1, cotmc_area_1),
-	WARP_NODE(10, 16, 1, 71, 0),
-	WARP_NODE(240, 6, 1, 50, 0),
-	WARP_NODE(241, 6, 1, 100, 0),
-	MARIO_POS(0x01, 0, -1638, 0, 98),
-	OBJECT_WITH_ACTS(0, -1638, 0, 98, 0, 90, 0, 0xa0000, bhvSpinAirborneWarp, 31),
-	OBJECT_WITH_ACTS(E_MODEL_TOAD, -246, 130, 49, 0, 270, 0, 0x1, id_bhvToadMessage, 31),
-	OBJECT_WITH_ACTS(0, -2142, 0, 62, 0, 90, 0, 0xa0a0000, bhvWarp, 31),
-	// OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x0, 0x0041f5a0, 31),
-	TERRAIN(cotmc_area_1_collision),
-	MACRO_OBJECTS(cotmc_area_1_macro_objs),
-	SET_BACKGROUND_MUSIC(0x00, 59),
-	TERRAIN_TYPE(TERRAIN_GRASS),
-	/* Fast64 begin persistent block [area commands] */
-	/* Fast64 end persistent block [area commands] */
-	END_AREA(),
-
-	AREA(2, cotmc_area_2),
-	WARP_NODE(10, 26, 1, 1, 0),
-	WARP_NODE(240, 6, 1, 50, 0),
-	WARP_NODE(241, 6, 1, 100, 0),
-	OBJECT_WITH_ACTS(E_MODEL_TOAD, -246, 130, 49, 0, 270, 0, 0x1, id_bhvToadMessage, 31),
-	OBJECT_WITH_ACTS(0, -1638, 0, 98, 0, 90, 0, 0xa0000, bhvSpinAirborneWarp, 31),
-	OBJECT_WITH_ACTS(0, -2142, 0, 62, 0, 90, 0, 0xa0a0000, bhvWarp, 31),
-	// OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x0, 0x0041f5a0, 31),
-	TERRAIN(cotmc_area_2_collision),
-	MACRO_OBJECTS(cotmc_area_2_macro_objs),
-	SET_BACKGROUND_MUSIC(0, 59),
-	TERRAIN_TYPE(TERRAIN_GRASS),
-	/* Fast64 begin persistent block [area commands] */
-	/* Fast64 end persistent block [area commands] */
-	END_AREA(),
-
-	FREE_LEVEL_POOL(),
-	MARIO_POS(0x01, 0, 0, 2, 0),
-	CALL(0, lvl_init_or_update),
-	CALL_LOOP(1, lvl_init_or_update),
-	CLEAR_LEVEL(),
-	SLEEP_BEFORE_EXIT(1),
-	EXIT(),
+    FREE_LEVEL_POOL(),
+    MARIO_POS(/*area*/ 1, /*yaw*/ 90, /*pos*/ -4185, 20, -47),
+    CALL(/*arg*/ 0, /*func*/ lvl_init_or_update),
+    CALL_LOOP(/*arg*/ 1, /*func*/ lvl_init_or_update),
+    CLEAR_LEVEL(),
+    SLEEP_BEFORE_EXIT(/*frames*/ 1),
+    EXIT(),
 };
