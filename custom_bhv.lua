@@ -190,7 +190,6 @@ define_custom_obj_fields({
 ---@param o Object
 function bhv_mushroom_straight_loop(o)
     load_object_collision_model()
-    local m = gMarioStates[0]
     if  o.oAction == 0 then
         o.oYNeeded = o.oYNeeded + 1
     end
