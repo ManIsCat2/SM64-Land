@@ -54,12 +54,12 @@ COL_PIPE_COVER = smlua_collision_util_get("pipe_cover_collision")
 
 -- Boss Star Cages
 
-COL_CAGE = smlua_collision_util_get("eight_star_cage_collision") -- Used by all cages
+COL_CAGE = smlua_collision_util_get("eight_star_cage_collision")     -- Used by all cages
 E_MODEL_8_STAR_CAGE = smlua_model_util_get_id("eight_star_cage_geo") -- World 1
 
 -- Per World Boss Cage Table
 worldCage = {
-    {cageModelID = E_MODEL_8_STAR_CAGE, starsNeeded = 8}
+    { cageModelID = E_MODEL_8_STAR_CAGE, starsNeeded = 8 }
 }
 
 COL_WORLD_CANNON = smlua_collision_util_get("world_cannon_collision")
@@ -179,38 +179,37 @@ COL_STRAIGHT_MUSHROOM = smlua_collision_util_get("straight_mushroom_collision")
 ---@param obj Object
 function bhv_mushroom_init(obj)
     obj.collisionData = COL_STRAIGHT_MUSHROOM
-    obj.oCollisionDistance = 1000
+    obj.oCollisionDistance = 2500
     obj.header.gfx.skipInViewCheck = true
 end
 
---taken from MOPs
+define_custom_obj_fields({
+    oYNeeded = "u32",
+})
 
----@param obj Object
-function bhv_mushroom_loop(obj)
+---@param o Object
+function bhv_mushroom_straight_loop(o)
     load_object_collision_model()
     local m = gMarioStates[0]
-    local y_spd = 64
-
-    if cur_obj_is_mario_on_platform() == 1 and not is_bubbled(m) then
-        m.peakHeight = m.pos.y
-        m.faceAngle.y = m.intendedYaw
-        --this is awful -- It really is -Sunk
-        -- Jump. If A is pressed during the jump, increase y_spd.
-        if m.controller.buttonPressed & A_BUTTON ~= 0 then
-            y_spd = y_spd + 12 -- I feel like this should increase with oBehParams2ndByte
-            spawn_mist_particles()
-        end
-        set_mario_action(m, ACT_DOUBLE_JUMP, 0)
-
-        -- Calculates y speed
-        local intermediate_y_spd = repack(y_spd, "f", "I")
-        intermediate_y_spd = intermediate_y_spd + (obj.oBehParams2ndByte << 16)
-        y_spd = repack(intermediate_y_spd, "I", "f")
-        m.vel.y = y_spd
+    if  o.oAction == 0 then
+        o.oYNeeded = o.oYNeeded + 1
     end
+
+    if o.oAction == 1 then
+        o.oYNeeded = o.oYNeeded - 1
+    end
+
+    if o.oYNeeded > (90 + 60) then
+        o.oAction = 1
+    end
+
+    if o.oYNeeded < 20 then
+        o.oAction = 0
+    end
+    o.header.gfx.scale.y = o.oYNeeded * 0.01
 end
 
-id_bhvStraightMushroom = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mushroom_init, bhv_mushroom_loop,
+id_bhvStraightMushroom = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mushroom_init, bhv_mushroom_straight_loop,
     "id_bhvStraightMushroom")
 
 -- another one :D
@@ -225,7 +224,7 @@ function bhv_mushroom_curved_init(obj)
     obj.header.gfx.skipInViewCheck = true
 end
 
-id_bhvCurvedMushroom = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mushroom_curved_init, bhv_mushroom_loop,
+id_bhvCurvedMushroom = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mushroom_curved_init, function (o) load_object_collision_model() end ,
     'id_bhvCurvedMushroom')
 
 -- seesaw platform but badass
