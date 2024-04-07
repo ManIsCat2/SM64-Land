@@ -699,3 +699,19 @@ function bhv_spinning_food_loop(o)
 end
 
 id_bhvSpinningFood = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_spinning_food_init, bhv_spinning_food_loop)
+
+
+E_MODEL_FLOWER = smlua_model_util_get_id("dancing_flower_geo")
+
+---@param o Object
+function bhv_animstate_object_init(o)
+    o.header.gfx.skipInViewCheck = true
+    obj_scale(o, 2)
+    obj_set_billboard(o)
+end
+
+function bhv_animstate_object_loop(o)
+    o.oAnimState = o.oAnimState + 1
+end
+
+id_bhvFlower = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_animstate_object_init, bhv_animstate_object_loop)
