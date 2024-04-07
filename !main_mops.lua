@@ -580,13 +580,24 @@ hook_event(HOOK_ON_SYNC_VALID,
 ---@param obj Object
 function bhv_green_switchboard_init(obj)
     -- Spawns gears
+    obj_scale_xyz(obj, 1.15, 1.15, 1.15)
+    obj.oPosY = obj.oPosY - 100
+    obj.collisionData = COL_GREEN_SEESAW
     obj.oIntroLakituCloud = spawn_object(obj, E_MODEL_GREEN_SWITCHBOARD_GEARS, id_bhvGreen_Switchboard_Gears_MOP)
-    obj_set_model_extended(obj, E_MODEL_GREEN_SWITCHBOARD)
+    obj_set_model_extended(obj, E_MODEL_GREEN_SEESAW)
 end
+
+function bhv_green_switchboard_gears_init(obj)
+    obj_scale_xyz(obj, 2, 2, 2)
+end
+
+hook_behavior(id_bhvGreen_Switchboard_Gears_MOP, OBJ_LIST_SURFACE, false, bhv_green_switchboard_gears_init, nil)
 
 ---@param obj Object
 function bhv_green_switchboard_loop(obj)
-    local MAX_SPEED = 20.0
+    load_object_collision_model()
+    local MIN_SPEED = 15.0
+    local MAX_SPEED = 30.0
     local SPEED_INC = 2.0
     local child = obj.oIntroLakituCloud
     local dot = 0
@@ -610,50 +621,85 @@ function bhv_green_switchboard_loop(obj)
         local invert = false
         if ((obj.oBehParams >> 0) & 0xFF) == 2 then
             invert = true
-            going_down_up_pos_y = 1.7
+            going_down_up_pos_y = 2.55
         else
             invert = false
-            going_down_up_pos_y = ((obj.oBehParams >> 8) & 0xff) * 3.9
+            going_down_up_pos_y = ((obj.oBehParams >> 8) & 0xff) * 3.9 * 1.5
         end
 
         --if dot is positive, mario is on front arrow
         dot = facingZ * dz + facingX * dx
         dotH = facingZ * dHz + facingX * dHx
 
-        if dot > 0 then
+        if dot >= 100 then
             -- 1st byte determines how far the switchboard can go forwards
-            if dotH < ((obj.oBehParams >> 24) & 0xFF) * 55 then
-                obj.oForwardVel = approach_by_increment(MAX_SPEED, obj.oForwardVel, SPEED_INC)
-                if not invert then
-                    obj.oPosY = obj.oPosY - going_down_up_pos_y
+            if dot >= 200 then
+                if dotH < ((obj.oBehParams >> 24) & 0xFF) * 55 then
+                    obj.oForwardVel = approach_by_increment(MAX_SPEED, obj.oForwardVel, SPEED_INC)
+                    if not invert then
+                        obj.oPosY = obj.oPosY - going_down_up_pos_y
+                    else
+                        obj.oPosY = obj.oPosY + going_down_up_pos_y
+                    end
                 else
-                    obj.oPosY = obj.oPosY + going_down_up_pos_y
+                    obj.oForwardVel = 0
                 end
+                obj.oFaceAnglePitch = approach_by_increment(4096.0, obj.oFaceAnglePitch, 256.0)
             else
-                obj.oForwardVel = 0
+                if dotH < ((obj.oBehParams >> 24) & 0xFF) * 55 then
+                    obj.oForwardVel = approach_by_increment(MIN_SPEED, obj.oForwardVel, SPEED_INC)
+                    if not invert then
+                        obj.oPosY = obj.oPosY - going_down_up_pos_y / 2
+                    else
+                        obj.oPosY = obj.oPosY + going_down_up_pos_y / 2
+                    end
+                else
+                    obj.oForwardVel = 0
+                end
+                obj.oFaceAnglePitch = approach_by_increment(2048.0, obj.oFaceAnglePitch, 256.0)
             end
-            obj.oFaceAnglePitch = approach_by_increment(2048.0, obj.oFaceAnglePitch, 128.0)
-        else
+        elseif dot <= -100 then
             -- 2nd byte determines how far the switchboard can go backwards
-            if dotH > obj.oBehParams2ndByte * -16 then
-                obj.oForwardVel = approach_by_increment(-MAX_SPEED, obj.oForwardVel, SPEED_INC)
-                if not invert then
-                    obj.oPosY = obj.oPosY + going_down_up_pos_y
+            if dot <= -200 then
+                if dotH > obj.oBehParams2ndByte * -16 then
+                    obj.oForwardVel = approach_by_increment(-MAX_SPEED, obj.oForwardVel, SPEED_INC)
+                    if not invert then
+                        obj.oPosY = obj.oPosY + going_down_up_pos_y
+                    else
+                        obj.oPosY = obj.oPosY - going_down_up_pos_y
+                    end
                 else
-                    obj.oPosY = obj.oPosY - going_down_up_pos_y
+                    obj.oForwardVel = 0
+                end
+                --this function doesn't work well with negatives thanks nintendo
+                if (obj.oFaceAnglePitch > -4096) then
+                    obj.oFaceAnglePitch = approach_by_increment(-4096.0, obj.oFaceAnglePitch, 256.0)
                 end
             else
-                obj.oForwardVel = 0
+                if dotH > obj.oBehParams2ndByte * -16 then
+                    obj.oForwardVel = approach_by_increment(-MIN_SPEED, obj.oForwardVel, SPEED_INC)
+                    if not invert then
+                        obj.oPosY = obj.oPosY + going_down_up_pos_y / 2
+                    else
+                        obj.oPosY = obj.oPosY - going_down_up_pos_y / 2
+                    end
+                else
+                    obj.oForwardVel = 0
+                end
+                --this function doesn't work well with negatives thanks nintendo
+                if (obj.oFaceAnglePitch > -2048) or (obj.oFaceAnglePitch < -2048) then
+                    obj.oFaceAnglePitch = approach_by_increment(-2048.0, obj.oFaceAnglePitch, 256.0)
+                end
             end
-            --this function doesn't work well with negatives thanks nintendo
-            if (obj.oFaceAnglePitch > -2048) then
-                obj.oFaceAnglePitch = approach_by_increment(-2048.0, obj.oFaceAnglePitch, 128.0)
-            end
+        else
+            obj.oForwardVel = approach_by_increment(0.0, obj.oForwardVel, SPEED_INC)
+            obj.oFaceAnglePitch = approach_by_increment(0.0, obj.oFaceAnglePitch, 256.0)
+            return
         end
     else
         -- Slowly resets the pitch and speed back to 0
         obj.oForwardVel = approach_by_increment(0.0, obj.oForwardVel, SPEED_INC)
-        obj.oFaceAnglePitch = approach_by_increment(0.0, obj.oFaceAnglePitch, 128.0)
+        obj.oFaceAnglePitch = approach_by_increment(0.0, obj.oFaceAnglePitch, 256.0)
     end
 end
 
