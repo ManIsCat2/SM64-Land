@@ -52,6 +52,34 @@ E_MODEL_BLOCKED_WARP_PIPE = smlua_model_util_get_id("warp_pipe_blocked_geo")
 E_MODEL_PIPE_COVER = smlua_model_util_get_id("pipe_cover_geo")
 COL_PIPE_COVER = smlua_collision_util_get("pipe_cover_collision")
 
+-- Big SeeSaw
+
+function big_seesaw_loop(o)
+    if (o.oBehParams >> 0) & 0xFF == 1 then
+        cur_obj_scale(1.5)
+        o.oCollisionDistance = 15000
+    end
+end
+
+hook_behavior(id_bhvSeesawPlatform, OBJ_LIST_SURFACE, false, nil, big_seesaw_loop)
+
+-- Long Checkerboard Elevator
+
+function long_checkerboard_loop(o)
+    obj_scale_xyz(o, 2, 1, 1)
+    o.oCollisionDistance = 2000
+end
+
+hook_behavior(id_bhvCheckerboardPlatformSub, OBJ_LIST_SURFACE, false, nil, long_checkerboard_loop)
+
+-- Unpoundable Wooden Post
+
+function unpoundable_wooden_post_loop(o)
+    o.oWoodenPostSpeedY = 0
+end
+
+hook_behavior(id_bhvWoodenPost, OBJ_LIST_SURFACE, false, nil, unpoundable_wooden_post_loop)
+
 -- Boss Star Cages
 
 COL_CAGE = smlua_collision_util_get("eight_star_cage_collision")     -- Used by all cages
@@ -173,43 +201,79 @@ bhvWorldCannon = hook_behavior(nil, OBJ_LIST_SURFACE, true, world_cannon_init, w
 
 -- big mushrooms
 
+-- "Fuck MOPS's Bouncers" -xLuigiGamerx
+
 E_MODEL_STRAIGHT_MUSHROOM = smlua_model_util_get_id("custom_DL_19001000")
 COL_STRAIGHT_MUSHROOM = smlua_collision_util_get("straight_mushroom_collision")
 
----@param obj Object
-function bhv_mushroom_init(obj)
-    obj.collisionData = COL_STRAIGHT_MUSHROOM
-    obj.oCollisionDistance = 2500
-    obj.header.gfx.skipInViewCheck = true
-end
+local squishTime = 0
 
 define_custom_obj_fields({
-    oYNeeded = "u32",
+    oInverted = "f32"
 })
 
 ---@param o Object
-function bhv_mushroom_straight_loop(o)
-    load_object_collision_model()
-    if  o.oAction == 0 then
-        o.oYNeeded = o.oYNeeded + 1
+function bhv_mushroom_straight_init(o)
+    o.oInverted = false
+    if o.oInverted then
+        squishTimer = MIN
+    else
+        squishTimer = MAX
     end
-
-    if o.oAction == 1 then
-        o.oYNeeded = o.oYNeeded - 1
-    end
-
-    if o.oYNeeded > (90 + 60) then
-        o.oAction = 1
-    end
-
-    if o.oYNeeded < 20 then
-        o.oAction = 0
-    end
-    o.header.gfx.scale.y = o.oYNeeded * 0.01
+    top = true
+    o.collisionData = COL_STRAIGHT_MUSHROOM
+    o.oCollisionDistance = 2500
+    o.header.gfx.skipInViewCheck = true
+    network_init_object(o, true, { "oInverted" })
 end
 
-id_bhvStraightMushroom = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mushroom_init, bhv_mushroom_straight_loop,
-    "id_bhvStraightMushroom")
+function sineInOut(b, e, c, t)
+    return b + (0.5 * (1 - math.cos(math.pi * t)) * (e - b))
+end
+
+
+---@param o Object
+function bhv_mushroom_straight_loop(o)
+    if o.oBehParams2ndByte > (o.oBehParams >> 24) & 0xFF then
+        MIN = math.abs(o.oBehParams2ndByte - (o.oBehParams >> 24))
+        MAX = o.oBehParams2ndByte * 2 + MIN
+        o.oInverted = true
+    elseif o.oBehParams2ndByte < (o.oBehParams >> 24) & 0xFF then
+        MIN = math.abs(o.oBehParams2ndByte - (o.oBehParams >> 24))
+        MAX = (o.oBehParams >> 24) + o.oBehParams2ndByte
+        o.oInverted = false
+    else
+        MIN = 20
+        MAX = 135
+        o.oInverted = false
+    end
+
+    if top then
+        if o.oInverted == 1 then
+            squishTimer = sineInOut(MIN, MAX, 1, squishTime)
+        else
+            squishTimer = sineInOut(MAX, MIN, 1, squishTime)
+        end
+    else
+        if o.oInverted == 1 then
+            squishTimer = sineInOut(MAX, MIN, 1, squishTime)
+        else
+            squishTimer = sineInOut(MIN, MAX, 1, squishTime)
+        end
+    end
+
+    if squishTime < 1 then
+        squishTime = squishTime + 1/900
+    else
+        top = not top
+        squishTime = 0
+    end
+
+    load_object_collision_model()
+    obj_scale_xyz(o, 1, squishTimer/100, 1)
+end
+
+id_bhvStraightMushroom = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mushroom_straight_init, bhv_mushroom_straight_loop, "id_bhvStraightMushroom")
 
 -- another one :D
 
@@ -223,8 +287,11 @@ function bhv_mushroom_curved_init(obj)
     obj.header.gfx.skipInViewCheck = true
 end
 
-id_bhvCurvedMushroom = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mushroom_curved_init, function (o) load_object_collision_model() end ,
-    'id_bhvCurvedMushroom')
+function bhv_mushroom_curved_loop(obj)
+    load_object_collision_model()
+end
+
+id_bhvCurvedMushroom = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mushroom_curved_init, bhv_mushroom_curved_loop, 'id_bhvCurvedMushroom')
 
 -- seesaw platform but badass
 
