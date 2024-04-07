@@ -5,6 +5,7 @@ local Py = 5 -100
 local prevPy = 5 -100
 
 curWorld = 1
+starPower = 0
 worldSelected = 1
 warpsforlevels = {
     { level = 16, area = 1, warpid = 11 },
@@ -71,6 +72,7 @@ function world_unlocked(world)
         end
     end
 
+    -- WIP Worlds --
 
     if world == 4 then
         return false
@@ -127,13 +129,13 @@ local TEX_P_WORLD_8_STAR = get_texture_info("hud_star_p_world_8")
 
 local worldSpecific = {
     { "World 1", stars = 14, nil, nil },
-    { "World 2", stars = 16, starIcon = TEX_WORLD_2_STAR, pStarIcon = TEX_P_WORLD_2_STAR },
-    { "World 3", stars = 15, starIcon = TEX_WORLD_3_STAR, pStarIcon = TEX_P_WORLD_3_STAR },
-    { "World 4", stars = 15, starIcon = TEX_WORLD_4_STAR, pStarIcon = TEX_P_WORLD_4_STAR },
-    { "World 5", stars = 16, starIcon = TEX_WORLD_5_STAR, pStarIcon = TEX_P_WORLD_5_STAR },
-    { "World 6", stars = 14, starIcon = TEX_WORLD_6_STAR, pStarIcon = TEX_P_WORLD_6_STAR },
-    { "World 7", stars = 14, starIcon = TEX_WORLD_7_STAR, pStarIcon = TEX_P_WORLD_7_STAR },
-    { "World 8", stars = 18, starIcon = TEX_WORLD_8_STAR, pStarIcon = TEX_P_WORLD_8_STAR },
+    { "World 2", stars = 16, starIcon = TEX_WORLD_2_STAR, starPowerIcon = TEX_P_WORLD_2_STAR },
+    { "World 3", stars = 15, starIcon = TEX_WORLD_3_STAR, starPowerIcon = TEX_P_WORLD_3_STAR },
+    { "World 4", stars = 15, starIcon = TEX_WORLD_4_STAR, starPowerIcon = TEX_P_WORLD_4_STAR },
+    { "World 5", stars = 16, starIcon = TEX_WORLD_5_STAR, starPowerIcon = TEX_P_WORLD_5_STAR },
+    { "World 6", stars = 14, starIcon = TEX_WORLD_6_STAR, starPowerIcon = TEX_P_WORLD_6_STAR },
+    { "World 7", stars = 14, starIcon = TEX_WORLD_7_STAR, starPowerIcon = TEX_P_WORLD_7_STAR },
+    { "World 8", stars = 18, starIcon = TEX_WORLD_8_STAR, starPowerIcon = TEX_P_WORLD_8_STAR },
 }
 
 function operation(course, star, is100star)
@@ -175,6 +177,11 @@ function lobby_hud()
             djui_hud_print_text(tostring(numStars), djui_hud_get_screen_width() - 32, 4, 1)
         else
             djui_hud_print_text(tostring(numStars), djui_hud_get_screen_width() - 46, 4, 1)
+        end
+        if curWorld > 1 then
+            djui_hud_render_texture(worldSpecific[curWorld].starPowerIcon, (djui_hud_get_screen_width()/2) - 26, 3, 1, 1)
+            djui_hud_print_text("@", (djui_hud_get_screen_width()/2) - 10, 4, 1)
+            djui_hud_print_text(tostring(starPower), (djui_hud_get_screen_width()/2) + 2, 4, 1)
         end
     end
 end
@@ -226,7 +233,7 @@ function level_hud()
             djui_hud_render_texture(operation(COURSE_JRB, 5), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_JRB, 4), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
         end
-        
+
         if gNetworkPlayers[0].currLevelNum == LEVEL_BBH and gNetworkPlayers[0].currAreaIndex == 1 then
             djui_hud_render_texture(operation(COURSE_BBH, 1), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
             djui_hud_render_texture(operation(COURSE_BBH, 2), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
