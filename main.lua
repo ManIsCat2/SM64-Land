@@ -1,5 +1,5 @@
 -- name: Super Mario 64 Land
--- description: Awesome romhack by Kaze, Ported By I'mYourCat and xLuigiGamerx.
+-- description: Awesome romhack by Kaze, Ported By I'mYourCat and xLuigiGamerx.\n\nCredits to:\nSteven\nSunk\nBlocky\nWoissil\nRushedAccN64
 -- incompatible: romhack
 
 m = gMarioStates[0]
