@@ -1,0 +1,10 @@
+extern const GeoLayout yoshi_nest_geo[];
+extern Lights1 yoshi_nest_f3dlite_material_lights;
+extern u8 yoshi_nest_Dried_Grass_Free_Texture_patternpictures_3013_768x510_ci8[];
+extern u8 yoshi_nest_Dried_Grass_Free_Texture_patternpictures_3013_768x510_ci8_pal_rgba16[];
+extern Vtx yoshi_nest_000_displaylist_mesh_layer_1_vtx_0[56];
+extern Gfx yoshi_nest_000_displaylist_mesh_layer_1_tri_0[];
+extern Gfx mat_yoshi_nest_f3dlite_material[];
+extern Gfx mat_revert_yoshi_nest_f3dlite_material[];
+extern Gfx yoshi_nest_000_displaylist_mesh_layer_1[];
+extern Gfx yoshi_nest_material_revert_render_settings[];
