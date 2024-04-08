@@ -712,7 +712,7 @@ E_MODEL_FLOWER = smlua_model_util_get_id("dancing_flower_geo")
 ---@param o Object
 function bhv_animstate_object_init(o)
     o.header.gfx.skipInViewCheck = true
-    obj_scale(o, 2)
+    obj_scale(o, 2.5)
     obj_set_billboard(o)
 end
 
