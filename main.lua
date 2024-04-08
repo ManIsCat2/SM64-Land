@@ -10,6 +10,8 @@ local function mario_update(m)
     vec3f_set(gLevelValues.starPositions.KingBobombStarPos, m.pos.x, m.pos.y + 200, m.pos.z) -- Makes the star spawn above the player like the romhack
 end
 
+--castle exit stuff
+
 if m.numStars > 0 then
     gLevelValues.entryLevel = LEVEL_CASTLE_GROUNDS
 else
@@ -17,8 +19,11 @@ else
 end
 
 gLevelValues.exitCastleLevel = LEVEL_CASTLE_GROUNDS
+-- fix collisions being bad
 gLevelValues.fixCollisionBugs = true
+--fix  cap durations
 gLevelValues.metalCapDurationCotmc = 1
+gLevelValues.wingCapDurationTotwc = 1
 
 --really needed
 gServerSettings.stayInLevelAfterStar = true
