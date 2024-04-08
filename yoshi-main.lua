@@ -317,16 +317,10 @@ end
 hook_event(HOOK_MARIO_UPDATE, mario_update)
 hook_event(HOOK_ON_SET_MARIO_ACTION, mario_on_set_action)
 hook_event(HOOK_ALLOW_INTERACT, allow_interact)
-hook_event(HOOK_ON_INTERACT, on_interact)
+--hook_event(HOOK_ON_INTERACT, on_interact)
 
 hook_mario_action(ACT_RIDE_YOSHI_IDLE, {every_frame = act_ride_yoshi_idle})
 hook_mario_action(ACT_RIDE_YOSHI_WALK, {every_frame = act_ride_yoshi_walk})
 hook_mario_action(ACT_RIDE_YOSHI_JUMP, {every_frame = act_ride_yoshi_jump})
 hook_mario_action(ACT_RIDE_YOSHI_FLUTTER, {every_frame = act_ride_yoshi_flutter})
 hook_mario_action(ACT_RIDE_YOSHI_FALL, {every_frame = act_ride_yoshi_fall})
-
-hook_chat_command(
-    "YOSHI_DEBUG",
-    "[\\#00C7FF\\on\\#ffffff\\|\\#A02200\\off\\#ffffff\\|\\#FFF700\\host-only\\#ffffff\\]",
-    debug_mode_command
-)
