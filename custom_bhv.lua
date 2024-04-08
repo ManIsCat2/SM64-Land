@@ -7,6 +7,7 @@ end
 function get_world_star_count(world)
     local course1
     local course2
+    local course3
     local stars_world = 0
     if world == 1 then
         course1 = COURSE_BOB
@@ -23,6 +24,12 @@ function get_world_star_count(world)
         course2 = COURSE_SSL
     end
 
+    if world == 4 then
+        course1 = COURSE_SL
+        course2 = COURSE_WDW
+        course3 = COURSE_TTC
+    end
+
     for i = course1, course2 do
         local starFlags = save_file_get_star_flags(get_current_save_file_num() - 1, i - 1)
         for star = 0, 6 do
@@ -31,7 +38,12 @@ function get_world_star_count(world)
             end
         end
     end
-    return stars_world
+    
+    if course3 ~= nil then
+        return stars_world + save_file_get_course_star_count(get_current_save_file_num() - 1, course3 - 1)
+    else
+        return stars_world
+    end
 end
 
 local repack = function(value, pack_fmt, unpack_fmt)
@@ -237,7 +249,6 @@ function sineInOut(b, e, c, t)
     return b + (0.5 * (1 - math.cos(math.pi * t)) * (e - b))
 end
 
-
 ---@param o Object
 function bhv_mushroom_straight_loop(o)
     if o.oBehParams2ndByte > (o.oBehParams >> 24) & 0xFF then
@@ -269,17 +280,18 @@ function bhv_mushroom_straight_loop(o)
     end
 
     if squishTime < 1 then
-        squishTime = squishTime + 1/900
+        squishTime = squishTime + 1 / 900
     else
         top = not top
         squishTime = 0
     end
 
     load_object_collision_model()
-    obj_scale_xyz(o, 1, squishTimer/100, 1)
+    obj_scale_xyz(o, 1, squishTimer / 100, 1)
 end
 
-id_bhvStraightMushroom = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mushroom_straight_init, bhv_mushroom_straight_loop, "id_bhvStraightMushroom")
+id_bhvStraightMushroom = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mushroom_straight_init,
+    bhv_mushroom_straight_loop, "id_bhvStraightMushroom")
 
 -- another one :D
 
@@ -297,7 +309,8 @@ function bhv_mushroom_curved_loop(obj)
     load_object_collision_model()
 end
 
-id_bhvCurvedMushroom = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mushroom_curved_init, bhv_mushroom_curved_loop, 'id_bhvCurvedMushroom')
+id_bhvCurvedMushroom = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mushroom_curved_init, bhv_mushroom_curved_loop,
+    'id_bhvCurvedMushroom')
 
 -- seesaw platform but badass
 
