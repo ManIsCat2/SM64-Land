@@ -734,3 +734,18 @@ function bhv_animstate_object_loop(o)
 end
 
 id_bhvFlower = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_animstate_object_init, bhv_animstate_object_loop)
+
+E_MODEL_SMW_BLOCK = smlua_model_util_get_id("smw_block_geo")
+COL_SMW_BLOCK = smlua_model_util_get_id("smw_block_collision")
+
+function bhv_smw_block_init(o)
+    o.header.gfx.skipInViewCheck = true
+    o.collisionData = COL_SMW_BLOCK
+    o.oCollisionDistance = 1000
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    obj_set_model_extended(o, E_MODEL_SMW_BLOCK)
+end
+
+function bhv_smw_block_loop(o)
+
+end
