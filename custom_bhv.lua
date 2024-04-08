@@ -190,7 +190,13 @@ function pipe_cover_loop(o)
         obj_mark_for_deletion(o)
     end
 
+
     if operation(COURSE_CCM, 5) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 8 then
+        obj_mark_for_deletion(o)
+    end
+
+
+    if operation(COURSE_SSL, 3) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 12 then
         obj_mark_for_deletion(o)
     end
 end

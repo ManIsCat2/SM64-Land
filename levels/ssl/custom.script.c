@@ -254,6 +254,7 @@ RETURN()
 };
 const LevelScript local_objects_ssl_3_[] = {
 OBJECT_WITH_ACTS(0,0,360,0,0,180,0,0xa0000, bhvSpinAirborneWarp,31),
+OBJECT_WITH_ACTS(E_MODEL_KING_BOBOMB,0,360,0,0,180,0,(3 << 24), id_bhvKingBobomb,31),
 OBJECT_WITH_ACTS(64,144,480,-945,0,0,0,0x0, Bhv_Custom_0x0703dfc0,31),
 OBJECT_WITH_ACTS(68,-115,2650,1217,0,0,0,0x0, Bhv_Custom_0x005cf200,31),
 OBJECT_WITH_ACTS(68,-1015,2650,-912,0,0,0,0x0, Bhv_Custom_0x005cf200,31),

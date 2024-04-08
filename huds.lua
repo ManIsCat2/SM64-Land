@@ -93,8 +93,10 @@ function world_unlocked(world)
 end
 
 function worlds_unlocked()
-    if world_unlocked(2)  then
-        worldsUnlocked = worldsUnlocked + 1
+    for i=1,8 do
+        if world_unlocked(i)  then
+            worldsUnlocked = worldsUnlocked + 1
+        end
     end
     return worldsUnlocked
 end
