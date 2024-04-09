@@ -4,6 +4,29 @@ function get_star_count()
     return save_file_get_total_star_count(get_current_save_file_num() - 1, courseMin - 1, courseMax - 1)
 end
 
+local function obj_set_hitbox(obj, hitbox)
+    if not obj or not hitbox then return end
+    -- Sets other hitbox values once
+    if (obj.oFlags & OBJ_FLAG_30) == 0 then
+        obj.oFlags = obj.oFlags | OBJ_FLAG_30
+        if hitbox.interactType ~= nil then
+            obj.oInteractType = hitbox.interactType
+        end
+        obj.oDamageOrCoinValue = hitbox.damageOrCoinValue
+        obj.oHealth = hitbox.health
+        obj.oNumLootCoins = hitbox.numLootCoins
+
+        cur_obj_become_tangible()
+    end
+
+    -- Set actual hitboxes
+    obj.hitboxRadius = obj.header.gfx.scale.x * hitbox.radius
+    obj.hitboxHeight = obj.header.gfx.scale.y * hitbox.height
+    obj.hurtboxRadius = obj.header.gfx.scale.x * hitbox.hurtboxRadius
+    obj.hurtboxHeight = obj.header.gfx.scale.y * hitbox.hurtboxHeight
+    obj.hitboxDownOffset = obj.header.gfx.scale.y * hitbox.downOffset
+end
+
 function get_world_star_count(world)
     local course1
     local course2
@@ -49,6 +72,9 @@ end
 local repack = function(value, pack_fmt, unpack_fmt)
     return string.unpack(unpack_fmt, string.pack(pack_fmt, value))
 end
+
+local FALSE = 0 -- false for custom object fields
+local TRUE = 1 -- true for custom object fields
 
 ---@param m MarioState
 ---@return boolean
@@ -233,7 +259,7 @@ define_custom_obj_fields({
 ---@param o Object
 function bhv_mushroom_straight_init(o)
     o.oInverted = false
-    if o.oInverted then
+    if o.oInverted == TRUE then
         squishTimer = MIN
     else
         squishTimer = MAX
@@ -266,13 +292,13 @@ function bhv_mushroom_straight_loop(o)
     end
 
     if top then
-        if o.oInverted == 1 then
+        if o.oInverted == TRUE then
             squishTimer = sineInOut(MIN, MAX, 1, squishTime)
         else
             squishTimer = sineInOut(MAX, MIN, 1, squishTime)
         end
     else
-        if o.oInverted == 1 then
+        if o.oInverted == TRUE then
             squishTimer = sineInOut(MAX, MIN, 1, squishTime)
         else
             squishTimer = sineInOut(MIN, MAX, 1, squishTime)
@@ -487,8 +513,8 @@ function fake_pipe_loop(o)
         o.oSubAction = o.oSubAction + 1
     end
 
-    if o.oSubAction > 100 then
-        spawn_sync_object(id_bhvAnt, E_MODEL_ANT, o.oPosX, o.oPosY + 100, o.oPosZ, function(obj)
+    if o.oSubAction > 120 then
+        spawn_sync_object(id_bhvAnt, E_MODEL_ANT, o.oPosX, o.oPosY, o.oPosZ, function(obj)
             obj.parentObj = o
         end)
         o.oSubAction = 0
@@ -570,7 +596,6 @@ function bhv_bouncy_platform_loop(obj)
     local m = gMarioStates[0]
 
     obj.oPosX = obj.oPosX
-
     if cur_obj_is_mario_on_platform() == 1 and not is_bubbled(m) then
         if m.action == ACT_GROUND_POUND_LAND then
             set_anim_to_frame(m, 0)
@@ -585,37 +610,59 @@ function bhv_bouncy_platform_loop(obj)
                 bounceMultiplier = bounceMultiplier + 1
             end
         end
+        set_mario_particle_flags(gMarioStates[0], (PARTICLE_MIST_CIRCLE | PARTICLE_HORIZONTAL_STAR), 0)
     end
 end
 
 id_bhvBouncyPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_bouncy_platform_init, bhv_bouncy_platform_loop)
 
+local antsKilled = 0
+
+local sAntHitbox = {
+    interactType = INTERACT_BOUNCE_TOP,
+    downOffset = 0,
+    damageOrCoinValue = 2,
+    health = 1,
+    numLootCoins = 1,
+    radius = 100,
+    height = 100,
+    hurtboxHeight = 75,
+    hurtboxRadius = 75,
+    numLootScore = 200
+}
+
+local sAntNoCoinOrScoreHitbox = {
+    interactType = INTERACT_BOUNCE_TOP,
+    downOffset = 0,
+    damageOrCoinValue = 2,
+    health = 1,
+    numLootCoins = 0,
+    radius = 100,
+    height = 100,
+    hurtboxHeight = 75,
+    hurtboxRadius = 75,
+    numLootScore = 0
+}
 
 ---@param o Object
 function bhv_ant_init(o)
-    o.oInteractType = INTERACT_BOUNCE_TOP
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_MOVE_XZ_USING_FVEL | OBJ_FLAG_SET_FACE_ANGLE_TO_MOVE_ANGLE
     o.header.gfx.skipInViewCheck = true
     o.oAnimations = gObjectAnimations.goomba_seg8_anims_0801DA4C
     o.oGravity = 3
     o.oFriction = 1
-    o.oForwardVel = 10
-    o.hurtboxRadius = 72
-    o.hurtboxHeight = 50
-    o.oIntangibleTimer = 0
-    o.oNumLootCoins = 1
+    o.oForwardVel = 3.545
+    o.oTimer = antsKilled
+    if o.oTimer < 3 then
+        obj_set_hitbox(o, sAntHitbox)
+    else
+        obj_set_hitbox(o, sAntNoCoinOrScoreHitbox)
+    end
+    djui_chat_message_create(tostring(o.oTimer))
     obj_scale(o, 2.5)
     cur_obj_init_animation(0)
+    djui_chat_message_create(tostring(antsKilled))
 end
-
-hit_acts = {
-    [ACT_PUNCHING] = true,
-    [ACT_MOVE_PUNCHING] = true,
-    [ACT_JUMP_KICK] = true,
-    [ACT_GROUND_POUND_LAND] = true,
-    [ACT_DIVE] = true,
-    [ACT_CAT_DIVE] = true
-}
 
 E_MODEL_ANT = smlua_model_util_get_id("ant_geo")
 
@@ -623,20 +670,17 @@ E_MODEL_ANT = smlua_model_util_get_id("ant_geo")
 function bhv_ant_loop(o)
     object_step()
     o.oMoveAngleYaw = o.parentObj.oFaceAngleYaw
-    if obj_check_hitbox_overlap(o, m.marioObj) then
-        if hit_acts[m.action] then
-            o.oAction = 1
-        end
-    end
 
-    if o.oAction == 1 or o.oInteractStatus == 49155 then
-        o.oHealth = 0
-        obj_die_if_health_non_positive()
-    end
-
-    if o.oPosZ > -5322 and gNetworkPlayers[0].currLevelNum == LEVEL_JRB then
+    if o.oPosZ - o.parentObj.oPosZ >= 3280 then
         obj_mark_for_deletion(o)
     end
+
+    if o.oInteractStatus & INT_STATUS_WAS_ATTACKED ~= 0 then
+        o.oHealth = o.oHealth - 1
+        antsKilled = antsKilled + 1
+    end
+
+    obj_die_if_health_non_positive()
 
     if o.oPosY < -1000 then
         obj_mark_for_deletion(o)
