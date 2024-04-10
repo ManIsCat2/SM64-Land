@@ -118,11 +118,6 @@ function bhv_yoshi_unridden(o)
         lua_push_mario_out_of_object(player, o, 2)
     end
 
-    if o.oYoshiIdleTimer >= 600 then
-        spawn_mist_particles_with_sound(SOUND_OBJ_DYING_ENEMY1)
-        obj_mark_for_deletion(o)
-    end
-
     o.oInteractStatus = 0
 
     local yoshiRidingActions = {
