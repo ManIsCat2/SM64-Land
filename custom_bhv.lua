@@ -661,7 +661,7 @@ function bhv_ant_init(o)
     djui_chat_message_create(tostring(o.oTimer))
     obj_scale(o, 2.5)
     cur_obj_init_animation(0)
-    djui_chat_message_create(tostring(antsKilled))
+    --djui_chat_message_create(tostring(antsKilled))
 end
 
 E_MODEL_ANT = smlua_model_util_get_id("ant_geo")
