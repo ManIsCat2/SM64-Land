@@ -780,17 +780,63 @@ end
 
 id_bhvFlower = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_animstate_object_init, bhv_animstate_object_loop)
 
-E_MODEL_SMW_BLOCK = smlua_model_util_get_id("smw_block_geo")
-COL_SMW_BLOCK = smlua_model_util_get_id("smw_block_collision")
+E_MODEL_FLIP_BLOCK = smlua_model_util_get_id("smw_block_geo")
+COL_FLIP_BLOCK = smlua_collision_util_get("smw_block_collision")
 
-function bhv_smw_block_init(o)
+local sFlipBlockHitbox = {
+    interactType = nil,
+    downOffset = 0,
+    damageOrCoinValue = 0,
+    health = 0,
+    numLootCoins = 0,
+    radius = 0,
+    height = 0,
+    hurtboxHeight = 0,
+    hurtboxRadius = 0
+}
+
+define_custom_obj_fields({
+    oFlipping = "f32"
+})
+
+function bhv_flip_block_init(o)
     o.header.gfx.skipInViewCheck = true
-    o.collisionData = COL_SMW_BLOCK
+    o.collisionData = COL_FLIP_BLOCK
     o.oCollisionDistance = 1000
+    o.oFlipping = false
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
-    obj_set_model_extended(o, E_MODEL_SMW_BLOCK)
+    obj_set_hitbox(o, sFlipBlockHitbox)
+    obj_set_model_extended(o, E_MODEL_FLIP_BLOCK)
+    network_init_object(o, true, {"oFlipping"})
 end
 
-function bhv_smw_block_loop(o)
+function bhv_flip_block_loop(o)
+    if o.oFlipping == FALSE then
+        o.oTimer = 0
+        o.oFaceAnglePitch = 0
+        load_object_collision_model()
+        obj_scale_xyz(o, 1, 1, 1)
+    else
+        if o.oTimer <= 180 then
+            o.oFaceAnglePitch = o.oFaceAnglePitch + (210 - o.oTimer) * 16
+        else
+            o.oFlipping = false
+        end
+        obj_scale_xyz(o, 1, 1, 0.01)
+    end
 
+    ---@type MarioState
+    local m = gMarioStates[0]
+    if not is_bubbled(m) and (cur_obj_was_attacked_or_ground_pounded() ~= 0 or (m.vel.y <= 0 and m.ceil and m.ceil.object == o and m.pos.y + m.marioObj.hitboxHeight + 156 >= m.ceil.lowerY)) and o.oFlipping == FALSE then
+        o.oFlipping = true
+    end
+
+    if cur_obj_is_mario_on_platform() ~= 0 then
+        djui_chat_message_create("1: "..tostring((o.oBehParams >> 24) & 0xFF))
+        djui_chat_message_create("2: "..tostring((o.oBehParams >> 16) & 0xFF))
+        djui_chat_message_create("3: "..tostring((o.oBehParams >> 8) & 0xFF))
+        djui_chat_message_create("4: "..tostring((o.oBehParams >> 0) & 0xFF))
+    end
 end
+
+id_bhvFlipBlock = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_flip_block_init, bhv_flip_block_loop)
