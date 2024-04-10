@@ -500,10 +500,13 @@ end
 
 id_bhvDancingHill = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_dancing_hill_init, bhv_dancing_hill_loop)
 
+local antsKilled = 0
+
 function bhv_fake_pipe_init(o)
     o.header.gfx.skipInViewCheck = true
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     o.collisionData = gGlobalObjectCollisionData.warp_pipe_seg3_collision_03009AC8
+    antsKilled = 0
 end
 
 ---@param o Object
@@ -616,8 +619,6 @@ end
 
 id_bhvBouncyPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_bouncy_platform_init, bhv_bouncy_platform_loop)
 
-local antsKilled = 0
-
 local sAntHitbox = {
     interactType = INTERACT_BOUNCE_TOP,
     downOffset = 0,
@@ -668,7 +669,6 @@ E_MODEL_ANT = smlua_model_util_get_id("ant_geo")
 
 ---@param o Object
 function bhv_ant_loop(o)
-    o.oInteractStatus = 0
     object_step()
     o.oMoveAngleYaw = o.parentObj.oFaceAngleYaw
 
@@ -679,6 +679,8 @@ function bhv_ant_loop(o)
     if o.oInteractStatus & INT_STATUS_WAS_ATTACKED ~= 0 then
         o.oHealth = o.oHealth - 1
         antsKilled = antsKilled + 1
+    else
+        o.oInteractStatus = 0
     end
 
     obj_die_if_health_non_positive()
