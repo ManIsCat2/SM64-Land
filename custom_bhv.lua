@@ -658,7 +658,7 @@ function bhv_ant_init(o)
     else
         obj_set_hitbox(o, sAntNoCoinOrScoreHitbox)
     end
-    djui_chat_message_create(tostring(o.oTimer))
+    --djui_chat_message_create(tostring(o.oTimer))
     obj_scale(o, 2.5)
     cur_obj_init_animation(0)
     --djui_chat_message_create(tostring(antsKilled))
