@@ -61,7 +61,7 @@ function get_world_star_count(world)
             end
         end
     end
-    
+
     if course3 ~= nil then
         return stars_world + save_file_get_course_star_count(get_current_save_file_num() - 1, course3 - 1)
     else
@@ -74,7 +74,7 @@ local repack = function(value, pack_fmt, unpack_fmt)
 end
 
 local FALSE = 0 -- false for custom object fields
-local TRUE = 1 -- true for custom object fields
+local TRUE = 1  -- true for custom object fields
 
 ---@param m MarioState
 ---@return boolean
@@ -668,6 +668,7 @@ E_MODEL_ANT = smlua_model_util_get_id("ant_geo")
 
 ---@param o Object
 function bhv_ant_loop(o)
+    o.oInteractStatus = 0
     object_step()
     o.oMoveAngleYaw = o.parentObj.oFaceAngleYaw
 
