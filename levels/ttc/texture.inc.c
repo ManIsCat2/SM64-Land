@@ -202,3 +202,183 @@ ALIGNED8 u8 ttc_2__texture_0E001020 = {
 ALIGNED8 u8 ttc_2__texture_0E0128A0[] = {
 #include "levels/ttc/ttc_2_0xe0128a0_custom.rgba16.inc.c"
 };
+Gfx ttc_dl__0_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__0_rgba16[] = {
+	#include "levels/ttc/_0.rgba16.inc.c"
+};
+
+Gfx ttc_dl__1_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__1_rgba16[] = {
+	#include "levels/ttc/_1.rgba16.inc.c"
+};
+
+Gfx ttc_dl__2_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__2_rgba16[] = {
+	#include "levels/ttc/_2.rgba16.inc.c"
+};
+
+Gfx ttc_dl__3_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__3_rgba16[] = {
+	#include "levels/ttc/_3.rgba16.inc.c"
+};
+
+Gfx ttc_dl__4_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__4_rgba16[] = {
+	#include "levels/ttc/_4.rgba16.inc.c"
+};
+
+Gfx ttc_dl__5_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__5_rgba16[] = {
+	#include "levels/ttc/_5.rgba16.inc.c"
+};
+
+Gfx ttc_dl__6_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__6_rgba16[] = {
+	#include "levels/ttc/_6.rgba16.inc.c"
+};
+
+Gfx ttc_dl__7_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__7_rgba16[] = {
+	#include "levels/ttc/_7.rgba16.inc.c"
+};
+
+Gfx ttc_dl__8_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__8_rgba16[] = {
+	#include "levels/ttc/_8.rgba16.inc.c"
+};
+
+Gfx ttc_dl__9_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__9_rgba16[] = {
+	#include "levels/ttc/_9.rgba16.inc.c"
+};
+
+Gfx ttc_dl__10_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__10_rgba16[] = {
+	#include "levels/ttc/_10.rgba16.inc.c"
+};
+
+Gfx ttc_dl__11_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__11_rgba16[] = {
+	#include "levels/ttc/_11.rgba16.inc.c"
+};
+
+Gfx ttc_dl__12_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__12_rgba16[] = {
+	#include "levels/ttc/_12.rgba16.inc.c"
+};
+
+Gfx ttc_dl__13_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__13_rgba16[] = {
+	#include "levels/ttc/_13.rgba16.inc.c"
+};
+
+Gfx ttc_dl__14_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__14_rgba16[] = {
+	#include "levels/ttc/_14.rgba16.inc.c"
+};
+
+Gfx ttc_dl__15_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__15_rgba16[] = {
+	#include "levels/ttc/_15.rgba16.inc.c"
+};
+
+Gfx ttc_dl__16_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__16_rgba16[] = {
+	#include "levels/ttc/_16.rgba16.inc.c"
+};
+
+Gfx ttc_dl__17_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__17_rgba16[] = {
+	#include "levels/ttc/_17.rgba16.inc.c"
+};
+
+Gfx ttc_dl__18_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__18_rgba16[] = {
+	#include "levels/ttc/_18.rgba16.inc.c"
+};
+
+Gfx ttc_dl__19_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__19_rgba16[] = {
+	#include "levels/ttc/_19.rgba16.inc.c"
+};
+
+Gfx ttc_dl__20_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__20_rgba16[] = {
+	#include "levels/ttc/_20.rgba16.inc.c"
+};
+
+Gfx ttc_dl__21_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__21_rgba16[] = {
+	#include "levels/ttc/_21.rgba16.inc.c"
+};
+
+Gfx ttc_dl__22_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__22_rgba16[] = {
+	#include "levels/ttc/_22.rgba16.inc.c"
+};
+
+Gfx ttc_dl__23_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__23_rgba16[] = {
+	#include "levels/ttc/_23.rgba16.inc.c"
+};
+
+Gfx ttc_dl__24_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__24_rgba16[] = {
+	#include "levels/ttc/_24.rgba16.inc.c"
+};
+
+Gfx ttc_dl__25_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__25_rgba16[] = {
+	#include "levels/ttc/_25.rgba16.inc.c"
+};
+
+Gfx ttc_dl__26_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__26_rgba16[] = {
+	#include "levels/ttc/_26.rgba16.inc.c"
+};
+
+Gfx ttc_dl__27_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__27_rgba16[] = {
+	#include "levels/ttc/_27.rgba16.inc.c"
+};
+
+Gfx ttc_dl__28_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__28_rgba16[] = {
+	#include "levels/ttc/_28.rgba16.inc.c"
+};
+
+Gfx ttc_dl__29_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__29_rgba16[] = {
+	#include "levels/ttc/_29.rgba16.inc.c"
+};
+
+Gfx ttc_dl__30_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__30_rgba16[] = {
+	#include "levels/ttc/_30.rgba16.inc.c"
+};
+
+Gfx ttc_dl__31_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__31_rgba16[] = {
+	#include "levels/ttc/_31.rgba16.inc.c"
+};
+
+Gfx ttc_dl__32_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__32_rgba16[] = {
+	#include "levels/ttc/_32.rgba16.inc.c"
+};
+
+Gfx ttc_dl__33_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__33_rgba16[] = {
+	#include "levels/ttc/_33.rgba16.inc.c"
+};
+
+Gfx ttc_dl__34_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__34_rgba16[] = {
+	#include "levels/ttc/_34.rgba16.inc.c"
+};
+
+Gfx ttc_dl__35_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 ttc_dl__35_rgba16[] = {
+	#include "levels/ttc/_35.rgba16.inc.c"
+};
+

@@ -148,7 +148,7 @@ WARP_NODE(241,16,4,23,0),
 RETURN()
 };
 const LevelScript local_area_ttc_2_[] = {
-AREA(2,Geo_ttc_2_0x1d283e0),
+AREA(2,ttc_area_1),
 TERRAIN(col_ttc_2_0xe038220),
 SET_BACKGROUND_MUSIC(0,46),
 TERRAIN_TYPE(0),
