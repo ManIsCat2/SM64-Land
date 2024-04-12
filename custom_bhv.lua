@@ -809,7 +809,7 @@ function bhv_flip_block_init(o)
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     obj_set_hitbox(o, sFlipBlockHitbox)
     obj_set_model_extended(o, E_MODEL_FLIP_BLOCK)
-    network_init_object(o, true, {"oFlipping"})
+    network_init_object(o, true, { "oFlipping" })
 end
 
 function bhv_flip_block_loop(o)
@@ -834,10 +834,10 @@ function bhv_flip_block_loop(o)
     end
 
     if cur_obj_is_mario_on_platform() ~= 0 then
-        djui_chat_message_create("1: "..tostring((o.oBehParams >> 24) & 0xFF))
-        djui_chat_message_create("2: "..tostring((o.oBehParams >> 16) & 0xFF))
-        djui_chat_message_create("3: "..tostring((o.oBehParams >> 8) & 0xFF))
-        djui_chat_message_create("4: "..tostring((o.oBehParams >> 0) & 0xFF))
+        djui_chat_message_create("1: " .. tostring((o.oBehParams >> 24) & 0xFF))
+        djui_chat_message_create("2: " .. tostring((o.oBehParams >> 16) & 0xFF))
+        djui_chat_message_create("3: " .. tostring((o.oBehParams >> 8) & 0xFF))
+        djui_chat_message_create("4: " .. tostring((o.oBehParams >> 0) & 0xFF))
     end
 end
 
