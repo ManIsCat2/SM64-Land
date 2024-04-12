@@ -118,6 +118,17 @@ end
 
 hook_behavior(id_bhvWoodenPost, OBJ_LIST_SURFACE, false, nil, unpoundable_wooden_post_loop)
 
+-- Huge Metal Box
+
+function huge_metal_box_loop(o)
+    cur_obj_scale(1.75)
+    o.oCollisionDistance = 2000
+    o.oPosX = o.oHomeX
+    o.oPosZ = o.oHomeZ
+end
+
+hook_behavior(id_bhvPushableMetalBox, OBJ_LIST_SURFACE, false, nil, huge_metal_box_loop)
+
 -- Boss Star Cages
 
 COL_CAGE = smlua_collision_util_get("eight_star_cage_collision")     -- Used by all cages
