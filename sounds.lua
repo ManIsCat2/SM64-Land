@@ -14,6 +14,7 @@ smlua_audio_utils_replace_sequence(40, 17, 75, "Super Mario World - Athletic Rem
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom")
 smlua_audio_utils_replace_sequence(0x02, 0x25, 75, "02_Seq_custom")
+smlua_audio_utils_replace_sequence(0x2E, 19, 75, "2E_Seq_custom")
 smlua_audio_utils_replace_sequence(0x04, 0x15, 75, "04_Seq_custom")
 smlua_audio_utils_replace_sequence(0x0B, 0x14, 75, "0B_Seq_custom")
 smlua_audio_utils_replace_sequence(0x0D, 0x16, 75, "0D_Seq_custom")
