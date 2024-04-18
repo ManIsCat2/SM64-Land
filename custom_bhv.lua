@@ -845,10 +845,10 @@ function bhv_flip_block_loop(o)
     end
 
     if cur_obj_is_mario_on_platform() ~= 0 then
-        djui_chat_message_create("1: " .. tostring((o.oBehParams >> 24) & 0xFF))
-        djui_chat_message_create("2: " .. tostring((o.oBehParams >> 16) & 0xFF))
-        djui_chat_message_create("3: " .. tostring((o.oBehParams >> 8) & 0xFF))
-        djui_chat_message_create("4: " .. tostring((o.oBehParams >> 0) & 0xFF))
+        --djui_chat_message_create("1: " .. tostring((o.oBehParams >> 24) & 0xFF))
+        --djui_chat_message_create("2: " .. tostring((o.oBehParams >> 16) & 0xFF))
+        --djui_chat_message_create("3: " .. tostring((o.oBehParams >> 8) & 0xFF))
+        --djui_chat_message_create("4: " .. tostring((o.oBehParams >> 0) & 0xFF))
     end
 end
 
