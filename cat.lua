@@ -21,8 +21,9 @@ function bhv_catsuit_init(obj)
     obj_set_model_extended(obj, E_MODEL_SUPER_BELL)
     obj_scale(obj, 0.5)
     obj.oFaceAngleYaw = obj.oFaceAngleYaw - 32768 -- watchr is so not awesome
-    obj.hitboxRadius = 50
-    obj.hitboxHeight = 50
+    obj.oIntangibleTimer = 0
+    obj.hitboxRadius = 120
+    obj.hitboxHeight = 120
     obj.oGravity = 3
     obj.oFriction = 0.8
     obj.oBuoyancy = 1

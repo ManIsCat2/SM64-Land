@@ -169,8 +169,8 @@ function world_cannon_init(o)
     o.oIntangibleTimer = 0
     o.header.gfx.skipInViewCheck = true
     o.collisionData = COL_WORLD_CANNON
-    o.hitboxRadius = 10000
-    o.hitboxHeight = 10000
+    o.hitboxRadius = 200
+    o.hitboxHeight = 200
 end
 
 stuck = false
@@ -515,7 +515,7 @@ function bhv_dancing_hill_loop(o)
     o.oAnimState = o.oAnimState + 1
 end
 
-id_bhvDancingHill = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_dancing_hill_init, bhv_dancing_hill_loop)
+id_bhvDancingHill = hook_behavior(nil, OBJ_LIST_DEFAULT, true, bhv_dancing_hill_init, bhv_dancing_hill_loop)
 
 local antsKilled = 0
 
@@ -797,7 +797,7 @@ function bhv_animstate_object_loop(o)
     o.oAnimState = o.oAnimState + 1
 end
 
-id_bhvFlower = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_animstate_object_init, bhv_animstate_object_loop)
+id_bhvFlower = hook_behavior(nil, OBJ_LIST_DEFAULT, true, bhv_animstate_object_init, bhv_animstate_object_loop)
 
 E_MODEL_FLIP_BLOCK = smlua_model_util_get_id("smw_block_geo")
 COL_FLIP_BLOCK = smlua_collision_util_get("smw_block_collision")

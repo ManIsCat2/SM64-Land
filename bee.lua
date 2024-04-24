@@ -67,6 +67,7 @@ function bhv_beesuit_init(obj)
     --spawn_sync_object(id_bhvSparkleParticleSpawner, E_MODEL_SPARKLES, obj.oPosX, obj.oPosY, obj.oPosZ, nil) doesn't work as of currently
     obj.hitboxRadius = 30
     obj.hitboxHeight = 30
+    obj.oIntangibleTimer = 0
     obj.oGravity = 3
     obj.oFriction = 0.8
     obj.oBuoyancy = 1

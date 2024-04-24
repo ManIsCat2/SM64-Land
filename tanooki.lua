@@ -61,6 +61,7 @@ function bhv_leaf_init(obj)
     obj.oFaceAngleYaw = obj.oFaceAngleYaw - 32768 -- watchr is so not awesome
     obj.hitboxRadius = 30
     obj.hitboxHeight = 30
+    obj.oIntangibleTimer = 0
     obj.oGravity = 3
     obj.oFriction = 0.8
     obj.oBuoyancy = 1
