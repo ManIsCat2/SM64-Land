@@ -10,6 +10,7 @@ worldSelected = 1
 warpsforlevels = {
     { level = 16, area = 1, warpid = 11 },
     { level = 26, area = 1, warpid = 11 },
+    { level = 16, area = 2, warpid = 11 },
 }
 
 local xCursorIndex = 1
