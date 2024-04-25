@@ -1,4 +1,4 @@
--- name: \\#FFFF00\\Super Mario 64 \\#00ff00\\Land
+-- name: \\#FFFF00\\SM64 \\#00ff00\\Land
 -- description: Awesome romhack by Kaze, Ported By I'mYourCat and xLuigiGamerx.\n\nCredits to:\nSteven\nSunk\nBlocky\nWoissil\nRushedAccN64
 -- incompatible: romhack
 

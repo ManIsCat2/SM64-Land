@@ -1,0 +1,113 @@
+Lights1 pushable_n64_button_Material_0_f3d_lights = gdSPDefLights1(
+	0x7F, 0x7F, 0x7F,
+	0xFF, 0xFF, 0xFF, 0x49, 0x49, 0x49);
+
+Gfx pushable_n64_button__0_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 pushable_n64_button__0_rgba16[] = {
+	#include "actors/pushable_n64_button/_0.rgba16.inc.c"
+};
+
+Vtx pushable_n64_button_Bone_mesh_layer_1_vtx_0[28] = {
+	{{ {80, 37, -63}, 0, {1456, 996}, {93, 82, 228, 255} }},
+	{{ {80, -11, 63}, 0, {1190, 1402}, {121, 0, 37, 255} }},
+	{{ {80, -11, -63}, 0, {1456, 1170}, {121, 0, 219, 255} }},
+	{{ {80, 37, 63}, 0, {1190, 1226}, {93, 82, 28, 255} }},
+	{{ {43, 37, -118}, 0, {1436, 858}, {47, 78, 168, 255} }},
+	{{ {43, -11, -118}, 0, {1436, 1034}, {60, 0, 144, 255} }},
+	{{ {-43, 37, -118}, 0, {1122, 768}, {209, 78, 168, 255} }},
+	{{ {-43, -11, -118}, 0, {1122, 942}, {196, 0, 144, 255} }},
+	{{ {-80, 37, -63}, 0, {874, 828}, {163, 82, 228, 255} }},
+	{{ {-80, -11, -63}, 0, {874, 1002}, {135, 0, 219, 255} }},
+	{{ {-80, 37, 63}, 0, {606, 1058}, {163, 82, 28, 255} }},
+	{{ {-80, -11, 63}, 0, {606, 1234}, {135, 0, 37, 255} }},
+	{{ {-43, 37, 118}, 0, {626, 1196}, {209, 78, 88, 255} }},
+	{{ {-43, -11, 118}, 0, {626, 1372}, {196, 0, 112, 255} }},
+	{{ {43, 37, 118}, 0, {940, 1286}, {47, 78, 88, 255} }},
+	{{ {43, -11, 118}, 0, {940, 1462}, {60, 0, 112, 255} }},
+	{{ {-80, 37, 16}, 0, {706, 972}, {166, 0, 90, 255} }},
+	{{ {-80, 53, -16}, 0, {774, 854}, {165, 38, 176, 255} }},
+	{{ {-80, 37, -16}, 0, {774, 914}, {166, 0, 166, 255} }},
+	{{ {-80, 53, 16}, 0, {706, 912}, {165, 38, 80, 255} }},
+	{{ {-54, 79, 16}, 0, {800, 844}, {218, 91, 80, 255} }},
+	{{ {54, 79, 16}, 0, {1196, 958}, {38, 91, 80, 255} }},
+	{{ {80, 37, 16}, 0, {1290, 1140}, {90, 0, 90, 255} }},
+	{{ {80, 53, 16}, 0, {1290, 1080}, {91, 38, 80, 255} }},
+	{{ {80, 37, -16}, 0, {1356, 1082}, {90, 0, 166, 255} }},
+	{{ {80, 53, -16}, 0, {1356, 1022}, {91, 38, 176, 255} }},
+	{{ {54, 79, -16}, 0, {1262, 900}, {38, 91, 176, 255} }},
+	{{ {-54, 79, -16}, 0, {868, 786}, {218, 91, 176, 255} }},
+};
+
+Gfx pushable_n64_button_Bone_mesh_layer_1_tri_0[] = {
+	gsSPVertex(pushable_n64_button_Bone_mesh_layer_1_vtx_0 + 0, 16, 0),
+	gsSP1Triangle(0, 1, 2, 0),
+	gsSP1Triangle(0, 3, 1, 0),
+	gsSP1Triangle(3, 0, 4, 0),
+	gsSP1Triangle(2, 4, 0, 0),
+	gsSP1Triangle(2, 5, 4, 0),
+	gsSP1Triangle(6, 4, 5, 0),
+	gsSP1Triangle(6, 5, 7, 0),
+	gsSP1Triangle(7, 8, 6, 0),
+	gsSP1Triangle(7, 9, 8, 0),
+	gsSP1Triangle(10, 8, 9, 0),
+	gsSP1Triangle(10, 9, 11, 0),
+	gsSP1Triangle(12, 10, 11, 0),
+	gsSP1Triangle(12, 11, 13, 0),
+	gsSP1Triangle(14, 12, 13, 0),
+	gsSP1Triangle(14, 13, 15, 0),
+	gsSP1Triangle(15, 3, 14, 0),
+	gsSP1Triangle(15, 1, 3, 0),
+	gsSP1Triangle(12, 14, 3, 0),
+	gsSP1Triangle(3, 4, 12, 0),
+	gsSP1Triangle(4, 8, 12, 0),
+	gsSP1Triangle(4, 6, 8, 0),
+	gsSP1Triangle(8, 10, 12, 0),
+	gsSPVertex(pushable_n64_button_Bone_mesh_layer_1_vtx_0 + 16, 12, 0),
+	gsSP1Triangle(0, 1, 2, 0),
+	gsSP1Triangle(0, 3, 1, 0),
+	gsSP1Triangle(3, 0, 4, 0),
+	gsSP1Triangle(5, 4, 0, 0),
+	gsSP1Triangle(0, 6, 5, 0),
+	gsSP1Triangle(6, 7, 5, 0),
+	gsSP1Triangle(8, 7, 6, 0),
+	gsSP1Triangle(8, 9, 7, 0),
+	gsSP1Triangle(9, 8, 10, 0),
+	gsSP1Triangle(11, 10, 8, 0),
+	gsSP1Triangle(8, 2, 11, 0),
+	gsSP1Triangle(2, 1, 11, 0),
+	gsSP1Triangle(11, 1, 3, 0),
+	gsSP1Triangle(11, 3, 4, 0),
+	gsSP1Triangle(11, 4, 5, 0),
+	gsSP1Triangle(11, 5, 10, 0),
+	gsSP1Triangle(9, 10, 5, 0),
+	gsSP1Triangle(9, 5, 7, 0),
+	gsSPEndDisplayList(),
+};
+
+
+Gfx mat_pushable_n64_button_Material_0_f3d[] = {
+	gsDPPipeSync(),
+	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsSPTexture(65535, 65535, 0, 0, 1),
+	gsSPSetLights1(pushable_n64_button_Material_0_f3d_lights),
+	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b_LOAD_BLOCK, 1, pushable_n64_button__0_rgba16),
+	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b_LOAD_BLOCK, 0, 0, 7, 0, G_TX_WRAP | G_TX_NOMIRROR, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 0, 0),
+	gsDPLoadBlock(7, 0, 0, 4095, 128),
+	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 6, 0, G_TX_WRAP | G_TX_NOMIRROR, 6, 0),
+	gsDPSetTileSize(0, 0, 0, 252, 252),
+	gsSPEndDisplayList(),
+};
+
+Gfx pushable_n64_button_Bone_mesh_layer_1[] = {
+	gsSPDisplayList(mat_pushable_n64_button_Material_0_f3d),
+	gsSPDisplayList(pushable_n64_button_Bone_mesh_layer_1_tri_0),
+	gsDPPipeSync(),
+	gsSPSetGeometryMode(G_LIGHTING),
+	gsSPClearGeometryMode(G_TEXTURE_GEN),
+	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
+	gsSPTexture(65535, 65535, 0, 0, 0),
+	gsDPSetEnvColor(255, 255, 255, 255),
+	gsDPSetAlphaCompare(G_AC_NONE),
+	gsSPEndDisplayList(),
+};
+

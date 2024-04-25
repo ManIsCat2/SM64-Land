@@ -859,3 +859,16 @@ function bhv_flip_block_loop(o)
 end
 
 id_bhvFlipBlock = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_flip_block_init, bhv_flip_block_loop)
+
+--pushable n64 button
+E_MODEL_PUSHABLE_N64_BUTTON = smlua_model_util_get_id("pushable_n64_button_geo")
+COL_PUSHABLE_N64_BUTTON = smlua_collision_util_get("pushable_n64_button_collision")
+
+---@param o Object
+function bhv_pushable_n64_button_init(o)
+    o.collisionData = COL_PUSHABLE_N64_BUTTON
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 2000
+end
+
+id_bhvPushableN64Button = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_pushable_n64_button_init, function (o) load_object_collision_model() bhv_pushable_loop() end)
