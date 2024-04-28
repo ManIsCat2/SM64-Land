@@ -871,4 +871,8 @@ function bhv_pushable_n64_button_init(o)
     o.oCollisionDistance = 2000
 end
 
-id_bhvPushableN64Button = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_pushable_n64_button_init, function (o) load_object_collision_model() bhv_pushable_loop() end)
+id_bhvPushableN64Button = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_pushable_n64_button_init,
+    function(o)
+        load_object_collision_model()
+        bhv_pushable_loop()
+    end)
