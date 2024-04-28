@@ -135,6 +135,15 @@ end
 
 hook_behavior(id_bhvPushableMetalBox, OBJ_LIST_SURFACE, false, nil, huge_metal_box_loop)
 
+function tall_doors_init(o)
+    if o.oBehParams2ndByte == 1 then
+        obj_scale_xyz(o, 1, 1.2, 1)
+        o.oCollisionDistance = 2000
+    end
+end
+
+hook_behavior(id_bhvDoorWarp, OBJ_LIST_SURFACE, false, tall_doors_init, nil)
+
 -- Boss Star Cages
 
 COL_CAGE = smlua_collision_util_get("eight_star_cage_collision")     -- Used by all cages
