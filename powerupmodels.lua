@@ -4,6 +4,10 @@
 -- Models
 
 E_MODEL_TANOOKI_MARIO = smlua_model_util_get_id("tanooki_mario_geo")
+E_MODEL_KITSUNE_LUIGI = smlua_model_util_get_id("kitsune_luigi_geo")
+E_MODEL_TANOOKI_TOAD = smlua_model_util_get_id("tanooki_toad_geo")
+E_MODEL_TANOOKI_WARIO = smlua_model_util_get_id("tanooki_wario_geo")
+E_MODEL_KITSUNE_WALUIGI = smlua_model_util_get_id("kitsune_waluigi_geo")
 E_MODEL_CAT_MARIO = smlua_model_util_get_id("cat_mario_geo")
 E_MODEL_BEE_MARIO = smlua_model_util_get_id("bee_mario_geo")
 
@@ -16,13 +20,28 @@ BEE = 3
 
 activePowerup = NORMAL -- Current Powerup, set to NORMAL to disable any powerup
 
--- Powerup States, to add more powerups here, you must first add them to the enum and assign a number
-powerupStates = {
-    [NORMAL] = {modelId = nil},
-    [TANOOKI] = {modelId = E_MODEL_TANOOKI_MARIO},
-    [CAT] = {modelId = E_MODEL_CAT_MARIO},
-    [BEE] = {modelId = E_MODEL_BEE_MARIO}
+characterPowerupModels = {
+    [CT_MARIO] = {tanooki = E_MODEL_TANOOKI_MARIO, cat = E_MODEL_CAT_MARIO, bee = E_MODEL_BEE_MARIO},
+    [CT_LUIGI] = {tanooki = E_MODEL_KITSUNE_LUIGI, cat = nil, bee = nil},
+    [CT_TOAD] = {tanooki = E_MODEL_TANOOKI_TOAD, cat = nil, bee = nil},
+    [CT_WARIO] = {tanooki = E_MODEL_TANOOKI_WARIO, cat = nil, bee = nil},
+    [CT_WALUIGI] = {tanooki = E_MODEL_KITSUNE_WALUIGI, cat = nil, bee = nil},
 }
+
+-- Powerup States, to add more powerups here, you must first add them to the enum and assign a number
+function get_character_model(m)
+    if m.playerIndex ~= 0 then return end
+    CPM = characterPowerupModels[m.character.type] -- To get the model easily
+    CPMM = characterPowerupModels[CT_MARIO] -- To get Mario's model easily
+    powerupStates = {
+        [NORMAL] = {modelId = nil},
+        [TANOOKI] = {modelId = CPM.tanooki and CPM.tanooki or CPMM.tanooki},
+        [CAT] = {modelId = CPM.cat and CPM.cat or CPMM.cat},
+        [BEE] = {modelId = CPM.bee and CPM.bee or CPMM.bee}
+    }
+end
+
+hook_event(HOOK_MARIO_UPDATE, get_character_model)
 
 -- Powerup Model Functions --
 
