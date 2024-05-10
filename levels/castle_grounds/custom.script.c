@@ -364,12 +364,7 @@ const LevelScript local_objects_castle_grounds_4_[] = {
 	OBJECT_WITH_ACTS(59,13575,0,-4380,0,327,0,0x10000,0x0702f9e0,31),
 	OBJECT_WITH_ACTS(59,-5926,0,-1734,0,14,0,0x0,0x0702f9e0,31),*/
 	OBJECT_WITH_ACTS(0, 1422, 362, 1836, 0, 0, 0, 0xf10000, bhvDeathWarp, 31),
-	OBJECT_WITH_ACTS(0, 30, -32748, 60, 0, 0, 0, 0xe01ca40, RM_Scroll_Texture, 31),
-	OBJECT_WITH_ACTS(0, 394, -32748, 60, 0, 0, 0, 0xe01df50, RM_Scroll_Texture, 31),
-	OBJECT_WITH_ACTS(0, 18, -24556, 60, 0, 0, 0, 0xe0326a0, RM_Scroll_Texture, 31),
-	OBJECT_WITH_ACTS(0, 66, -32748, 60, 0, 0, 0, 0xe05c6c0, RM_Scroll_Texture, 31),
-	OBJECT_WITH_ACTS(0, 4, -24556, 2, 0, 0, 0, 0xe06a520, RM_Scroll_Texture, 31),
-	OBJECT_WITH_ACTS(0, 3881, -32748, 60, 0, 0, 0, 0xe021d30, RM_Scroll_Texture, 31),
+	OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/4, /*vtx count*/4, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ 10, RM_Scroll_Texture, 31),
 	RETURN()};
 const LevelScript local_warps_castle_grounds_4_[] = {
 	WARP_NODE(10, 26, 3, 15, 0),

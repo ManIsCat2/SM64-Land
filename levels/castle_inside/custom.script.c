@@ -101,6 +101,8 @@ const LevelScript local_objects_castle_inside_1_[] = {
 	OBJECT_WITH_ACTS(E_MODEL_TOAD, -5178, 2100, 639, 0, 90, 0, 0x35000000, id_bhvToadMessage, 31),
 	OBJECT_WITH_ACTS(E_MODEL_TOAD, -7347, 2550, 638, 0, 90, 0, 0x36000000, id_bhvToadMessage, 31),
 	OBJECT_WITH_ACTS(E_MODEL_TOAD, -587, -593, 578, 0, 90, 0, 0x33330000, id_bhvToadMessage, 31),
+	//manually inserting it lmao
+	OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 400, /*axis*/5, /*vtx count*/4, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ 11, RM_Scroll_Texture, 31),
 RETURN()
 };
 const LevelScript local_warps_castle_inside_1_[] = {

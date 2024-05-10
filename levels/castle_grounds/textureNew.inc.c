@@ -373,12 +373,18 @@ ALIGNED8 u8 castle_grounds_4__texture_0E00F840[] = {
 ALIGNED8 u8 castle_grounds_4__texture_0E012060[] = {
 #include "levels/castle_grounds/castle_grounds_4_0xe012060_custom.rgba16.inc.c"
 };
+
+
 ALIGNED8 u8 castle_grounds_4__texture_0E010840[] = {
 #include "levels/castle_grounds/castle_grounds_4_0xe010840_custom.ci4.inc.c"
 };
+
+// duplicate?
 ALIGNED8 u8 castle_grounds_4__texture_0E011040[] = {
 #include "levels/castle_grounds/castle_grounds_4_0xe010840_custom.ci4.inc.c"
 };
+
+
 ALIGNED8 u8 castle_grounds_4__texture_0E011060[] = {
 #include "levels/castle_grounds/castle_grounds_4_0xe011060_custom.rgba16.inc.c"
 };
