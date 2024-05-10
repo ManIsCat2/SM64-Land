@@ -130,7 +130,7 @@ const LevelScript local_objects_castle_grounds_1_[] = {
 	OBJECT(E_MODEL_PIPE_COVER, 9170, 336, -1717, 0, 0, 0, (4 << 16), bhvPipeCover),
 	// World 2 Pipe Cover End
 	OBJECT(E_MODEL_BLUE_WARP_PIPE, 9170, 136, -1717, 0, 0, 0, (0 << 24) | (1 << 16) | (0 << 8) | (0), id_bhvWarpPipe),
-	OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/1, /*vtx count*/4, 0, 0, 0, /*index*/ 4, RM_Scroll_Texture, 31),
+	OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/4, /*vtx count*/4, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ 4, RM_Scroll_Texture, 31),
 	RETURN()};
 const LevelScript local_warps_castle_grounds_1_[] = {
 	WARP_NODE(10, 9, 1, 0, 0),
