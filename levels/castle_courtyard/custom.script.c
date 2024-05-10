@@ -118,8 +118,8 @@ const LevelScript local_objects_castle_courtyard_1_[] = {
     OBJECT_WITH_ACTS(86, 4260, 379, -1585, 0, 0, 0, 0x0, bhvTweester, 31),
     OBJECT_WITH_ACTS(86, 5352, 379, -201, 0, 0, 0, 0x0, bhvTweester, 31),
     OBJECT_WITH_ACTS(86, 3715, 379, 1207, 0, 0, 0, 0x0, bhvTweester, 31),
-    OBJECT_WITH_ACTS(0, 3, 5, 4, 0, 0, 20, 14, RM_Scroll_Texture, 31),
-    OBJECT_WITH_ACTS(0, 70, 5, 58, 0, 0, 20, 15, RM_Scroll_Texture, 31),
+    OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/4, /*vtx count*/4, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ 6, RM_Scroll_Texture, 31),
+   OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 35, /*axis*/4, /*vtx count*/58, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ 7, RM_Scroll_Texture, 31),
     RETURN()};
 const LevelScript local_warps_castle_courtyard_1_[] = {
     WARP_NODE(10, 16, 1, 1, 0),

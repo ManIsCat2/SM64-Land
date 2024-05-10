@@ -1,6 +1,3 @@
--- Moving Textures (WaterBoxes)
---   Every movtext type is set to 1 (normal water texture)
---   If you want to configure and setup other water type, change the value here
 movtexqc_register('castle_grounds_1_Movtex_0', 16, 1, 0)
 movtexqc_register('castle_grounds_1_Movtex_1', 16, 1, 0)
 movtexqc_register('castle_grounds_1_Movtex_2', 16, 1, 0)
@@ -20,8 +17,16 @@ movtexqc_register('ending_2_Movtex_0', 25, 1, 0)
 movtexqc_register('ending_2_Movtex_1', 25, 1, 0)
 movtexqc_register('ending_2_Movtex_2', 25, 1, 0)
 
--- Scroll Textures
---   Uncomment and replace <id>, <offset> and <count> with the proper values
---   if you want to have scroll textures in your mod.
+--for all hubs with water:
+-- OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/4, /*vtx count*/4, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ 5, RM_Scroll_Texture, 31),
+
+-- among us
 add_scroll_target(4, "VB_castle_grounds_1_0xe0148a0", 0, 4)
 add_scroll_target(5, "VB_castle_grounds_2_0xe019cc0", 0, 4)
+add_scroll_target(6, "VB_castle_courtyard_1_0xe01d000", 0, 4)
+
+add_scroll_target(7, "VB_castle_courtyard_1_0xe020de0", 0, 11)
+add_scroll_target(7, "VB_castle_courtyard_1_0xe020e90", 0, 14)
+add_scroll_target(7, "VB_castle_courtyard_1_0xe020f70", 0, 10)
+add_scroll_target(7, "VB_castle_courtyard_1_0xe021010", 0, 13)
+add_scroll_target(7, "VB_castle_courtyard_1_0xe0210e0", 0, 10)
