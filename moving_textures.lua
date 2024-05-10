@@ -24,3 +24,4 @@ movtexqc_register('ending_2_Movtex_2', 25, 1, 0)
 --   Uncomment and replace <id>, <offset> and <count> with the proper values
 --   if you want to have scroll textures in your mod.
 add_scroll_target(4, "VB_castle_grounds_1_0xe0148a0", 0, 4)
+add_scroll_target(5, "VB_castle_grounds_2_0xe019cc0", 0, 4)

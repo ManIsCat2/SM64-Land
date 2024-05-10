@@ -211,7 +211,7 @@ const LevelScript local_objects_castle_grounds_2_[] = {
 	OBJECT_WITH_ACTS(0, 2497, 200, 258, 0, 0, 0, 0x6d0000, bhvDeathWarp, 31),
 	// OBJECT_WITH_ACTS(0,0,0,0,0,0,0,0x0,0x0703f180,31),
 	OBJECT_WITH_ACTS(E_MODEL_PIPE_COVER, 1883, 200, 666, 0, 23, 0, (12 << 16), bhvPipeCover, 31),
-	OBJECT_WITH_ACTS(0, 4, -32748, 3, 0, 0, 0, 0xe019cc0, RM_Scroll_Texture, 31),
+OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/4, /*vtx count*/4, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ 5, RM_Scroll_Texture, 31),
 	RETURN()};
 const LevelScript local_warps_castle_grounds_2_[] = {
 	WARP_NODE(10, 26, 1, 15, 0),
