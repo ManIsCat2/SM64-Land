@@ -190,8 +190,7 @@ function lobby_hud()
 end
 
 function level_hud()
-    if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_COTMC) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_VCUTM) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_TOTWC)  then
-
+    if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_COTMC) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_VCUTM) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_TOTWC) then
         djui_hud_render_texture(TEX_SCORE, 8, 4, 1, 1)
         djui_hud_print_text(string.format(("%.05d"), math.floor(scoreCounter)), 24, 4, 1)
         if gNetworkPlayers[0].currLevelNum == LEVEL_BOB and gNetworkPlayers[0].currAreaIndex == 1 then
