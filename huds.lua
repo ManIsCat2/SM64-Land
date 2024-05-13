@@ -13,6 +13,20 @@ warpsforlevels = {
     { level = 16, area = 2, warpid = 11 },
 }
 
+--[[
+    Level values for optimization
+    if a level uses more than 1 area just add another table to it with the index of the area id
+    boss areas don't count
+]]
+levelData = {
+    [COURSE_BOB] = {{stars = {0, 2, 1, 6}, coinStar = 6, finalStar = 1}},
+    [COURSE_WF] = {{stars = {2, 1, 0}, finalStar = 0}, {stars = {5, 4}, finalStar = 4}},
+    [COURSE_CCM] = {{stars = {2, 1, 0}, finalStar = 0}, {stars = {4, 3, 6}, finalStar = 3}},
+    [COURSE_JRB] = {{stars = {2, 1, 0}, finalStar = 0}, {stars = {3, 5, 4}, finalStar = 4}},
+    [COURSE_BBH] = {{stars = {1, 2, 0}, finalStar = 0}},
+    [COURSE_HMC] = {{stars = {0, 1, 2}, finalStar = 2}}
+}
+
 local xCursorIndex = 1
 local yCursorIndex = 1
 local stickMoved = false
@@ -58,19 +72,11 @@ function world_unlocked(world)
     end
 
     if world == 2 then
-        if operation(COURSE_JRB, 0) == gTextures.star then
-            return true
-        else
-            return false
-        end
+        return operation(COURSE_JRB, 0) == gTextures.star
     end
 
     if world == 3 then
-        if operation(COURSE_CCM, 5) == gTextures.star then
-            return true
-        else
-            return false
-        end
+        return operation(COURSE_CCM, 5) == gTextures.star
     end
 
     -- WIP Worlds --
@@ -90,14 +96,12 @@ function world_unlocked(world)
     if world == 8 then
         return false
     end
-    
+
 end
 
 function worlds_unlocked()
     for i=1,8 do
-        if world_unlocked(i)  then
-            worldsUnlocked = worldsUnlocked + 1
-        end
+        worldsUnlocked = world_unlocked(i) and worldsUnlocked + 1 or worldsUnlocked
     end
     return worldsUnlocked
 end
@@ -141,6 +145,11 @@ local worldSpecific = {
     { "World 8", stars = 18, starIcon = TEX_WORLD_8_STAR, starPowerIcon = TEX_P_WORLD_8_STAR },
 }
 
+--- Returns the hud texture for the star if it's was collected, otherwise returns an uncollected star texture
+---@param course integer
+---@param star integer
+---@param is100star boolean|nil
+---@return TextureInfo
 function operation(course, star, is100star)
     courseReal = course - 1
     starflags = save_file_get_star_flags(get_current_save_file_num() - 1, courseReal)
@@ -162,113 +171,80 @@ end
 
 function lobby_hud()
     if gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS) or gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) then
+
+        -- World Star Counter
+
         djui_hud_print_text(string.format("%.02d", get_world_star_count(curWorld)), 8, 4, 1)
         djui_hud_render_texture(TEX_SEPERATOR, 28, 4, 1, 1)
-        if curWorld ~= nil then
-            djui_hud_print_text(tostring(worldSpecific[curWorld].stars), 40, 4, 1)
-        else
-            djui_hud_print_text("NIL", 40, 4, 1)
-        end
-        if worldSpecific[curWorld].starIcon == nil then
-            djui_hud_print_text("*", 68, 3, 1)
-        else
-            djui_hud_render_texture(worldSpecific[curWorld].starIcon, 68, 3, 1, 1)
-        end
-        djui_hud_print_text("*", djui_hud_get_screen_width() - 62, 4, 1)
-        if numStars < 100 then
-            djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
-            djui_hud_print_text(tostring(numStars), djui_hud_get_screen_width() - 32, 4, 1)
-        else
-            djui_hud_print_text(tostring(numStars), djui_hud_get_screen_width() - 46, 4, 1)
-        end
+        djui_hud_print_text(tostring(curWorld and worldSpecific[curWorld].stars or 0), 40, 4, 1)
+
+        starIcon = worldSpecific[curWorld].starIcon
+        djui_hud_render_texture(starIcon and starIcon or gTextures.star, 68, 3, 1, 1)
+
+        -- Star Power Counter
+
         if curWorld > 1 then
             djui_hud_render_texture(worldSpecific[curWorld].starPowerIcon, (djui_hud_get_screen_width()/2) - 26, 3, 1, 1)
             djui_hud_print_text("@", (djui_hud_get_screen_width()/2) - 10, 4, 1)
             djui_hud_print_text(tostring(starPower), (djui_hud_get_screen_width()/2) + 2, 4, 1)
         end
+
+        -- Star Counter
+
+        djui_hud_print_text("*", djui_hud_get_screen_width() - 62, 4, 1)
+        if numStars < 100 then
+            djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
+        end
+        djui_hud_print_text(tostring(numStars), djui_hud_get_screen_width() - (32 + (numStars < 100 and 0 or 14)), 4, 1)
+
     end
 end
 
 function level_hud()
     if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_COTMC) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_VCUTM) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_TOTWC) then
+
+        -- Score Counter
+
         djui_hud_render_texture(TEX_SCORE, 8, 4, 1, 1)
         djui_hud_print_text(string.format(("%.05d"), math.floor(scoreCounter)), 24, 4, 1)
-        if gNetworkPlayers[0].currLevelNum == LEVEL_BOB and gNetworkPlayers[0].currAreaIndex == 1 then
-            djui_hud_render_texture(operation(COURSE_BOB, 0), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_BOB, 2), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_BOB, 1), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_BOB, 6, true), ((djui_hud_get_screen_width() / 2) - 24) + 42, 4, 1, 1)
+
+        -- Collected Stars Display
+
+        local curCourseNum = gNetworkPlayers[0].currCourseNum
+        local curAreaIndex = gNetworkPlayers[0].currAreaIndex
+        local areaStars = levelData[curCourseNum][curAreaIndex].stars
+        local coinStar = levelData[curCourseNum][curAreaIndex].coinStar
+        for i = 0, #areaStars - 1 do
+            djui_hud_render_texture(operation(curCourseNum, areaStars[i+1], coinStar and coinStar == areaStars[i+1]), ((djui_hud_get_screen_width() / 2) - 24) + 14 * i, 4, 1, 1)
         end
 
-        if gNetworkPlayers[0].currLevelNum == LEVEL_WF and gNetworkPlayers[0].currAreaIndex == 1 then
-            djui_hud_render_texture(operation(COURSE_WF, 2), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_WF, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_WF, 0), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
-        end
-
-        if gNetworkPlayers[0].currLevelNum == LEVEL_WF and gNetworkPlayers[0].currAreaIndex == 2 then
-            djui_hud_render_texture(operation(COURSE_WF, 5), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_WF, 4), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
-        end
-
-        if gNetworkPlayers[0].currLevelNum == LEVEL_CCM and gNetworkPlayers[0].currAreaIndex == 1 then
-            djui_hud_render_texture(operation(COURSE_CCM, 2), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_CCM, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_CCM, 0), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
-        end
-
-        if gNetworkPlayers[0].currLevelNum == LEVEL_CCM and gNetworkPlayers[0].currAreaIndex == 2 then
-            djui_hud_render_texture(operation(COURSE_CCM, 4), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_CCM, 3), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_CCM, 6), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
-        end
-
-
-        if gNetworkPlayers[0].currLevelNum == LEVEL_JRB and gNetworkPlayers[0].currAreaIndex == 1 then
-            djui_hud_render_texture(operation(COURSE_JRB, 2), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_JRB, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_JRB, 0), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
-        end
-
-        if gNetworkPlayers[0].currLevelNum == LEVEL_JRB and gNetworkPlayers[0].currAreaIndex == 2 then
-            djui_hud_render_texture(operation(COURSE_JRB, 3), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_JRB, 5), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_JRB, 4), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
-        end
-
-        if gNetworkPlayers[0].currLevelNum == LEVEL_BBH and gNetworkPlayers[0].currAreaIndex == 1 then
-            djui_hud_render_texture(operation(COURSE_BBH, 1), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_BBH, 2), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_BBH, 0), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
-        end
-
-        if gNetworkPlayers[0].currLevelNum == LEVEL_HMC and gNetworkPlayers[0].currAreaIndex == 1 then
-            djui_hud_render_texture(operation(COURSE_HMC, 0), ((djui_hud_get_screen_width() / 2) - 24), 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_HMC, 1), ((djui_hud_get_screen_width() / 2) - 24) + 14, 4, 1, 1)
-            djui_hud_render_texture(operation(COURSE_HMC, 2), ((djui_hud_get_screen_width() / 2) - 24) + 28, 4, 1, 1)
-        end
+        -- Timer
 
         djui_hud_render_texture(TEX_TIMER, ((djui_hud_get_screen_width() / 2) + 46), 4, 1, 1)
         djui_hud_print_text(string.format(("%.03d"), math.floor(timer)), djui_hud_get_screen_width() / 2 + 57, 4, 1)
+
+        -- Coin Counter
+
         djui_hud_print_text("$", djui_hud_get_screen_width() - 62, 4, 1)
         if numCoins < 100 then
             djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
-            djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - 32, 4, 1)
-        else
-            djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - 46, 4, 1)
         end
+        djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - (32 + (numCoins < 100 and 0 or 14)), 4, 1)
+
    end
 end
 
 function toad_house_hud()
-    if gNetworkPlayers[0].currLevelNum == (LEVEL_COTMC) or  gNetworkPlayers[0].currLevelNum == (LEVEL_VCUTM) or gNetworkPlayers[0].currLevelNum == (LEVEL_TOTWC) then
+    if gNetworkPlayers[0].currLevelNum == (LEVEL_COTMC) or gNetworkPlayers[0].currLevelNum == (LEVEL_VCUTM) or gNetworkPlayers[0].currLevelNum == (LEVEL_TOTWC) then
+
+        -- Coin Counter
+
         djui_hud_print_text("$", djui_hud_get_screen_width() - 62, 4, 1)
         if numCoins < 100 then
             djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
-            djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - 32, 4, 1)
-        else
-            djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - 46, 4, 1)
         end
+        djui_hud_print_text(tostring(numCoins), djui_hud_get_screen_width() - (32 + (numCoins < 100 and 0 or 14)), 4, 1)
+
     end
 end
 
@@ -281,8 +257,7 @@ function cannon_hud()
     end
     if not stuckHud then return end
     m = gMarioStates[0]
-    if m.playerIndex ~= 0 then return end
-    
+
     if m.controller.stickX == 0 and m.controller.stickY == 0 and stickMoved then
         stickMoved = false
     end
@@ -358,7 +333,7 @@ function cannon_hud()
     if world_unlocked(5) then
         djui_hud_print_text("World 5", xMid - 106, 72 + (yOff * 2), 1)
     end
-    if world_unlocked(6) then    
+    if world_unlocked(6) then
         djui_hud_print_text("World 6", xMid + 24, 72 + (yOff * 2), 1)
     end
     if world_unlocked(7) then
