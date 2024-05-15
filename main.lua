@@ -39,7 +39,7 @@ save_file_set_flags(SAVE_FLAG_HAVE_WING_CAP)
 
 hook_event(HOOK_MARIO_UPDATE, mario_update)
 
---[[ World Map Camera --
+--[[ World Map Camera
 function world_map_cam(m)
     if m.playerIndex ~= 0 then return end
     l = gLakituState
