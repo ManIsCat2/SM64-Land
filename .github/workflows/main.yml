@@ -17,7 +17,7 @@ jobs:
 
       - name: Generate zip file
         run: |
-          curl -u $GITHUB_TOKEN:x-auth-token -o repo.zip https://github.com/$Maniscat2/$SM64-Land/archive/master.zip
+          curl -u $GITHUB_TOKEN:x-auth-token -o repo.zip https://github.com/Maniscat2/SM64-Land/archive/master.zip
 
       - name: Send zip file to Discord
         uses: actions/http-request@v1
