@@ -1,0 +1,30 @@
+name: Discord Zip
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Generate zip file
+        run: |
+          curl -u $GITHUB_TOKEN:x-auth-token -o repo.zip https://github.com/$Maniscat2/$SM64-Land/archive/master.zip
+
+      - name: Send zip file to Discord
+        uses: actions/http-request@v1
+        with:
+          method: POST
+          url: $https://discord.com/api/webhooks/1240425552700248176/8ciepth9zf_guhn3qmg5rgaidwlntks0jdanm6sgt6jdgc4bv6trikuhf1qkwuwro-un
+          headers: |
+            Content-Type: application/octet-stream
+          body: |
+            @repo.zip
