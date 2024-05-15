@@ -36,3 +36,8 @@ add_scroll_target(8, "VB_castle_courtyard_2_0xe025bd0", 0, 4)
 add_scroll_target(9, "VB_castle_courtyard_3_0xe048d20", 0, 4)
 
 add_scroll_target(11, "VB_castle_inside_1_0xe016800", 0, 4)
+
+add_scroll_target(12, "VB_ccm_1_0xe00ac10", 0, 15)
+add_scroll_target(12, "VB_ccm_1_0xe00ad00", 0, 15)
+add_scroll_target(12, "VB_ccm_1_0xe00adf0", 0, 15)
+add_scroll_target(12, "VB_ccm_1_0xe00aee0", 0, 15)

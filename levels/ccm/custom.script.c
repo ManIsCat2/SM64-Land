@@ -141,8 +141,9 @@ OBJECT_WITH_ACTS(212,-2138,3574,-2860,0,0,0,0x0, bhv1Up,31),
 OBJECT_WITH_ACTS(0,-4640,2460,-942,0,0,0,0x0, bhvPokey,31),
 OBJECT_WITH_ACTS(0,-8535,930,-2198,0,0,0,0x0, bhvPokey,31),
 OBJECT_WITH_ACTS(0,-10365,600,12922,0,0,0,0x0, bhvPokey,31),
-OBJECT_WITH_ACTS(0,70,5,60,0,0,20,8, RM_Scroll_Texture,31),
-OBJECT_WITH_ACTS(0,2,5,925,0,0,20,9, RM_Scroll_Texture,31),
+//sigma
+OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 70, /*axis*/4, /*vtx count*/60, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ 12, RM_Scroll_Texture, 31),
+//OBJECT_WITH_ACTS(0,2,5,925,0,0,20,9, RM_Scroll_Texture,31),
 RETURN()
 };
 const LevelScript local_warps_ccm_1_[] = {
@@ -229,8 +230,8 @@ OBJECT_WITH_ACTS(195,6896,-1591,1356,0,0,0,0x10000, bhvBobombBuddy,31),
 OBJECT_WITH_ACTS(212,6655,-1683,1030,0,0,0,0x0, bhv1Up,31),
 OBJECT_WITH_ACTS(195,-3761,-1606,-5032,0,0,0,0x20000, bhvBobombBuddy,31),
 OBJECT_WITH_ACTS(212,-3445,-1700,-4755,0,0,0,0x0, bhv1Up,31),
-OBJECT_WITH_ACTS(0,40,4,43,0,0,20,10, RM_Scroll_Texture,31),
-OBJECT_WITH_ACTS(0,3,5,142,0,0,20,11, RM_Scroll_Texture,31),
+//OBJECT_WITH_ACTS(0,40,4,43,0,0,20,10, RM_Scroll_Texture,31),
+//OBJECT_WITH_ACTS(0,3,5,142,0,0,20,11, RM_Scroll_Texture,31),
 RETURN()
 };
 const LevelScript local_warps_ccm_2_[] = {
