@@ -11,7 +11,7 @@ jobs:
     permissions:
       contents: read
       packages: read
-      secrets: read
+      repository: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
