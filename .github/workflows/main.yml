@@ -1,8 +1,9 @@
 name: Upload Zip to Discord
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      branch:
 
 jobs:
   upload-zip:
