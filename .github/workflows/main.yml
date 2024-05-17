@@ -29,7 +29,11 @@ jobs:
       run: |
         zip -r output.zip .
 
-    - name: Compress the ZIP file with gzip
+    - name: Compress the ZIP file with 7zip
+      run: |
+        7z a -tzip output.zip output.zip
+
+    - name: Compress the ZIP file again with gzip
       run: |
         gzip output.zip
 
