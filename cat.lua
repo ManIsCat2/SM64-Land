@@ -20,7 +20,7 @@ function bhv_catsuit_init(obj)
     obj.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     obj_set_model_extended(obj, E_MODEL_SUPER_BELL)
     obj_scale(obj, 0.5)
-    obj.oFaceAngleYaw = obj.oFaceAngleYaw - 32768 -- watchr is so not awesome
+    obj.oFaceAngleYaw = obj.oFaceAngleYaw - 32768
     obj.oIntangibleTimer = 0
     obj.hitboxRadius = 120
     obj.hitboxHeight = 120
