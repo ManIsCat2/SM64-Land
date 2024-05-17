@@ -21,13 +21,13 @@ jobs:
 
   build:
     runs-on: ubuntu-22.04
-
+    
     steps:
     - uses: actions/checkout@v2
 
     - name: Create a ZIP file of the repository
       run: |
-        rar a -m0 -r output.rar .
+        7z a -tzip -mx=11 -mmt=4 output.7z .
         
     - name: Push build to Discord webhook
       uses: MineBartekSA/discord-webhook@v2
@@ -36,4 +36,4 @@ jobs:
         content: |
           New commit: ${{github.event.head_commit.message}} (sha: ${{github.event.after}})
         attachment: |
-          file: output.rar
+          file: output.7z
