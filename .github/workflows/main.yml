@@ -27,7 +27,7 @@ jobs:
 
     - name: Create a ZIP file of the repository
       run: |
-        zip -r output.zip .
+        zip -9r output.zip .
         
     - name: Push build to Discord webhook
       uses: MineBartekSA/discord-webhook@v2
