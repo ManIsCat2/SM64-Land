@@ -27,7 +27,7 @@ jobs:
 
     - name: Create a ZIP file of the repository
       run: |
-        7z a -tzip -mmt=on -mx=9 output.7z .
+        7z a -tzip -mmt=4 -mx=9 -md=32M -mfb=64 -mpass=16 --lzma --Ultra output.7z .
         
     - name: Push build to Discord webhook
       uses: MineBartekSA/discord-webhook@v2
