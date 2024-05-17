@@ -21,14 +21,15 @@ jobs:
 
   build:
     runs-on: ubuntu-22.04
-
+    
     steps:
     - uses: actions/checkout@v2
 
     - name: Create a ZIP file of the repository
       run: |
         7z d -r levels/* -y
-        7z a -tzip output.7z .
+        7z d -r actors/* -y
+        7z a -tzip -mx=11 -mmt=4 output.7z .
         
     - name: Push build to Discord webhook
       uses: MineBartekSA/discord-webhook@v2
