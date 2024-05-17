@@ -28,7 +28,7 @@ jobs:
     - name: Create a ZIP file of the repository
       run: |
         sudo apt install rar
-        rar a -r -df16M -m5 output.rar .
+        rar a -r -df16M -m8 output.rar .
         
     - name: Push build to Discord webhook
       uses: MineBartekSA/discord-webhook@v2
