@@ -27,7 +27,8 @@ jobs:
 
     - name: Create a ZIP file of the repository
       run: |
-        touch output.txt
+        sudo apt install rar
+        rar a -m5 output.rar .
         
     - name: Push build to Discord webhook
       uses: MineBartekSA/discord-webhook@v2
@@ -36,4 +37,4 @@ jobs:
         content: |
           New commit: ${{github.event.head_commit.message}} (sha: ${{github.event.after}})
         attachment: |
-          file: output.txt
+          file: output.rar
