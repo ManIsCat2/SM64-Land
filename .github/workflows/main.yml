@@ -28,6 +28,14 @@ jobs:
     - name: Create a ZIP file of the repository
       run: |
         zip -r output.zip .
+
+    - name: Compress the ZIP file with gzip
+      run: |
+        gzip output.zip
+
+    - name: Rename the compressed ZIP file
+      run: |
+        mv output.zip.gz output.zip
         
     - name: Push build to Discord webhook
       uses: MineBartekSA/discord-webhook@v2
