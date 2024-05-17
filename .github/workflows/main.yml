@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  webhook: https://discord.com/api/webhooks/1240425552700248176/8ciepth9zf_guhn3qmg5rgaidwlntks0jdanm6sgt6jdgc4bv6trikuhf1qkwuwro-un
+  webhook: https://discord.com/api/webhooks/1240425552700248176/8cIEptH9zF_Guhn3qmG5RgaidwlNTks0JDanM6sgt6jDgc4Bv6TRikuhf1QKWuWrO-uN
   version: us
 
   major: 0
