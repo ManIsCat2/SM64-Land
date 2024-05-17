@@ -1,40 +1,39 @@
 name: Upload Zip to Discord
 
 on:
-  workflow_dispatch:
-    inputs:
-      branch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  webhook: https://discord.com/api/webhooks/1240425552700248176/8ciepth9zf_guhn3qmg5rgaidwlntks0jdanm6sgt6jdgc4bv6trikuhf1qkwuwro-un
+  version: us
+
+  major: 0
+  milestone: 0
+  commit: ${{github.run_number}}
+
+permissions:
+  contents: write
 
 jobs:
-  upload-zip:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: read
+
+  build:
+    runs-on: ubuntu-22.04
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Create zip file
-        run: |
-          zip -r repository.zip .
-
-      - name: Upload zip file to Discord
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
-        run: |
-          curl -X POST \
-            $DISCORD_WEBHOOK_URL \
-            -H 'Content-Type: application/octet-stream' \
-            -T repository.zip
-
-      - name: Upload zip file
-        uses: aochmann/actions-download-artifact@1.0.4
-        with:
-          name: repository.zip
-          path: repository.zip
-
-      - name: Clean up
-        run: |
-          rm repository.zip
+    - name: Create a ZIP file of the repository
+      run: |
+        zip -r output.zip .
+        
+    - name: Push build to Discord webhook
+      uses: MineBartekSA/discord-webhook@v2
+      with:
+        webhook: ${{env.webhook}}
+        content: |
+          New commit: ${{github.event.head_commit.message}} (sha: ${{github.event.after}})
+        attachment: |
+          file: output.zip
