@@ -27,9 +27,8 @@ jobs:
 
     - name: Create a ZIP file of the repository
       run: |
-        7z d -r levels/* -y
-        7z d -r actors/* -y
-        7z a -tzip -mx=11 -mmt=4 output.7z .
+        touch output.zip
+        zip output.zip
         
     - name: Push build to Discord webhook
       uses: MineBartekSA/discord-webhook@v2
@@ -38,4 +37,4 @@ jobs:
         content: |
           New commit: ${{github.event.head_commit.message}} (sha: ${{github.event.after}})
         attachment: |
-          file: output.7z
+          file: output.zip
