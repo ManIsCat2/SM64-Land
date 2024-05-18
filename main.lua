@@ -19,6 +19,7 @@ else
 end
 
 gLevelValues.exitCastleLevel = LEVEL_CASTLE_GROUNDS
+gLevelValues.exitCastleWarpNode = 11
 -- fix collisions being bad
 gLevelValues.fixCollisionBugs = true
 gLevelValues.fixCollisionBugsRoundedCorners = false
