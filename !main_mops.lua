@@ -582,6 +582,7 @@ function bhv_green_switchboard_init(obj)
     -- Spawns gears
     obj_scale_xyz(obj, 1.15, 1.15, 1.15)
     obj.oPosY = obj.oPosY - 100
+    obj.header.gfx.skipInViewCheck = true
     obj.collisionData = COL_GREEN_SEESAW
     obj.oIntroLakituCloud = spawn_object(obj, E_MODEL_GREEN_SWITCHBOARD_GEARS, id_bhvGreen_Switchboard_Gears_MOP)
     obj_set_model_extended(obj, E_MODEL_GREEN_SEESAW)
@@ -621,7 +622,11 @@ function bhv_green_switchboard_loop(obj)
         local invert = false
         if ((obj.oBehParams >> 0) & 0xFF) == 2 then
             invert = true
-            going_down_up_pos_y = 2.55
+            if ((obj.oBehParams >> 8) & 0xFF) == 1 then
+                going_down_up_pos_y = 2.55
+            else
+                going_down_up_pos_y = 3.9 * 1.5 * 1.5
+            end
         else
             invert = false
             going_down_up_pos_y = ((obj.oBehParams >> 8) & 0xff) * 3.9 * 1.5
