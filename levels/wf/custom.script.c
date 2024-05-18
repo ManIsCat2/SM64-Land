@@ -131,7 +131,7 @@ OBJECT_WITH_ACTS(0, 13157, 105, -7977, 0, 270, 0, 0xa0000, bhvSpinAirborneWarp, 
 	OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x1004e20, 0x1300003c, 31),
 	OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x0, 0x0040eb54, 31),*/
 	OBJECT_WITH_ACTS(195, 9986, 93, -19958, 0, 0, 0, 0x4d0000, bhvBobombBuddy, 31),
-OBJECT_WITH_ACTS(0,53,-32748,3,0,0,0,0xe023e10, RM_Scroll_Texture,31),
+OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/4, /*vtx count*/53, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ 0xe023e10, RM_Scroll_Texture, 31),
 RETURN()
 };
 const LevelScript local_warps_wf_1_[] = {
