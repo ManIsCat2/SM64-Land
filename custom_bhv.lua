@@ -59,6 +59,26 @@ function get_world_star_count(world)
         course3 = COURSE_HMC
     end
 
+    -- WIP (added to avoid hud errors)
+
+    if world == 6 then
+        course1 = COURSE_DDD
+        course2 = COURSE_SL
+        course3 = COURSE_HMC
+    end
+
+    if world == 7 then
+        course1 = COURSE_DDD
+        course2 = COURSE_SL
+        course3 = COURSE_HMC
+    end
+
+    if world == 8 then
+        course1 = COURSE_DDD
+        course2 = COURSE_SL
+        course3 = COURSE_HMC
+    end
+
     for i = course1, course2 do
         local starFlags = save_file_get_star_flags(get_current_save_file_num() - 1, i - 1)
         for star = 0, 6 do
