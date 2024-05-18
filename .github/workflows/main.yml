@@ -27,8 +27,7 @@ jobs:
 
     - name: Create a ZIP file of the repository
       run: |
-        sudo apt install rar
-        find . -type f \( -not -name "*.c" -and -not -name "*.png" -and -not -name "*.h" \) -exec rar a -r -m5 output.rar {} \;
+        zip -r sm64land.zip * -x \*.c \*.h \*.png
         
     - name: Push build to Discord webhook
       uses: MineBartekSA/discord-webhook@v2
@@ -37,4 +36,4 @@ jobs:
         content: |
           New commit: ${{github.event.head_commit.message}} (sha: ${{github.event.after}})
         attachment: |
-          file: output.rar
+          file: sm64land.zip
