@@ -64,7 +64,6 @@ function bhv_beesuit_init(obj)
     obj.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     obj_set_model_extended(obj, E_MODEL_BEE_SHROOM)
     obj_scale(obj, 0.5)
-    --spawn_sync_object(id_bhvSparkleParticleSpawner, E_MODEL_SPARKLES, obj.oPosX, obj.oPosY, obj.oPosZ, nil) doesn't work as of currently
     obj.hitboxRadius = 30
     obj.hitboxHeight = 30
     obj.oIntangibleTimer = 0
@@ -76,6 +75,7 @@ end
 
 ---@param obj Object
 function bhv_beesuit_loop(obj)
+    spawn_non_sync_object(id_bhvSparkleSpawn, E_MODEL_NONE, obj.oPosX, obj.oPosY, obj.oPosZ, nil);
     object_step()
     load_object_collision_model()
     obj.oFaceAngleYaw = obj.oFaceAngleYaw + ((65536/360) * 1.5)
