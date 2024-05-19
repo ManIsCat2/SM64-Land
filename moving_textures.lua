@@ -19,7 +19,7 @@ movtexqc_register('ending_2_Movtex_1', 25, 1, 0)
 movtexqc_register('ending_2_Movtex_2', 25, 1, 0)
 
 --for all hubs with water:
--- OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/4, /*vtx count*/4, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ id, RM_Scroll_Texture, 31),
+-- OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/4, /*vtx count*/size, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ id, RM_Scroll_Texture, 31),
 
 -- among us
 add_scroll_target(4, "VB_castle_grounds_1_0xe0148a0", 0, 4)
@@ -42,6 +42,7 @@ add_scroll_target(12, "VB_ccm_1_0xe00ad00", 0, 15)
 add_scroll_target(12, "VB_ccm_1_0xe00adf0", 0, 15)
 add_scroll_target(12, "VB_ccm_1_0xe00aee0", 0, 15)
 
+-- awesome index bro
 add_scroll_target(0xe023e10, "VB_wf_1_0xe023e10", 0, 14)
 add_scroll_target(0xe023e10, "VB_wf_1_0xe023ef0", 0, 12)
 add_scroll_target(0xe023e10, "VB_wf_1_0xe023fb0", 0, 8)
