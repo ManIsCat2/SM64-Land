@@ -231,7 +231,7 @@ OBJECT_WITH_ACTS(212,6655,-1683,1030,0,0,0,0x0, bhv1Up,31),
 OBJECT_WITH_ACTS(195,-3761,-1606,-5032,0,0,0,0x20000, bhvBobombBuddy,31),
 OBJECT_WITH_ACTS(212,-3445,-1700,-4755,0,0,0,0x0, bhv1Up,31),
 //OBJECT_WITH_ACTS(0,40,4,43,0,0,20,10, RM_Scroll_Texture,31),
-//OBJECT_WITH_ACTS(0,3,5,142,0,0,20,11, RM_Scroll_Texture,31),
+OBJECT_WITH_ACTS(0,3,4,142,0,0,20,13, RM_Scroll_Texture,31),
 RETURN()
 };
 const LevelScript local_warps_ccm_2_[] = {
