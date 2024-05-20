@@ -321,6 +321,10 @@ function sineInOut(b, e, c, t)
     return b + (0.5 * (1 - math.cos(math.pi * t)) * (e - b))
 end
 
+function cubicOut(b, e, c, t)
+    return b + (1 - (1 - t)^3) * (e - b)
+end
+
 ---@param o Object
 function bhv_mushroom_straight_loop(o)
     if o.oBehParams2ndByte > (o.oBehParams >> 24) & 0xFF then
@@ -828,8 +832,8 @@ end
 
 id_bhvFlower = hook_behavior(nil, OBJ_LIST_DEFAULT, true, bhv_animstate_object_init, bhv_animstate_object_loop)
 
-E_MODEL_FLIP_BLOCK = smlua_model_util_get_id("smw_block_geo")
-COL_FLIP_BLOCK = smlua_collision_util_get("smw_block_collision")
+E_MODEL_FLIP_BLOCK = smlua_model_util_get_id("flip_block_geo")
+COL_FLIP_BLOCK = smlua_collision_util_get("flip_block_collision")
 
 ACT_FLIP_BLOCK_IDLE = 0
 ACT_FLIP_BLOCK_FLIPPING = 1
