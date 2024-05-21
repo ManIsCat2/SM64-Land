@@ -1,3 +1,6 @@
+E_MODEL_NEW_THWOMP = smlua_model_util_get_id("new_thwomp_geo")
+E_MODEL_ROTATING_PLATFORM_JRB = smlua_model_util_get_id("rotating_platform_jrb_geo")
+
 function get_star_count()
     local courseMax = 25
     local courseMin = 1
@@ -923,3 +926,12 @@ id_bhvPushableN64Button = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_pushabl
         load_object_collision_model()
         bhv_pushable_loop()
     end)
+
+COL_JRB_PLATFORM = smlua_collision_util_get("rotating_platform_jrb_collision")
+function bhv_custom_rotating_platform(o)
+    o.collisionData = COL_JRB_PLATFORM
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 6000
+end
+
+id_bhvRotPlatformJRB = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_custom_rotating_platform, function (o) load_object_collision_model() end)

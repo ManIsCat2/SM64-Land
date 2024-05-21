@@ -1,0 +1,12 @@
+extern const GeoLayout rotating_platform_jrb_geo[];
+extern Lights1 rotating_platform_jrb_Material_0_001_f3d_lights;
+extern Lights1 rotating_platform_jrb_Material_1_001_f3d_lights;
+extern u8 rotating_platform_jrb__0_rgba16[];
+extern u8 rotating_platform_jrb__1_rgba16[];
+extern Vtx rotating_platform_jrb_Bone_mesh_layer_1_vtx_0[549];
+extern Gfx rotating_platform_jrb_Bone_mesh_layer_1_tri_0[];
+extern Vtx rotating_platform_jrb_Bone_mesh_layer_1_vtx_1[128];
+extern Gfx rotating_platform_jrb_Bone_mesh_layer_1_tri_1[];
+extern Gfx mat_rotating_platform_jrb_Material_0_001_f3d[];
+extern Gfx mat_rotating_platform_jrb_Material_1_001_f3d[];
+extern Gfx rotating_platform_jrb_Bone_mesh_layer_1[];
