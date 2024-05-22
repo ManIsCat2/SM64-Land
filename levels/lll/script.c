@@ -179,6 +179,7 @@ const LevelScript level_lll_entry[] = {
 	OBJECT_WITH_ACTS(57, 8056, 3341, 1324, 0, 0, 0, 0x26010000, Bhv_Custom_0x13000f58, 31),
 	OBJECT_WITH_ACTS(57, -10559, 3341, -7030, 0, 305, 0, 0x28000000, bhvWdwSquareFloatingPlatform, 31),
 	OBJECT_WITH_ACTS(120, 925, 4097, -1531, 0, 63, 0, 0x49010000, bhvRecoveryHeart, 31),
+	OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/4, /*vtx count*/4, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ 563, RM_Scroll_Texture, 31),
 	TERRAIN(lll_area_1_collision),
 	MACRO_OBJECTS(lll_area_1_macro_objs),
 	SET_BACKGROUND_MUSIC(0, 5),

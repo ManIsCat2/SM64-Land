@@ -21,6 +21,8 @@ movtexqc_register('ending_2_Movtex_2', 25, 1, 0)
 --for all hubs with water:
 -- OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/4, /*vtx count*/size, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ id, RM_Scroll_Texture, 31),
 
+add_scroll_target(563, "lll_dl_Water_Box_Mesh_mesh_layer_5_vtx_0", 0, 4)
+
 -- among us
 add_scroll_target(4, "VB_castle_grounds_1_0xe0148a0", 0, 4)
 add_scroll_target(5, "VB_castle_grounds_2_0xe019cc0", 0, 4)
