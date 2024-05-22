@@ -113,3 +113,8 @@ u8 lll_dl__22_rgba16[] = {
 	#include "levels/lll/_22.rgba16.inc.c"
 };
 
+Gfx lll_dl_segment2_11C58_rgba16_ci8_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 lll_dl_segment2_11C58_rgba16_ci8_rgba16[] = {
+	#include "levels/lll/segment2.11C58.rgba16.ci8.rgba16.inc.c"
+};
+

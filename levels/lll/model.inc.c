@@ -90,6 +90,10 @@ Lights1 lll_dl_Material_22_f3d_lights = gdSPDefLights1(
 	0x7F, 0x7F, 0x7F,
 	0xFF, 0xFF, 0xFF, 0x49, 0x49, 0x49);
 
+Lights1 lll_dl_sm64_water_mat_lights = gdSPDefLights1(
+	0x7F, 0x7F, 0x7F,
+	0xFF, 0xFF, 0xFF, 0x49, 0x49, 0x49);
+
 Vtx lll_dl_node_mesh_layer_1_vtx_cull[8] = {
 	{{ {-31013, -10569, 118}, 0, {0, 0}, {0, 0, 0, 0} }},
 	{{ {-31013, 10294, 118}, 0, {0, 0}, {0, 0, 0, 0} }},
@@ -5040,6 +5044,30 @@ Gfx lll_dl_node_mesh_layer_1_tri_22[] = {
 	gsSPEndDisplayList(),
 };
 
+Vtx lll_dl_Water_Box_Mesh_mesh_layer_5_vtx_cull[8] = {
+	{{ {-39208, 0, 39208}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {-39208, 0, 39208}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {-39208, 0, -39208}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {-39208, 0, -39208}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {39208, 0, 39208}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {39208, 0, 39208}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {39208, 0, -39208}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {39208, 0, -39208}, 0, {0, 0}, {0, 0, 0, 0} }},
+};
+
+Vtx lll_dl_Water_Box_Mesh_mesh_layer_5_vtx_0[4] = {
+	{{ {-39208, 0, 39208}, 0, {-19809, 20801}, {0, 127, 0, 255} }},
+	{{ {39208, 0, 39208}, 0, {19777, 20801}, {0, 127, 0, 255} }},
+	{{ {39208, 0, -39208}, 0, {19777, -18785}, {0, 127, 0, 255} }},
+	{{ {-39208, 0, -39208}, 0, {-19809, -18785}, {0, 127, 0, 255} }},
+};
+
+Gfx lll_dl_Water_Box_Mesh_mesh_layer_5_tri_0[] = {
+	gsSPVertex(lll_dl_Water_Box_Mesh_mesh_layer_5_vtx_0 + 0, 4, 0),
+	gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
+	gsSPEndDisplayList(),
+};
+
 Gfx mat_lll_dl_Material_0_f3d[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
@@ -5339,6 +5367,27 @@ Gfx mat_lll_dl_Material_22_f3d[] = {
 	gsSPEndDisplayList(),
 };
 
+Gfx mat_lll_dl_sm64_water_mat[] = {
+	gsDPPipeSync(),
+	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0, TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0),
+	gsSPGeometryMode(G_CULL_BACK, 0),
+	gsSPTexture(65535, 65535, 0, 0, 1),
+	gsDPSetPrimColor(0, 0, 255, 255, 255, 155),
+	gsSPSetLights1(lll_dl_sm64_water_mat_lights),
+	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b_LOAD_BLOCK, 1, lll_dl_segment2_11C58_rgba16_ci8_rgba16),
+	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b_LOAD_BLOCK, 0, 0, 7, 0, G_TX_WRAP | G_TX_NOMIRROR, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 0, 0),
+	gsDPLoadBlock(7, 0, 0, 1023, 256),
+	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
+	gsDPSetTileSize(0, 0, 0, 124, 124),
+	gsSPEndDisplayList(),
+};
+
+Gfx mat_revert_lll_dl_sm64_water_mat[] = {
+	gsDPPipeSync(),
+	gsSPGeometryMode(0, G_CULL_BACK),
+	gsSPEndDisplayList(),
+};
+
 Gfx lll_dl_node_mesh_layer_1[] = {
 	gsSPClearGeometryMode(G_LIGHTING),
 	gsSPVertex(lll_dl_node_mesh_layer_1_vtx_cull + 0, 8, 0),
@@ -5390,6 +5439,24 @@ Gfx lll_dl_node_mesh_layer_1[] = {
 	gsSPDisplayList(lll_dl_node_mesh_layer_1_tri_21),
 	gsSPDisplayList(mat_lll_dl_Material_22_f3d),
 	gsSPDisplayList(lll_dl_node_mesh_layer_1_tri_22),
+	gsDPPipeSync(),
+	gsSPSetGeometryMode(G_LIGHTING),
+	gsSPClearGeometryMode(G_TEXTURE_GEN),
+	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
+	gsSPTexture(65535, 65535, 0, 0, 0),
+	gsDPSetEnvColor(255, 255, 255, 255),
+	gsDPSetAlphaCompare(G_AC_NONE),
+	gsSPEndDisplayList(),
+};
+
+Gfx lll_dl_Water_Box_Mesh_mesh_layer_5[] = {
+	gsSPClearGeometryMode(G_LIGHTING),
+	gsSPVertex(lll_dl_Water_Box_Mesh_mesh_layer_5_vtx_cull + 0, 8, 0),
+	gsSPSetGeometryMode(G_LIGHTING),
+	gsSPCullDisplayList(0, 7),
+	gsSPDisplayList(mat_lll_dl_sm64_water_mat),
+	gsSPDisplayList(lll_dl_Water_Box_Mesh_mesh_layer_5_tri_0),
+	gsSPDisplayList(mat_revert_lll_dl_sm64_water_mat),
 	gsDPPipeSync(),
 	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPClearGeometryMode(G_TEXTURE_GEN),
