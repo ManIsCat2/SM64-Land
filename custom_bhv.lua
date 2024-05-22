@@ -158,6 +158,16 @@ end
 
 hook_behavior(id_bhvPushableMetalBox, OBJ_LIST_SURFACE, false, nil, huge_metal_box_loop)
 
+-- new thwomp
+
+function new_thwomp_init(o)
+    if o.oBehParams == 2 then
+        o.collisionData = smlua_collision_util_get("new_thwomp_collision")
+    end
+end
+
+hook_behavior(id_bhvThwomp, OBJ_LIST_SURFACE, false, new_thwomp_init, nil)
+
 function tall_doors_init(o)
     if o.oBehParams2ndByte == 1 then
         obj_scale_xyz(o, 1, 1.2, 1)
@@ -325,7 +335,7 @@ function sineInOut(b, e, c, t)
 end
 
 function cubicOut(b, e, c, t)
-    return b + (1 - (1 - t)^3) * (e - b)
+    return b + (1 - (1 - t) ^ 3) * (e - b)
 end
 
 ---@param o Object
@@ -868,11 +878,11 @@ function bhv_flip_block_init(o)
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     o.oBlockExtX = ((o.oBehParams >> 16) & 0xFF)
     o.oBlockExtZ = ((o.oBehParams >> 24) & 0xFF)
-    o.oBlockExtDiagonal = (o.oBlockExtX + o.oBlockExtZ)^2 * (o.oBlockExtX * o.oBlockExtZ)
+    o.oBlockExtDiagonal = (o.oBlockExtX + o.oBlockExtZ) ^ 2 * (o.oBlockExtX * o.oBlockExtZ)
     o.oBlockExtDelay = ((o.oBehParams >> 0) & 0xFF)
     obj_set_hitbox(o, sFlipBlockHitbox)
     obj_set_model_extended(o, E_MODEL_FLIP_BLOCK)
-    network_init_object(o, true, {"oBlockExtX", "oBlockExtZ", "oBlockExtDiagonal", "oBlockExtDelay"})
+    network_init_object(o, true, { "oBlockExtX", "oBlockExtZ", "oBlockExtDiagonal", "oBlockExtDelay" })
 end
 
 function bhv_flip_block_loop(o)
@@ -883,7 +893,7 @@ function bhv_flip_block_loop(o)
             load_object_collision_model()
             obj_scale_xyz(o, 1, 1, 1)
         elseif o.oAction == ACT_FLIP_BLOCK_FLIPPING then
-            o.oFaceAnglePitch = cubicOut(0, 344064, 1, o.oTimer/150)
+            o.oFaceAnglePitch = cubicOut(0, 344064, 1, o.oTimer / 150)
             o.oAction = o.oTimer < 150 and ACT_FLIP_BLOCK_FLIPPING or ACT_FLIP_BLOCK_IDLE
             obj_scale_xyz(o, 1, 1, 0.02)
         end
@@ -933,13 +943,13 @@ function bhv_custom_rotating_platform(o)
     o.collisionData = COL_JRB_PLATFORM
     o.header.gfx.skipInViewCheck = true
     o.oCollisionDistance = 6000
-    o.oAngleVelYaw = 400
+    o.oAngleVelYaw = 100
 end
 
 function bhv_custom_rotating_platform_loop(o)
     load_object_collision_model()
-    o.oFaceAngleYaw = o.oFaceAngleYaw + 400
+    o.oFaceAngleYaw = o.oFaceAngleYaw + 100
 end
 
-
-id_bhvRotPlatformJRB = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_custom_rotating_platform, bhv_custom_rotating_platform_loop)
+id_bhvRotPlatformJRB = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_custom_rotating_platform,
+    bhv_custom_rotating_platform_loop)
