@@ -928,10 +928,18 @@ id_bhvPushableN64Button = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_pushabl
     end)
 
 COL_JRB_PLATFORM = smlua_collision_util_get("rotating_platform_jrb_collision")
+---@param o Object
 function bhv_custom_rotating_platform(o)
     o.collisionData = COL_JRB_PLATFORM
     o.header.gfx.skipInViewCheck = true
     o.oCollisionDistance = 6000
+    o.oAngleVelYaw = 400
 end
 
-id_bhvRotPlatformJRB = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_custom_rotating_platform, function (o) load_object_collision_model() end)
+function bhv_custom_rotating_platform_loop(o)
+    load_object_collision_model()
+    o.oFaceAngleYaw = o.oFaceAngleYaw + 400
+end
+
+
+id_bhvRotPlatformJRB = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_custom_rotating_platform, bhv_custom_rotating_platform_loop)
