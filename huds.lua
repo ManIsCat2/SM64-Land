@@ -19,12 +19,14 @@ warpsforlevels = {
     boss areas don't count
 ]]
 levelData = {
-    [COURSE_BOB] = {{stars = {0, 2, 1, 6}, coinStar = 6, finalStar = 1}, {stars = {4, 5}, finalStar = 5}},
+    [COURSE_BOB] = {{stars = {0, 2, 1, 6}, coinStar = 6, finalStar = 1}, {stars = {4, 5}, finalStar = 5}, {stars = {}, finalStar = nil}},
     [COURSE_WF] = {{stars = {2, 1, 0}, finalStar = 0}, {stars = {5, 4}, finalStar = 4}},
     [COURSE_CCM] = {{stars = {2, 1, 0}, finalStar = 0}, {stars = {4, 3, 6}, finalStar = 3}, {stars = {}, finalStar = nil} },
     [COURSE_JRB] = {{stars = {2, 1, 0}, finalStar = 0}, {stars = {3, 5, 4}, finalStar = 4}},
     [COURSE_BBH] = {{stars = {1, 2, 0}, finalStar = 0}},
-    [COURSE_HMC] = {{stars = {0, 1, 2}, finalStar = 2}}
+    [COURSE_HMC] = {{stars = {0, 1, 2}, finalStar = 2}},
+    [COURSE_LLL] = {{stars = {}, finalStar = nil}},
+    [COURSE_SSL] = {{stars = {1, 0}, finalStar = 0}}
 }
 
 local xCursorIndex = 1
