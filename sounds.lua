@@ -11,6 +11,7 @@ smlua_audio_utils_replace_sequence(51, 26, 75, "3-4outside")
 smlua_audio_utils_replace_sequence(54, 16, 75, "OW4_Retro_Remix2")
 smlua_audio_utils_replace_sequence(40, 17, 75, "Super Mario World - Athletic Remix (NInst 17)")
 smlua_audio_utils_replace_sequence(0x05, 19, 75, "Dire, Dire Docks")
+smlua_audio_utils_replace_sequence(68, 24, 75, "1-4_Yoshi_Star")
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom")
