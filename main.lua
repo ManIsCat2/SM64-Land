@@ -23,7 +23,7 @@ gLevelValues.exitCastleWarpNode = 11
 -- fix collisions being bad
 gLevelValues.fixCollisionBugs = true
 gLevelValues.fixCollisionBugsRoundedCorners = false
-gLevelValues.fixCollisionBugsGroundPoundBonks = true
+gLevelValues.fixCollisionBugsGroundPoundBonks = false
 --fix  cap durations
 gLevelValues.metalCapDurationCotmc = 1
 gLevelValues.wingCapDurationTotwc = 1
