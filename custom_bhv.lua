@@ -159,7 +159,6 @@ smlua_anim_util_register_animation("anim_dance_hill",
         0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
         0xFFFF, 0xFFFF, 0xFFFF, 0x0000, 0x0000, 0x0000, 0x0000, 0xFFFF, 0xFFFF,
         0x0000, 0xFFFF, 0x0000, 0x0000, 0x0000, 0x0000, 0xFFFF, 0xFFFF, 0x0000, },
-
     { 0x0001, 0x0000, 0x0001, 0x0001, 0x0001, 0x0002, 0x0001, 0x0003, 0x0001,
         0x0004, 0x0001, 0x0005, 0x0001, 0x0006, 0x0001, 0x0007, 0x0046, 0x0008,
         0x0050, 0x004E, 0x0045, 0x009E, 0x004F, 0x00E3, })
@@ -673,10 +672,14 @@ ACT_GOOMBA_BOSS_DIALOGUE = 3
 ---@param o Object
 function bhv_king_goomba_init(o)
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.oFriction = 1
+    o.oMoveAngleYaw = -32768
     o.oFaceAngleYaw = -32768
     o.oPosZ = o.oPosZ + 500
     o.header.gfx.skipInViewCheck = true
     o.oAnimations = gObjectAnimations.goomba_seg8_anims_0801DA4C
+    o.oAction = ACT_GOOMBA_BOSS_DIALOGUE
+    set_background_music(0, SEQ_EVENT_BOSS, 0)
     obj_set_hitbox(o, sKingGoombaHitbox)
     cur_obj_scale(5)
     cur_obj_init_animation(0)
@@ -685,26 +688,18 @@ end
 ---@param o Object
 function bhv_king_goomba_loop(o)
     o.oInteractStatus = 0
+    ---@type MarioState
     local m = gMarioStates[0]
-    cur_obj_can_mario_activate_textbox_2(m, 1, 100)
-    if should_start_or_continue_dialog(m, o) ~= 0 then
-        --djui_chat_message_create("Trigger Dialogue")
+    if should_start_or_continue_dialog(m, o) and o.oAction == ACT_GOOMBA_BOSS_DIALOGUE then
+        cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_008)
     end
-    djui_chat_message_create(tostring(should_start_or_continue_dialog(m, o)))
+    
+    if get_dialog_box_state() == 3 then
+        --ur code goes here
+    end
     object_step()
     if o.oAction == ACT_GOOMBA_BOSS_RUNNING then
         o.oForwardVel = 30
-        o.oSubAction = o.oSubAction + 1
-    end
-
-    if o.oAction == ACT_GOOMBA_BOSS_ON_GROUND then
-        o.header.gfx.angle.x = 16384
-        o.oForwardVel = 0
-    end
-
-    if o.oSubAction > 50 then
-        o.oAction = ACT_GOOMBA_BOSS_ON_GROUND
-        o.oSubAction = 0
     end
 end
 
@@ -1023,10 +1018,10 @@ function bhv_pushable_n64_button_init(o)
 end
 
 id_bhvPushableN64Button = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_pushable_n64_button_init,
-function(o)
-    load_object_collision_model()
-    bhv_pushable_loop()
-end)
+    function(o)
+        load_object_collision_model()
+        bhv_pushable_loop()
+    end)
 
 COL_JRB_PLATFORM = smlua_collision_util_get("rotating_platform_jrb_collision")
 ---@param o Object
@@ -1101,7 +1096,7 @@ function bhv_kickable_rock_loop(o)
     end
     if o.oVelX ~= 0 or o.oVelZ ~= 0 then
         local moveAngle = atan2s(o.oVelZ * 100, o.oVelX * 100)
-        local forwardRot = math.sqrt(o.oVelX^2 + o.oVelZ^2)
+        local forwardRot = math.sqrt(o.oVelX ^ 2 + o.oVelZ ^ 2)
         o.oFaceAngleYaw = moveAngle
         o.oFaceAnglePitch = o.oFaceAnglePitch + forwardRot * 100
     end
@@ -1136,7 +1131,7 @@ function bhv_checkpoint_init(o)
     cur_obj_init_animation(0)
     o.oCollected = FALSE
     o.header.gfx.pos.y = o.oPosY - 180
-    network_init_object(o, true, {"oCollected"})
+    network_init_object(o, true, { "oCollected" })
     obj_set_hitbox(o, sCheckpointHitbox)
 end
 
