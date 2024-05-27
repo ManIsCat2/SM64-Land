@@ -18,7 +18,7 @@ local E_MODEL_SHRINK_PLATFORM_BORDER = smlua_model_util_get_id("Shrink_Platform_
 local E_MODEL_SWITCHBLOCK = smlua_model_util_get_id("Switchblock_MOP")
 local E_MODEL_SWITCHBLOCK_SWITCH = smlua_model_util_get_id("Switchblock_Switch_MOP")
 local E_MODEL_SPRING = smlua_model_util_get_id("Spring_MOP")
-E_MODEL_CHECKPOINT = smlua_model_util_get_id("Checkpoint_Flag_MOP")
+local E_MODEL_CHECKPOINT = smlua_model_util_get_id("Checkpoint_Flag_MOP")
 E_MODEL_GREEN_SWITCHBOARD = smlua_model_util_get_id("Green_Switchboard_MOP")
 E_MODEL_GREEN_SWITCHBOARD_GEARS = smlua_model_util_get_id("Green_Switchboard_Gears_MOP")
 local E_MODEL_MOVING_ROATING_BLOCK = smlua_model_util_get_id("Moving_Rotating_Block_MOP")
@@ -521,7 +521,7 @@ end
 
 --id_bhvFlipswap_Platform_MOP = hook_behavior(nil, OBJ_LIST_SURFACE, false, bhv_flipswap_init, bhv_flipswap_loop, "bhvFlipswap_Platform_MOP")
 
------- Checkpoint flag ------
+--[[---- Checkpoint flag ------
 -- Dying will cause the player to respawn at this point
 -- ! The 2nd byte of every checkpoint flag within different courses should be different
 -- ! A good practice is to put the level ID of the level the flag is in as the 2nd byte
@@ -570,7 +570,7 @@ hook_event(HOOK_ON_SYNC_VALID,
                 vec3f_set(m.pos, ltc.oPosX, ltc.oPosY, ltc.oPosZ)
             end
         end
-    end)
+    end)]]
 
 --id_bhvCheckpoint_Flag_MOP = hook_behavior(nil, OBJ_LIST_GENACTOR, false, bhv_checkpoint_flag_init, bhv_checkpoint_flag_loop, "bhvCheckpoint_Flag_MOP")
 
