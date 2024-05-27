@@ -164,8 +164,6 @@ smlua_anim_util_register_animation("anim_dance_hill",
         0x0004, 0x0001, 0x0005, 0x0001, 0x0006, 0x0001, 0x0007, 0x0046, 0x0008,
         0x0050, 0x004E, 0x0045, 0x009E, 0x004F, 0x00E3, })
 
-
-
 -- Big SeeSaw
 
 function big_seesaw_loop(o)
@@ -196,14 +194,17 @@ hook_behavior(id_bhvWoodenPost, OBJ_LIST_SURFACE, false, nil, unpoundable_wooden
 
 -- Huge Metal Box
 
-function huge_metal_box_loop(o)
-    cur_obj_scale(1.75)
-    o.oCollisionDistance = 2000
-    o.oPosX = o.oHomeX
-    o.oPosZ = o.oHomeZ
+function huge_metal_box_init(o)
+    o.collisionData = gGlobalObjectCollisionData.metal_box_seg8_collision_08024C28
 end
 
-hook_behavior(id_bhvPushableMetalBox, OBJ_LIST_SURFACE, false, nil, huge_metal_box_loop)
+function huge_metal_box_loop(o)
+    load_object_collision_model()
+    cur_obj_scale(1.75)
+    o.oCollisionDistance = 2000
+end
+
+hook_behavior(id_bhvPushableMetalBox, OBJ_LIST_SURFACE, true, huge_metal_box_init, huge_metal_box_loop)
 
 -- new thwomp
 
@@ -649,28 +650,49 @@ id_bhvFakeWarpPipe = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_fake_pipe_in
 
 
 --- gombba :D
-E_MODEL_GOOMBOSS = smlua_model_util_get_id("king_goomba_geo")
+E_MODEL_KING_GOOMBA = smlua_model_util_get_id("king_goomba_geo")
+
+local sKingGoombaHitbox = {
+    interactType = INTERACT_DAMAGE,
+    downOffset = 0,
+    damageOrCoinValue = 3,
+    health = 3,
+    numLootCoins = 0,
+    radius = 300,
+    height = 300,
+    hurtboxHeight = 150,
+    hurtboxRadius = 150,
+    numLootScore = 0
+}
+
+ACT_GOOMBA_BOSS_RUNNING = 0
+ACT_GOOMBA_BOSS_HIT_WALL = 1
+ACT_GOOMBA_BOSS_ON_GROUND = 2
+ACT_GOOMBA_BOSS_DIALOGUE = 3
 
 ---@param o Object
-function bhv_goomboss_init(o)
-    o.oInteractType = INTERACT_DAMAGE
+function bhv_king_goomba_init(o)
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.oFaceAngleYaw = -32768
+    o.oPosZ = o.oPosZ + 500
     o.header.gfx.skipInViewCheck = true
     o.oAnimations = gObjectAnimations.goomba_seg8_anims_0801DA4C
-    o.hitboxRadius = 320
-    o.hitboxHeight = 300
+    obj_set_hitbox(o, sKingGoombaHitbox)
+    cur_obj_scale(5)
     cur_obj_init_animation(0)
 end
 
-ACT_GOOMBA_BOSS_RUNNING_TO_WALL = 0
-ACT_GOOMBA_BOSS_ON_GROUND = 1
-
 ---@param o Object
-function bhv_goomboss_loop(o)
+function bhv_king_goomba_loop(o)
     o.oInteractStatus = 0
     local m = gMarioStates[0]
+    cur_obj_can_mario_activate_textbox_2(m, 1, 100)
+    if should_start_or_continue_dialog(m, o) ~= 0 then
+        --djui_chat_message_create("Trigger Dialogue")
+    end
+    djui_chat_message_create(tostring(should_start_or_continue_dialog(m, o)))
     object_step()
-    if o.oAction == ACT_GOOMBA_BOSS_RUNNING_TO_WALL then
+    if o.oAction == ACT_GOOMBA_BOSS_RUNNING then
         o.oForwardVel = 30
         o.oSubAction = o.oSubAction + 1
     end
@@ -684,15 +706,9 @@ function bhv_goomboss_loop(o)
         o.oAction = ACT_GOOMBA_BOSS_ON_GROUND
         o.oSubAction = 0
     end
-
-    -- other
-
-    if o.oAction == ACT_GOOMBA_BOSS_ON_GROUND and m.action == ACT_GROUND_POUND and dist_between_objects(o, m.marioObj) < 100 then
-        o.oAction = 3
-    end
 end
 
-id_bhvGoomboss = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_goomboss_init, bhv_goomboss_loop)
+id_bhvKingGoomba = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_king_goomba_init, bhv_king_goomba_loop)
 
 --bouncer
 
@@ -959,14 +975,41 @@ function bhv_flip_block_loop(o)
         djui_chat_message_create("2: "..tostring((o.oBehParams >> 16) & 0xFF))
         djui_chat_message_create("3: "..tostring((o.oBehParams >> 8) & 0xFF)) -- USELESS!
         djui_chat_message_create("4: "..tostring((o.oBehParams >> 0) & 0xFF))
-        djui_chat_message_create("X Blocks: "..tostring(o.oBlockExtX))
-        djui_chat_message_create("Z Blocks: "..tostring(o.oBlockExtZ))
-        djui_chat_message_create("Diagonal Blocks: "..tostring(o.oBlockExtDiagonal))
-        djui_chat_message_create("Extension Delay: "..tostring(o.oBlockExtDelay))]]
+        if gMarioStates[0].controller.buttonDown & Y_BUTTON ~= 0 then
+            djui_chat_message_create("X Blocks: "..tostring(o.oBlockExtX))
+            djui_chat_message_create("Z Blocks: "..tostring(o.oBlockExtZ))
+            djui_chat_message_create("Diagonal Blocks: "..tostring(o.oBlockExtDiagonal))
+            djui_chat_message_create("Extension Delay: "..tostring(o.oBlockExtDelay))
+        else
+            for i = 1, o.oBlockExtX*2 do
+                djui_chat_message_create("x block "..tostring(i))
+            end
+            for i = 1, o.oBlockExtZ*2 do
+                djui_chat_message_create("z block "..tostring(i))
+            end
+            for i = 1, o.oBlockExtDiagonal do
+                djui_chat_message_create("diagonal block "..tostring(i))
+            end
+        end]]
     end
 end
 
 id_bhvFlipBlock = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_flip_block_init, bhv_flip_block_loop)
+
+--hook_event(HOOK_MARIO_UPDATE, function (m) if m.controller.buttonPressed & X_BUTTON ~= 0 then; spawn_sync_object(id_bhvExtensionBlock, E_MODEL_FLIP_BLOCK, m.pos.x, m.pos.y + 100, m.pos.z, nil) end end)
+
+function bhv_extension_block_init(o)
+    o.collisionData = COL_FLIP_BLOCK
+    obj_set_model_extended(o, E_MODEL_FLIP_BLOCK)
+end
+
+function bhv_extension_block_loop(o)
+    load_object_collision_model()
+    djui_chat_message_create("i exist")
+    djui_chat_message_create(string.format("x %s y %s z %s", o.oPosX, o.oPosY, o.oPosZ))
+end
+
+id_bhvExtensionBlock = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_extension_block_init, bhv_extension_block_loop)
 
 --pushable n64 button
 E_MODEL_PUSHABLE_N64_BUTTON = smlua_model_util_get_id("pushable_n64_button_geo")
@@ -980,10 +1023,10 @@ function bhv_pushable_n64_button_init(o)
 end
 
 id_bhvPushableN64Button = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_pushable_n64_button_init,
-    function(o)
-        load_object_collision_model()
-        bhv_pushable_loop()
-    end)
+function(o)
+    load_object_collision_model()
+    bhv_pushable_loop()
+end)
 
 COL_JRB_PLATFORM = smlua_collision_util_get("rotating_platform_jrb_collision")
 ---@param o Object
@@ -1001,3 +1044,108 @@ end
 
 id_bhvRotPlatformJRB = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_custom_rotating_platform,
     bhv_custom_rotating_platform_loop)
+
+-- Unclimbable Trees
+
+E_MODEL_UNCLIMBABLE_TREE = smlua_model_util_get_id("normal_tree_geo")
+
+local sUnclimbableTreeHitbox = {
+    interactType = nil,
+    downOffset = 0,
+    damageOrCoinValue = 0,
+    health = 0,
+    numLootCoins = 0,
+    radius = 125,
+    height = 700,
+    hurtboxHeight = 0,
+    hurtboxRadius = 0
+}
+
+function bhv_unclimbable_tree_init(o)
+    obj_set_model_extended(o, E_MODEL_UNCLIMBABLE_TREE)
+    obj_set_hitbox(o, sUnclimbableTreeHitbox)
+end
+
+function bhv_unclimbable_tree_loop(o)
+    cur_obj_push_mario_away_from_cylinder(o.hitboxRadius, o.hitboxHeight)
+end
+
+id_bhvUnclimbableTree = hook_behavior(nil, OBJ_LIST_DEFAULT, true, bhv_unclimbable_tree_init, bhv_unclimbable_tree_loop)
+
+-- Kickable Rocks
+
+E_MODEL_KICKABLE_ROCK = smlua_model_util_get_id("kickable_rock_geo")
+
+local sKickableRockHitbox = {
+    interactType = nil,
+    downOffset = 0,
+    damageOrCoinValue = 0,
+    health = 1,
+    numLootCoins = 1,
+    radius = 60,
+    height = 60,
+    hurtboxHeight = 0,
+    hurtboxRadius = 0,
+    numLootScore = 100
+}
+
+function bhv_kickable_rock_init(o)
+    obj_set_model_extended(o, E_MODEL_KICKABLE_ROCK)
+    o.header.gfx.pos.y = o.oPosY + 50
+    obj_set_hitbox(o, sKickableRockHitbox)
+end
+
+function bhv_kickable_rock_loop(o)
+    if obj_check_hitbox_overlap(gMarioStates[0].marioObj, o) then
+        -- need code moment
+    end
+    if o.oVelX ~= 0 or o.oVelZ ~= 0 then
+        local moveAngle = atan2s(o.oVelZ * 100, o.oVelX * 100)
+        local forwardRot = math.sqrt(o.oVelX^2 + o.oVelZ^2)
+        o.oFaceAngleYaw = moveAngle
+        o.oFaceAnglePitch = o.oFaceAnglePitch + forwardRot * 100
+    end
+end
+
+id_bhvKickableRock = hook_behavior(nil, OBJ_LIST_DEFAULT, true, bhv_kickable_rock_init, bhv_kickable_rock_loop)
+
+-- Checkpoint Flag (I'm so peak)
+
+E_MODEL_CHECKPOINT = smlua_model_util_get_id("checkpoint_geo")
+
+local sCheckpointHitbox = {
+    interactType = INTERACT_POLE,
+    downOffset = 0,
+    damageOrCoinValue = 0,
+    health = 0,
+    numLootCoins = 0,
+    radius = 30,
+    height = 150,
+    hurtboxHeight = 0,
+    hurtboxRadius = 0
+}
+
+define_custom_obj_fields({
+    oCollected = "f32"
+})
+
+function bhv_checkpoint_init(o)
+    obj_set_model_extended(o, E_MODEL_CHECKPOINT)
+    o.oAnimations = gObjectAnimations.castle_grounds_seg7_anims_flags
+    o.oAnimState = 1
+    cur_obj_init_animation(0)
+    o.oCollected = FALSE
+    o.header.gfx.pos.y = o.oPosY - 180
+    network_init_object(o, true, {"oCollected"})
+    obj_set_hitbox(o, sCheckpointHitbox)
+end
+
+function bhv_checkpoint_loop(o)
+    local m = gMarioStates[0]
+    if obj_check_hitbox_overlap(m.marioObj, o) then
+        o.oCollected = TRUE
+    end
+    o.oAnimState = o.oCollected
+end
+
+id_bhvCheckpoint = hook_behavior(nil, OBJ_LIST_POLELIKE, true, bhv_checkpoint_init, bhv_checkpoint_loop)

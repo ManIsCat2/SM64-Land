@@ -13,7 +13,7 @@ const GeoLayout king_goomba_geo[] = {
 					GEO_OPEN_NODE(),
 						GEO_BILLBOARD_WITH_PARAMS(LAYER_FORCE, 0, 0, 0),
 						GEO_OPEN_NODE(),
-							GEO_DISPLAY_LIST(LAYER_OPAQUE, king_goomba_000_displaylist_mesh_layer_1),
+							GEO_DISPLAY_LIST(LAYER_ALPHA, king_goomba_000_displaylist_mesh_layer_4),
 						GEO_CLOSE_NODE(),
 						GEO_SWITCH_CASE(2, geo_switch_anim_state),
 						GEO_OPEN_NODE(),
@@ -37,6 +37,8 @@ const GeoLayout king_goomba_geo[] = {
 				GEO_CLOSE_NODE(),
 			GEO_CLOSE_NODE(),
 		GEO_CLOSE_NODE(),
+		GEO_DISPLAY_LIST(LAYER_OPAQUE, king_goomba_material_revert_render_settings),
+		GEO_DISPLAY_LIST(LAYER_ALPHA, king_goomba_material_revert_render_settings),
 	GEO_CLOSE_NODE(),
 	GEO_END(),
 };
