@@ -29,6 +29,10 @@ levelData = {
     [COURSE_SSL] = {{stars = {1, 0}, finalStar = 0}}
 }
 
+bossLevelData = {
+    [COURSE_BOB + 3] = true,
+}
+
 local xCursorIndex = 1
 local yCursorIndex = 1
 local stickMoved = false
@@ -203,7 +207,12 @@ function lobby_hud()
 end
 
 function level_hud()
-    if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_COTMC) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_VCUTM) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_TOTWC) then
+    local curCourseNum = gNetworkPlayers[0].currCourseNum
+    local curAreaIndex = gNetworkPlayers[0].currAreaIndex
+    local bossLevel = bossLevelData[curCourseNum + curAreaIndex]
+    local hubLevel = gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) or gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS)
+    local toadHouse = gNetworkPlayers[0].currLevelNum == (LEVEL_COTMC) or gNetworkPlayers[0].currLevelNum == (LEVEL_VCUTM) or gNetworkPlayers[0].currLevelNum == (LEVEL_TOTWC)
+    if not hubLevel and not bossLevel and not toadHouse and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) then
 
         -- Score Counter
 
@@ -212,12 +221,12 @@ function level_hud()
 
         -- Collected Stars Display
 
-        local curCourseNum = gNetworkPlayers[0].currCourseNum
-        local curAreaIndex = gNetworkPlayers[0].currAreaIndex
-        local areaStars = levelData[curCourseNum][curAreaIndex].stars
-        local coinStar = levelData[curCourseNum][curAreaIndex].coinStar
-        for i = 0, #areaStars - 1 do
-            djui_hud_render_texture(operation(curCourseNum, areaStars[i+1], coinStar and coinStar == areaStars[i+1]), ((djui_hud_get_screen_width() / 2) - 24) + 14 * i, 4, 1, 1)
+        areaStars = levelData[curCourseNum] and levelData[curCourseNum][curAreaIndex].stars
+        coinStar = levelData[curCourseNum] and levelData[curCourseNum][curAreaIndex].coinStar
+        if areaStars then
+            for i = 0, #areaStars - 1 do
+                djui_hud_render_texture(operation(curCourseNum, areaStars[i+1], coinStar and coinStar == areaStars[i+1]), ((djui_hud_get_screen_width() / 2) - 24) + 14 * i, 4, 1, 1)
+            end
         end
 
         -- Timer
