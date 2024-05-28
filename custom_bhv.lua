@@ -689,7 +689,7 @@ end
 ---@param o Object
 function bhv_king_goomba_loop(o)
     o.oInteractStatus = 0
-    djui_chat_message_create(tostring(o.oFaceAnglePitch))
+    --djui_chat_message_create(tostring(o.oFaceAnglePitch))
     ---@type MarioState
     local m = gMarioStates[0]
     if should_start_or_continue_dialog(m, o) and o.oAction == ACT_GOOMBA_BOSS_DIALOGUE then
@@ -745,7 +745,7 @@ function bhv_king_goomba_loop(o)
         o.oInteractType = INTERACT_DAMAGE
     end
 
-    if o.oAction == ACT_GOOMBA_BOSS_ON_GROUND and o.oSubAction > 100 then
+    if o.oAction == ACT_GOOMBA_BOSS_ON_GROUND and o.oSubAction > 70 then
         o.oSubAction = 0
         o.oFaceAngleYaw = obj_angle_to_object(o, m.marioObj)
         o.oMoveAngleYaw = obj_angle_to_object(o, m.marioObj)
