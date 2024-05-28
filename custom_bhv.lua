@@ -689,7 +689,7 @@ end
 ---@param o Object
 function bhv_king_goomba_loop(o)
     o.oInteractStatus = 0
-    djui_chat_message_create(tostring(o.oHealth))
+    djui_chat_message_create(tostring(o.oFaceAnglePitch))
     ---@type MarioState
     local m = gMarioStates[0]
     if should_start_or_continue_dialog(m, o) and o.oAction == ACT_GOOMBA_BOSS_DIALOGUE then
@@ -737,25 +737,36 @@ function bhv_king_goomba_loop(o)
     end
 
     -- on ground
-    if o.oAction == ACT_GOOMBA_BOSS_ON_GROUND then
+    if o.oAction == ACT_GOOMBA_BOSS_ON_GROUND and o.oAnimState ~= 1 then
+        o.oFaceAnglePitch = approach_s32(o.oFaceAnglePitch, -16384, 0, 1000)
         o.oInteractType = 0
-        o.oFaceAnglePitch  = -16384
         o.oForwardVel = 0
     else
         o.oInteractType = INTERACT_DAMAGE
     end
 
-    if o.oAction == ACT_GOOMBA_BOSS_ON_GROUND and m.action == ACT_GROUND_POUND_LAND and obj_check_hitbox_overlap(m.marioObj, o) then
-        spawn_sync_object(id_bhvGoomba, E_MODEL_GOOMBA, o.oPosX, o.oPosY, o.oPosZ, function (obj) obj.oBehParams2ndByte = 1 end)
-        o.oFaceAnglePitch  = 0
+    if o.oAction == ACT_GOOMBA_BOSS_ON_GROUND and o.oSubAction > 100 then
+        o.oSubAction = 0
         o.oFaceAngleYaw = obj_angle_to_object(o, m.marioObj)
         o.oMoveAngleYaw = obj_angle_to_object(o, m.marioObj)
+        o.oAnimState = 0
+        o.oAction = ACT_GOOMBA_BOSS_CHARGING
+        
+    end
+
+    if o.oAnimState == 1 then
+        o.oSubAction = o.oSubAction + 1
+        o.oFaceAnglePitch = approach_s32(o.oFaceAnglePitch, 0, 1000, 0)
+    end
+
+    if o.oAction == ACT_GOOMBA_BOSS_ON_GROUND and m.action == ACT_GROUND_POUND_LAND and obj_check_hitbox_overlap(m.marioObj, o) and o.oAnimState ~= 1 then
         m.action = ACT_TRIPLE_JUMP
         m.vel.y = 78
         m.invincTimer = 60
         play_sound(SOUND_OBJ_KING_WHOMP_DEATH, o.header.gfx.cameraToObject)
         o.oHealth = o.oHealth - 1
-        o.oAction = ACT_GOOMBA_BOSS_CHARGING
+        spawn_sync_object(id_bhvGoomba, E_MODEL_GOOMBA, o.oPosX, o.oPosY, o.oPosZ, function (obj) obj.oBehParams2ndByte = 1 end)
+        o.oAnimState = 1
     end
 end
 
