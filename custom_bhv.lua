@@ -668,10 +668,11 @@ ACT_GOOMBA_BOSS_RUNNING = 0
 ACT_GOOMBA_BOSS_HIT_WALL = 1
 ACT_GOOMBA_BOSS_ON_GROUND = 2
 ACT_GOOMBA_BOSS_DIALOGUE = 3
+ACT_GOOMBA_BOSS_CHARGING = 4
 
 ---@param o Object
 function bhv_king_goomba_init(o)
-    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_MOVE_XZ_USING_FVEL
     o.oFriction = 1
     o.oMoveAngleYaw = -32768
     o.oFaceAngleYaw = -32768
@@ -688,6 +689,7 @@ end
 ---@param o Object
 function bhv_king_goomba_loop(o)
     o.oInteractStatus = 0
+    djui_chat_message_create(tostring(o.oHealth))
     ---@type MarioState
     local m = gMarioStates[0]
     if should_start_or_continue_dialog(m, o) and o.oAction == ACT_GOOMBA_BOSS_DIALOGUE then
@@ -695,11 +697,65 @@ function bhv_king_goomba_loop(o)
     end
     
     if get_dialog_box_state() == 3 then
-        --ur code goes here
+        o.oAction = ACT_GOOMBA_BOSS_CHARGING
     end
-    object_step()
+
+    if o.oHealth <= 0 then
+        spawn_mist_particles_variable(0, 0, 100.0);
+        spawn_triangle_break_particles(20, 138, 3.0, 4);
+        star = spawn_default_star(m.pos.x, m.pos.y + 200, m.pos.z)
+        star.oBehParams = (3 << 24)
+        obj_mark_for_deletion(o)
+    end
+    --object_step()
+    --- action code
+
+    --- charge up
+    if o.oAction == ACT_GOOMBA_BOSS_CHARGING then
+        cur_obj_init_animation_with_accel_and_sound(0, 3)
+        cur_obj_play_sound_at_anim_range(2, 17, SOUND_OBJ_GOOMBA_WALK)
+        spawn_non_sync_object(id_bhvSparkleSpawn, E_MODEL_NONE, o.oPosX, o.oPosY, o.oPosZ, nil);
+        o.oSubAction = o.oSubAction + 1
+    end
+
+    if o.oAction == ACT_GOOMBA_BOSS_CHARGING and o.oSubAction > 70 then
+        o.oAction = ACT_GOOMBA_BOSS_RUNNING
+        o.oSubAction  = 0
+    end
+
+    -- run
+
+    
     if o.oAction == ACT_GOOMBA_BOSS_RUNNING then
-        o.oForwardVel = 30
+        o.oForwardVel = 70
+    end
+
+    if obj_find_wall(o.oPosX + o.oVelX, o.oPosY, o.oPosZ + o.oVelZ, o.oVelX, o.oVelZ) == 0 then
+        o.oAction = ACT_GOOMBA_BOSS_ON_GROUND
+        o.oPosX = o.oPosX - (50 * sins(o.oFaceAngleYaw))
+        o.oPosZ = o.oPosZ - (50 * coss(o.oFaceAngleYaw))
+    end
+
+    -- on ground
+    if o.oAction == ACT_GOOMBA_BOSS_ON_GROUND then
+        o.oInteractType = 0
+        o.oFaceAnglePitch  = -16384
+        o.oForwardVel = 0
+    else
+        o.oInteractType = INTERACT_DAMAGE
+    end
+
+    if o.oAction == ACT_GOOMBA_BOSS_ON_GROUND and m.action == ACT_GROUND_POUND_LAND and obj_check_hitbox_overlap(m.marioObj, o) then
+        spawn_sync_object(id_bhvGoomba, E_MODEL_GOOMBA, o.oPosX, o.oPosY, o.oPosZ, function (obj) obj.oBehParams2ndByte = 1 end)
+        o.oFaceAnglePitch  = 0
+        o.oFaceAngleYaw = obj_angle_to_object(o, m.marioObj)
+        o.oMoveAngleYaw = obj_angle_to_object(o, m.marioObj)
+        m.action = ACT_TRIPLE_JUMP
+        m.vel.y = 78
+        m.invincTimer = 60
+        play_sound(SOUND_OBJ_KING_WHOMP_DEATH, o.header.gfx.cameraToObject)
+        o.oHealth = o.oHealth - 1
+        o.oAction = ACT_GOOMBA_BOSS_CHARGING
     end
 end
 
