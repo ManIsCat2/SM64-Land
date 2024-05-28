@@ -732,8 +732,8 @@ function bhv_king_goomba_loop(o)
 
     if obj_find_wall(o.oPosX + o.oVelX, o.oPosY, o.oPosZ + o.oVelZ, o.oVelX, o.oVelZ) == 0 then
         o.oAction = ACT_GOOMBA_BOSS_ON_GROUND
-        o.oPosX = o.oPosX - (50 * sins(o.oFaceAngleYaw))
-        o.oPosZ = o.oPosZ - (50 * coss(o.oFaceAngleYaw))
+        o.oPosX = o.oPosX - (200 * sins(o.oFaceAngleYaw))
+        o.oPosZ = o.oPosZ - (200 * coss(o.oFaceAngleYaw))
     end
 
     -- on ground
