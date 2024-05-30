@@ -684,6 +684,7 @@ function bhv_king_goomba_init(o)
     obj_set_hitbox(o, sKingGoombaHitbox)
     cur_obj_scale(5)
     cur_obj_init_animation(0)
+    network_init_object(o, true, nil)
 end
 
 ---@param o Object
@@ -692,8 +693,9 @@ function bhv_king_goomba_loop(o)
     --djui_chat_message_create(tostring(o.oFaceAnglePitch))
     ---@type MarioState
     local m = gMarioStates[0]
-    if should_start_or_continue_dialog(m, o) and o.oAction == ACT_GOOMBA_BOSS_DIALOGUE then
+    if should_start_or_continue_dialog(m, o) and o.oAction == ACT_GOOMBA_BOSS_DIALOGUE and o.oBehParams ~= 1 then
         cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_008)
+        o.oBehParams = 1
     end
     
     if get_dialog_box_state() == 3 then
@@ -1097,6 +1099,7 @@ function bhv_custom_rotating_platform(o)
     o.header.gfx.skipInViewCheck = true
     o.oCollisionDistance = 6000
     o.oAngleVelYaw = 100
+    network_init_object(o, true, nil)
 end
 
 function bhv_custom_rotating_platform_loop(o)
@@ -1155,6 +1158,7 @@ function bhv_kickable_rock_init(o)
     obj_set_model_extended(o, E_MODEL_KICKABLE_ROCK)
     o.header.gfx.pos.y = o.oPosY + 50
     obj_set_hitbox(o, sKickableRockHitbox)
+    network_init_object(o, true, nil)
 end
 
 function bhv_kickable_rock_loop(o)
