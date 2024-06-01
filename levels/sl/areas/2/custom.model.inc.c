@@ -25548,10 +25548,10 @@ Gfx DL_sl_2_0xe059a08[] = {
 	gsSPVertex(VB_sl_2_0xe00f6e0, 8, 0),
 	gsSP2Triangles(0, 1, 2, 0, 3, 4, 5, 0),
 	gsSP1Triangle(6, 7, 4, 0),
-	gsSPGeometryMode(0, G_LIGHTING),
-	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, SHADE, 0, 0, 0, SHADE, 0, 0, 0, SHADE),
 	gsSPTexture(65535, 65535, 0, 0, 0),
-	gsSPGeometryMode(G_TEXTURE_GEN, 0),
+gsSPSetGeometryMode(G_LIGHTING)
+gsSPGeometryMode(G_TEXTURE_GEN, 0),
+gsDPSetTextureLUT(G_TT_NONE),
 	gsSPEndDisplayList(),
 };
 
