@@ -1,0 +1,12 @@
+extern const GeoLayout bucket_water_geo[];
+extern Lights1 bucket_water_Material_0_002_f3d_lights;
+extern Lights1 bucket_water_Material_1_001_f3d_lights;
+extern u8 bucket_water__0_rgba16[];
+extern u8 bucket_water__1_rgba16[];
+extern Vtx bucket_water_Bone_mesh_layer_1_vtx_0[38];
+extern Gfx bucket_water_Bone_mesh_layer_1_tri_0[];
+extern Vtx bucket_water_Bone_mesh_layer_1_vtx_1[6];
+extern Gfx bucket_water_Bone_mesh_layer_1_tri_1[];
+extern Gfx mat_bucket_water_Material_0_002_f3d[];
+extern Gfx mat_bucket_water_Material_1_001_f3d[];
+extern Gfx bucket_water_Bone_mesh_layer_1[];

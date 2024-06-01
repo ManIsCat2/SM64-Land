@@ -1269,3 +1269,26 @@ function bhv_angry_sun_loop(o)
 end
 
 id_bhvAngrySun = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_angry_sun_init, bhv_angry_sun_loop)
+
+E_MODEL_WATER_BUCKET_FULL = smlua_model_util_get_id("bucket_water_geo")
+E_MODEL_WATER_BUCKET_EMPTY = smlua_model_util_get_id("bucket_no_water_geo")
+
+---@param o Object
+function bhv_bucket_init(o)
+    bhv_breakable_box_small_init()
+    cur_obj_scale(1.3)
+end
+
+---@param o Object
+function bhv_bucket_loop(o)
+    bhv_breakable_box_small_loop()
+
+    if o.oPosY <= 1445 then --hardcoded since idk how to check if its in water
+        obj_set_model_extended(o, E_MODEL_WATER_BUCKET_FULL)
+    end
+    if obj_check_hitbox_overlap(o, obj_get_first_with_behavior_id(id_bhvAngrySun)) then
+        obj_set_model_extended(o, E_MODEL_WATER_BUCKET_EMPTY)
+    end
+end
+    
+id_bhvWaterBucket = hook_behavior(nil, OBJ_LIST_DESTRUCTIVE, true, bhv_bucket_init, bhv_bucket_loop)
