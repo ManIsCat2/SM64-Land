@@ -1215,3 +1215,57 @@ function bhv_checkpoint_loop(o)
 end
 
 id_bhvCheckpoint = hook_behavior(nil, OBJ_LIST_POLELIKE, true, bhv_checkpoint_init, bhv_checkpoint_loop)
+
+
+local sAngrySunHitbox = {
+    interactType = INTERACT_FLAME,
+    downOffset = 0,
+    damageOrCoinValue = 3,
+    health = 3,
+    numLootCoins = 0,
+    radius = 180,
+    height = 180,
+    hurtboxHeight = 180,
+    hurtboxRadius = 180,
+    numLootScore = 0
+}
+
+E_MODEL_ANGRYSUN = smlua_model_util_get_id("angry_sun_geo")
+
+ACT_ANGRYSUN_CHARGING = 0
+ACT_ANGRYSUN_MOVING = 1
+ACT_ANGRYSUN_IDLE = 2
+
+---@param o Object
+function bhv_angry_sun_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_MOVE_XZ_USING_FVEL
+    o.oFriction = 1
+    o.header.gfx.skipInViewCheck = true
+    obj_set_billboard(o)
+    obj_set_hitbox(o, sAngrySunHitbox)
+    network_init_object(o, true, nil)
+end
+
+---@param o Object
+function bhv_angry_sun_loop(o)
+    local m = gMarioStates[0]
+    djui_chat_message_create(tostring(o.oSubAction))
+    if o.oAction == ACT_ANGRYSUN_CHARGING then
+        o.oPosY = o.oPosY + (math.sin(o.oTimer * 0.06) * 8)
+        o.oPosX = o.oPosX + (math.sin(o.oTimer * 0.06) * 8)
+        o.oSubAction = o.oSubAction + 1
+        if o.oSubAction >= 60 then
+           o.oAction = ACT_ANGRYSUN_MOVING
+        end
+
+    end
+
+    if o.oAction == ACT_ANGRYSUN_MOVING then
+        o.oFaceAngleYaw = obj_angle_to_object(o, m.marioObj)
+        o.oMoveAngleYaw = obj_angle_to_object(o, m.marioObj)
+        o.oForwardVel = approach_f32(o.oForwardVel, 40, 5, 0)
+        o.oPosY = approach_s32(o.oPosY, m.pos.y, 0, 20)
+    end
+end
+
+id_bhvAngrySun = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_angry_sun_init, bhv_angry_sun_loop)

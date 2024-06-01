@@ -1,0 +1,14 @@
+extern const GeoLayout angry_sun_geo[];
+extern Lights1 angry_sun_Material_0_f3d_lights;
+extern Lights1 angry_sun_Material_1_f3d_lights;
+extern u8 angry_sun__0_rgba16[];
+extern u8 angry_sun__1_rgba16[];
+extern Vtx angry_sun_Bone_mesh_layer_4_vtx_0[9];
+extern Gfx angry_sun_Bone_mesh_layer_4_tri_0[];
+extern Vtx angry_sun_Bone_mesh_layer_4_vtx_1[4];
+extern Gfx angry_sun_Bone_mesh_layer_4_tri_1[];
+extern Gfx mat_angry_sun_Material_0_f3d[];
+extern Gfx mat_revert_angry_sun_Material_0_f3d[];
+extern Gfx mat_angry_sun_Material_1_f3d[];
+extern Gfx mat_revert_angry_sun_Material_1_f3d[];
+extern Gfx angry_sun_Bone_mesh_layer_4[];
