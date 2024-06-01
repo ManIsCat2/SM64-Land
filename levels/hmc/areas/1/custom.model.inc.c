@@ -25398,6 +25398,7 @@ gsSP1Triangle(8, 9, 6, 0),
 gsSPVertex(VB_hmc_1_0xe0a1fe0, 7, 0),
 gsSP2Triangles(0, 1, 2, 0,2, 1, 3, 0),
 gsSP2Triangles(3, 4, 5, 0,6, 3, 5, 0),
+gsSPSetGeometryMode(G_LIGHTING)
 gsSPTexture(65535, 65535, 0, 0, 0),
 gsSPEndDisplayList(),
 };
