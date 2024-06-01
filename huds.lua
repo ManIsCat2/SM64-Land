@@ -30,7 +30,7 @@ levelData = {
 }
 
 bossLevelData = {
-    [COURSE_BOB + 3] = true,
+    [COURSE_BOB] = {[3] = true},
 }
 
 local xCursorIndex = 1
@@ -209,7 +209,7 @@ end
 function level_hud()
     local curCourseNum = gNetworkPlayers[0].currCourseNum
     local curAreaIndex = gNetworkPlayers[0].currAreaIndex
-    local bossLevel = bossLevelData[curCourseNum + curAreaIndex]
+    local bossLevel = bossLevelData[curCourseNum] and bossLevelData[curCourseNum][curAreaIndex] and bossLevelData[curCourseNum][curAreaIndex]
     local hubLevel = gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) or gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS)
     local toadHouse = gNetworkPlayers[0].currLevelNum == (LEVEL_COTMC) or gNetworkPlayers[0].currLevelNum == (LEVEL_VCUTM) or gNetworkPlayers[0].currLevelNum == (LEVEL_TOTWC)
     if not hubLevel and not bossLevel and not toadHouse and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) then
