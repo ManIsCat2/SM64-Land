@@ -31,6 +31,7 @@ levelData = {
 
 bossLevelData = {
     [COURSE_BOB] = {[3] = true},
+    [COURSE_CCM] = {[3] = true},
 }
 
 local xCursorIndex = 1
