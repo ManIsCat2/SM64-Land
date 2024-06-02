@@ -1242,6 +1242,7 @@ function bhv_angry_sun_init(o)
     o.oFriction = 1
     o.header.gfx.skipInViewCheck = true
     obj_set_billboard(o)
+    obj_scale(o, 0.8)
     obj_set_hitbox(o, sAngrySunHitbox)
     network_init_object(o, true, nil)
 end
@@ -1251,20 +1252,25 @@ function bhv_angry_sun_loop(o)
     local m = gMarioStates[0]
     djui_chat_message_create(tostring(o.oSubAction))
     if o.oAction == ACT_ANGRYSUN_CHARGING then
-        o.oPosY = o.oPosY + (math.sin(o.oTimer * 0.06) * 8)
-        o.oPosX = o.oPosX + (math.sin(o.oTimer * 0.06) * 8)
+        o.oForwardVel = 0
+        o.oPosY = o.oPosY + (math.sin(o.oTimer * 0.07) * 8)
+        o.oPosX = o.oPosX + (math.sin(o.oTimer * 0.07) * 8)
         o.oSubAction = o.oSubAction + 1
         if o.oSubAction >= 60 then
            o.oAction = ACT_ANGRYSUN_MOVING
         end
+    end
 
+    if o.oInteractStatus ~= 0 then
+        o.oAction = ACT_ANGRYSUN_CHARGING
+        o.oInteractStatus = 0
     end
 
     if o.oAction == ACT_ANGRYSUN_MOVING then
         o.oFaceAngleYaw = obj_angle_to_object(o, m.marioObj)
         o.oMoveAngleYaw = obj_angle_to_object(o, m.marioObj)
-        o.oForwardVel = approach_f32(o.oForwardVel, 40, 5, 0)
-        o.oPosY = approach_s32(o.oPosY, m.pos.y, 0, 20)
+        o.oForwardVel = approach_f32(o.oForwardVel, 25, 5, 0)
+        o.oPosY = approach_s32(o.oPosY, m.pos.y, 10, 10)
     end
 end
 
