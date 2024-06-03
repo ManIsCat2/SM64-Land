@@ -34305,6 +34305,7 @@ Gfx DL_rr_2_0xe071240[] = {
 	gsSPVertex(VB_rr_2_0xe0711e0, 6, 0),
 	gsSP2Triangles(0, 1, 2, 0, 3, 0, 2, 0),
 	gsSP2Triangles(3, 4, 0, 0, 3, 5, 4, 0),
+	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPTexture(65535, 65535, 0, 0, 0),
 	gsSPEndDisplayList(),
 };
@@ -36583,6 +36584,7 @@ Gfx DL_rr_2_0xe081c38[] = {
 	gsSP2Triangles(0, 1, 2, 0, 1, 3, 2, 0),
 	gsSP2Triangles(4, 5, 6, 0, 5, 7, 6, 0),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, SHADE, 0, 0, 0, SHADE, 0, 0, 0, SHADE),
+	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPTexture(65535, 65535, 0, 0, 0),
 	gsSPEndDisplayList(),
 };

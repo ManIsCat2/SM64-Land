@@ -24219,6 +24219,7 @@ Gfx DL_wmotr_1_0xe075130[] = {
 	gsDPSetTileSize(0, 0, 0, 124, 208),
 	gsSPVertex(VB_wmotr_1_0xe0750f0, 4, 0),
 	gsSP2Triangles(0, 1, 2, 0, 0, 3, 1, 0),
+	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPTexture(65535, 65535, 0, 0, 0),
 	gsSPEndDisplayList(),
 };

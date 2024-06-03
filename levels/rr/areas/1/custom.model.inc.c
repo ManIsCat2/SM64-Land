@@ -12109,6 +12109,7 @@ Gfx DL_rr_1_0xe02c470[] = {
 	gsSPVertex(VB_rr_1_0xe02c3c0, 11, 0),
 	gsSP2Triangles(0, 1, 2, 0, 2, 3, 4, 0),
 	gsSP2Triangles(5, 6, 7, 0, 8, 9, 10, 0),
+	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPTexture(65535, 65535, 0, 0, 0),
 	gsSPEndDisplayList(),
 };

@@ -15203,6 +15203,7 @@ Gfx DL_ttc_1_0xe02ed80[] = {
 	gsDPSetCycleType(G_CYC_1CYCLE),
 	gsDPSetRenderMode(0, 4468856),
 	gsSPGeometryMode(G_FOG, 0),
+	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPTexture(65535, 65535, 0, 0, 0),
 	gsSPGeometryMode(G_TEXTURE_GEN, 0),
 	gsDPSetTextureLUT(G_TT_NONE),

@@ -8948,6 +8948,7 @@ gsSPLight(&Light_wdw_2_0xe000820.col, 2),
 gsSPLight(&Light_wdw_2_0xe000828.col, 1),
 gsSPVertex(VB_wdw_2_0xe01ff30, 4, 0),
 gsSP2Triangles(0, 1, 2, 0,0, 3, 1, 0),
+gsSPSetGeometryMode(G_LIGHTING),
 gsSPTexture(65535, 65535, 0, 0, 0),
 gsSPEndDisplayList(),
 };
