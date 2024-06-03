@@ -30,6 +30,39 @@ local function obj_set_hitbox(obj, hitbox)
     obj.hitboxDownOffset = obj.header.gfx.scale.y * hitbox.downOffset
 end
 
+local function obj_rotate_pitch_toward(o, target, increment)
+
+    local startPitch = o.oMoveAnglePitch
+    o.oMoveAnglePitch = approach_s16_symmetric(o.oMoveAnglePitch, target, increment)
+    o.oFaceAnglePitch = approach_s16_symmetric(o.oFaceAnglePitch, target, increment)
+
+    o.oAngleVelPitch = o.oMoveAnglePitch - startPitch
+
+    return o.oAngleVelPitch == 0
+end
+
+local function obj_pitch_angle_to_object(obj1, obj2)
+    if obj1 == nil or obj2 == nil then
+        return 0
+    end
+
+    local z1, x1, y1, z2, x2, y2, h, v
+    local angle
+
+    z1 = obj1.oPosZ
+    z2 = obj2.oPosZ
+    x1 = obj1.oPosX
+    x2 = obj2.oPosX
+    y1 = obj1.oPosY
+    y2 = obj2.oPosY
+
+    h = math.sqrt((z2 - z1)^2 + (x2 - x1)^2)
+    v = y2 - y1
+
+    angle = -atan2s(h, v)
+    return angle
+end
+
 function get_world_star_count(world)
     local course1
     local course2
@@ -205,7 +238,7 @@ end
 
 hook_behavior(id_bhvPushableMetalBox, OBJ_LIST_SURFACE, true, huge_metal_box_init, huge_metal_box_loop)
 
--- new thwomp
+-- New Thwomp
 
 function new_thwomp_init(o)
     if o.oBehParams == 2 then
@@ -215,6 +248,8 @@ end
 
 hook_behavior(id_bhvThwomp, OBJ_LIST_SURFACE, false, new_thwomp_init, nil)
 
+-- Tall Doors
+
 function tall_doors_init(o)
     if o.oBehParams2ndByte == 1 then
         obj_scale_xyz(o, 1, 1.2, 1)
@@ -223,6 +258,27 @@ function tall_doors_init(o)
 end
 
 hook_behavior(id_bhvDoorWarp, OBJ_LIST_SURFACE, false, tall_doors_init, nil)
+
+-- Multidirectional Bullet Bills
+
+function multidirectional_bullet_bill_loop(o)
+    local player = nearest_player_to_object(o)
+    local distanceToPlayer = player and dist_between_objects(o, player) or 10000
+    local angleToPlayer = player and obj_pitch_angle_to_object(o, player) or 0
+    if o.oTimer > 50 and o.oAction == 2 then
+        if distanceToPlayer > 300.0 then
+            obj_rotate_pitch_toward(o, angleToPlayer, 0x100)
+        end
+        o.oVelY = -o.oForwardVel
+        o.oPosY = o.oPosY + o.oVelY * sins(o.oFaceAnglePitch)
+        if o.oPosY == o.oFloorHeight then
+            o.oAction = 3
+            spawn_mist_particles()
+        end
+    end
+end
+
+hook_behavior(id_bhvBulletBill, OBJ_LIST_GENACTOR, false, nil, multidirectional_bullet_bill_loop)
 
 -- Boss Star Cages
 
@@ -578,6 +634,7 @@ end
 
 id_bhvGreenSeesaw = hook_behavior(nil, OBJ_LIST_SURFACE, true, seesaw_green_init, seesaw_green_loop, "id_bhvGreenSeesaw")
 
+-- Dialogue Peach
 
 id_bhvPeachCustom = hook_behavior(nil, OBJ_LIST_GENACTOR, true, function(o)
     o.oFlags = OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_HOLDABLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO |
@@ -593,6 +650,16 @@ end, function(o)
     --djui_chat_message_create(tostring(o.oOpacity))
     bhv_toad_message_loop()
 end)
+
+-- Rolling Chomps
+
+function bhv_rolling_chomp_init(o)
+
+end
+
+function bhv_rolling_chomp_loop(o)
+
+end
 
 --dancing hill :D
 
@@ -697,7 +764,7 @@ function bhv_king_goomba_loop(o)
         cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_008)
         o.oBehParams = 1
     end
-    
+
     if get_dialog_box_state() == 3 then
         o.oAction = ACT_GOOMBA_BOSS_CHARGING
     end
@@ -1216,6 +1283,7 @@ end
 
 id_bhvCheckpoint = hook_behavior(nil, OBJ_LIST_POLELIKE, true, bhv_checkpoint_init, bhv_checkpoint_loop)
 
+-- Angry Sun
 
 local sAngrySunHitbox = {
     interactType = INTERACT_FLAME,
@@ -1276,18 +1344,32 @@ end
 
 id_bhvAngrySun = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_angry_sun_init, bhv_angry_sun_loop)
 
+-- Water Bucket
+
+local sWaterBucketHitbox = {
+    interactType = INTERACT_GRABBABLE,
+    downOffset = 0,
+    damageOrCoinValue = 0,
+    health = 0,
+    numLootCoins = 0,
+    radius = 160,
+    height = 100,
+    hurtboxHeight = 0,
+    hurtboxRadius = 0,
+    numLootScore = 0
+}
+
 E_MODEL_WATER_BUCKET_FULL = smlua_model_util_get_id("bucket_water_geo")
 E_MODEL_WATER_BUCKET_EMPTY = smlua_model_util_get_id("bucket_no_water_geo")
 
 ---@param o Object
-function bhv_bucket_init(o)
-    bhv_breakable_box_small_init()
+function bhv_water_bucket_init(o)
+    obj_set_hitbox(o, sWaterBucketHitbox)
     cur_obj_scale(1.3)
 end
 
 ---@param o Object
-function bhv_bucket_loop(o)
-    bhv_breakable_box_small_loop()
+function bhv_water_bucket_loop(o)
 
     if o.oPosY <= 1445 then --hardcoded since idk how to check if its in water
         obj_set_model_extended(o, E_MODEL_WATER_BUCKET_FULL)
@@ -1297,4 +1379,4 @@ function bhv_bucket_loop(o)
     end
 end
     
-id_bhvWaterBucket = hook_behavior(nil, OBJ_LIST_DESTRUCTIVE, true, bhv_bucket_init, bhv_bucket_loop)
+id_bhvWaterBucket = hook_behavior(nil, OBJ_LIST_DESTRUCTIVE, true, bhv_water_bucket_init, bhv_water_bucket_loop)
