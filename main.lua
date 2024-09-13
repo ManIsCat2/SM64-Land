@@ -2,7 +2,7 @@
 -- description: Awesome romhack by Kaze, Ported By I'mYourCat and xLuigiGamerx.\n\nCredits to:\nSteven\nSunk\nBlocky\nWoissil\nRushedAccN64
 -- incompatible: romhack
 
-m = gMarioStates[0]
+local m = gMarioStates[0]
 
 local function mario_update(m)
     if m.playerIndex ~= 0 then return end
@@ -67,3 +67,30 @@ end
 
 hook_event(HOOK_MARIO_UPDATE, world_map_cam)
 ]]
+
+function level_1_3(m)
+    if m.action & ACT_FLAG_AIR ~= 0 and gNetworkPlayers[0].currLevelNum == LEVEL_WF and gNetworkPlayers[0].currAreaIndex == 2 and m.action ~= ACT_TWIRLING then
+        m.vel.y = m.vel.y + 1.2
+    end
+end
+
+hook_event(HOOK_MARIO_UPDATE, level_1_3)
+
+-- Timer and bonus timer score --
+
+timer = 0
+
+function timer_update()
+    if gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_COURTYARD) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE_GROUNDS) and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) then
+        timer = math.floor(get_network_area_timer() / 30)
+    else
+        timer = 0
+    end
+end
+
+function timer_score()
+    local bonusScore = timer < 300 and (300 - math.floor(timer)) * 64
+    return bonusScore
+end
+
+hook_event(HOOK_UPDATE, timer_update)

@@ -223,7 +223,7 @@ const LevelScript local_area_castle_courtyard_3_[] = {
     END_AREA(),
     RETURN()};
 const LevelScript local_objects_castle_courtyard_3_[] = {
-    OBJECT_WITH_ACTS(36, -5343, 672, 2065, 0, 90, 0, 0xa0000, bhvWarpPipe, 31),
+    OBJECT_WITH_ACTS(E_MODEL_BLUE_WARP_PIPE, -5343, 672, 2065, 0, 90, 0, 0xa0000, id_bhvWarpPipe, 31),
     OBJECT_WITH_ACTS(0, -4070, 2496, 238, 0, 33, 0, 0xb0000, bhvFlyingWarp, 31),
     OBJECT_WITH_ACTS(53, 564, 942, 1720, 0, 180, 0, 0x0, Bhv_Custom_0x130006ac, 31),
     OBJECT_WITH_ACTS(22, -4567, 980, 331, 0, 0, 0, 0x290000, bhvWarpPipe, 31),

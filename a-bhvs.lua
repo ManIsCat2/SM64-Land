@@ -31,7 +31,6 @@ local function obj_set_hitbox(obj, hitbox)
 end
 
 local function obj_rotate_pitch_toward(o, target, increment)
-
     local startPitch = o.oMoveAnglePitch
     o.oMoveAnglePitch = approach_s16_symmetric(o.oMoveAnglePitch, target, increment)
     o.oFaceAnglePitch = approach_s16_symmetric(o.oFaceAnglePitch, target, increment)
@@ -56,7 +55,7 @@ local function obj_pitch_angle_to_object(obj1, obj2)
     y1 = obj1.oPosY
     y2 = obj2.oPosY
 
-    h = math.sqrt((z2 - z1)^2 + (x2 - x1)^2)
+    h = math.sqrt((z2 - z1) ^ 2 + (x2 - x1) ^ 2)
     v = y2 - y1
 
     angle = -atan2s(h, v)
@@ -326,7 +325,7 @@ stuckHud = false
 
 function world_cannon_loop(o)
     load_object_collision_model()
-    m = gMarioStates[0]
+    local m = gMarioStates[0]
 
     if stuck then
         vec3f_set(m.pos, o.oPosX, o.oPosY + 400, o.oPosZ)
@@ -529,7 +528,7 @@ function seesaw_green_init(obj)
     network_init_object(obj, true, { "oEndPointX", "oEndPointZ", "oDoneEndPoint" })
 
     -- more things
-    o = obj
+    local o = obj
     if o.oHomeY == 1620 then
         o.oFaceAnglePitch = 2000
         obj.oFaceAngleYaw = obj.oFaceAngleYaw + 16384
@@ -685,6 +684,10 @@ function bhv_fake_pipe_init(o)
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     o.collisionData = gGlobalObjectCollisionData.warp_pipe_seg3_collision_03009AC8
     antsKilled = 0
+
+    if o.oBehParams2ndByte == 0 then
+        network_init_object(o, true, nil)
+    end
 end
 
 ---@param o Object
@@ -749,9 +752,10 @@ function bhv_king_goomba_init(o)
     o.oAction = ACT_GOOMBA_BOSS_DIALOGUE
     set_background_music(0, SEQ_EVENT_BOSS, 0)
     obj_set_hitbox(o, sKingGoombaHitbox)
+    o.oHealth = 3
     cur_obj_scale(5)
     cur_obj_init_animation(0)
-    network_init_object(o, true, nil)
+    network_init_object(o, true, { "oAction", "oHealth", "oSubAction", "oPosX", "oPosY", "oPosZ", "oAnimState" })
 end
 
 ---@param o Object
@@ -759,13 +763,9 @@ function bhv_king_goomba_loop(o)
     o.oInteractStatus = 0
     --djui_chat_message_create(tostring(o.oFaceAnglePitch))
     ---@type MarioState
-    local m = gMarioStates[0]
-    if should_start_or_continue_dialog(m, o) and o.oAction == ACT_GOOMBA_BOSS_DIALOGUE and o.oBehParams ~= 1 then
-        cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_008)
-        o.oBehParams = 1
-    end
+    local m = nearest_mario_state_to_object(o)
 
-    if get_dialog_box_state() == 3 then
+    if o.oAction == ACT_GOOMBA_BOSS_DIALOGUE and should_start_or_continue_dialog(m, o) ~= 0 and cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_008) ~= 0 then
         o.oAction = ACT_GOOMBA_BOSS_CHARGING
     end
 
@@ -788,13 +788,13 @@ function bhv_king_goomba_loop(o)
     end
 
     if o.oAction == ACT_GOOMBA_BOSS_CHARGING and o.oSubAction > 70 then
-        o.oAction = ACT_GOOMBA_BOSS_RUNNING
-        o.oSubAction  = 0
+        o.oAction    = ACT_GOOMBA_BOSS_RUNNING
+        o.oSubAction = 0
     end
 
     -- run
 
-    
+
     if o.oAction == ACT_GOOMBA_BOSS_RUNNING then
         o.oForwardVel = 70
     end
@@ -820,7 +820,6 @@ function bhv_king_goomba_loop(o)
         o.oMoveAngleYaw = obj_angle_to_object(o, m.marioObj)
         o.oAnimState = 0
         o.oAction = ACT_GOOMBA_BOSS_CHARGING
-        
     end
 
     if o.oAnimState == 1 then
@@ -834,7 +833,8 @@ function bhv_king_goomba_loop(o)
         m.invincTimer = 60
         play_sound(SOUND_OBJ_KING_WHOMP_DEATH, o.header.gfx.cameraToObject)
         o.oHealth = o.oHealth - 1
-        spawn_sync_object(id_bhvGoomba, E_MODEL_GOOMBA, o.oPosX, o.oPosY, o.oPosZ, function (obj) obj.oBehParams2ndByte = 1 end)
+        spawn_sync_object(id_bhvGoomba, E_MODEL_GOOMBA, o.oPosX, o.oPosY, o.oPosZ,
+            function(obj) obj.oBehParams2ndByte = 1 end)
         o.oAnimState = 1
     end
 end
@@ -921,6 +921,7 @@ function bhv_ant_init(o)
     obj_scale(o, 2.5)
     cur_obj_init_animation(0)
     --djui_chat_message_create(tostring(antsKilled))
+    network_init_object(o, true, nil)
 end
 
 E_MODEL_ANT = smlua_model_util_get_id("ant_geo")
@@ -1090,7 +1091,7 @@ function bhv_flip_block_loop(o)
         elseif o.oAction == ACT_FLIP_BLOCK_FLIPPING then
             o.oFaceAnglePitch = cubicOut(0, 344064, 1, o.oTimer / 150)
             o.oAction = o.oTimer < 150 and ACT_FLIP_BLOCK_FLIPPING or ACT_FLIP_BLOCK_IDLE
-            obj_scale_xyz(o, 1, 1, 0.02)
+            --obj_scale_xyz(o, 1, 1, 0.02)
         end
 
         ---@type MarioState
@@ -1325,7 +1326,7 @@ function bhv_angry_sun_loop(o)
         o.oPosX = o.oPosX + (math.sin(o.oTimer * 0.07) * 8)
         o.oSubAction = o.oSubAction + 1
         if o.oSubAction >= 60 then
-           o.oAction = ACT_ANGRYSUN_MOVING
+            o.oAction = ACT_ANGRYSUN_MOVING
         end
     end
 
@@ -1370,7 +1371,6 @@ end
 
 ---@param o Object
 function bhv_water_bucket_loop(o)
-
     if o.oPosY <= 1445 then --hardcoded since idk how to check if its in water
         obj_set_model_extended(o, E_MODEL_WATER_BUCKET_FULL)
     end
@@ -1378,5 +1378,22 @@ function bhv_water_bucket_loop(o)
         obj_set_model_extended(o, E_MODEL_WATER_BUCKET_EMPTY)
     end
 end
-    
+
 id_bhvWaterBucket = hook_behavior(nil, OBJ_LIST_DESTRUCTIVE, true, bhv_water_bucket_init, bhv_water_bucket_loop)
+
+---@param o Object
+function bhv_ttm_blue_platform(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+
+    o.header.gfx.skipInViewCheck = true
+    o.collisionData = smlua_collision_util_get("ttm_blue_platform_collision")
+
+    o.oCollisionDistance = 1000
+end
+
+---@param o Object
+function bhv_ttm_blue_platform_loop(o)
+    load_object_collision_model()
+end
+
+bhvTTMBluePlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ttm_blue_platform, bhv_ttm_blue_platform_loop)

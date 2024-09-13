@@ -334,7 +334,7 @@ local function act_air_hit_wall(m)
         if m.vel.y > 0.0 then
             m.vel.y = 0.0
         end
-        if activePowerup ~= CAT then
+        if gPlayerSyncTable[0].activePowerup ~= CAT then
             m.faceAngle.y = limit_angle(m.faceAngle.y + 0x8000)
             m.particleFlags = m.particleFlags | PARTICLE_VERTICAL_STAR
             return set_mario_action(m, ACT_WALL_SLIDE, 0)
