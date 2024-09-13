@@ -27,7 +27,7 @@ levelData = {
     [COURSE_HMC] = { { stars = { 0, 1, 2 }, finalStar = 2 } },
     [COURSE_LLL] = { { stars = {}, finalStar = nil } },
     [COURSE_SSL] = { { stars = { 1, 0 }, finalStar = 0 } },
-    [COURSE_TTM] = { { stars = { 1, 2 }, finalStar = 2 } }
+    [COURSE_TTM] = { { stars = { 1, 2 }, finalStar = 2 }, {stars = { 3, 4 }, finalStar = 4} }
 }
 
 bossLevelData = {

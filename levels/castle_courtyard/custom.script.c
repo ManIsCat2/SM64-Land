@@ -173,7 +173,7 @@ const LevelScript local_objects_castle_courtyard_2_[] = {
     OBJECT_WITH_ACTS(0, -4626, 300, -1784, 0, 0, 0, 0x2a0000, bhvDeathWarp, 31),
     OBJECT_WITH_ACTS(0, -741, 372, -1023, 0, 0, 0, 0x2b0000, bhvDeathWarp, 31),
     OBJECT_WITH_ACTS(0, 2185, 200, 1446, 0, 0, 0, 0x2c0000, bhvDeathWarp, 31),
-    OBJECT_WITH_ACTS(53, -4946, -97, 2567, 0, 180, 0, 0x0, Bhv_Custom_0x130006ac, 31),
+    OBJECT_WITH_ACTS(53, -4946, -97, 2567, 0, 180, 0, 0x0, bhvWorldCannon, 31),
     OBJECT_WITH_ACTS(0, 2199, 0, 1110, 0, 0, 0, 0xc000000, Bhv_Custom_0x130001dc, 31),
     OBJECT_WITH_ACTS(0, -4625, 100, -2116, 0, 0, 0, 0xf000000, Bhv_Custom_0x130001dc, 31),
     OBJECT_WITH_ACTS(0, -719, 172, -1362, 0, 0, 0, 0xd000000, Bhv_Custom_0x130001dc, 31),
@@ -225,7 +225,7 @@ const LevelScript local_area_castle_courtyard_3_[] = {
 const LevelScript local_objects_castle_courtyard_3_[] = {
     OBJECT_WITH_ACTS(E_MODEL_BLUE_WARP_PIPE, -5343, 672, 2065, 0, 90, 0, 0xa0000, id_bhvWarpPipe, 31),
     OBJECT_WITH_ACTS(0, -4070, 2496, 238, 0, 33, 0, 0xb0000, bhvFlyingWarp, 31),
-    OBJECT_WITH_ACTS(53, 564, 942, 1720, 0, 180, 0, 0x0, Bhv_Custom_0x130006ac, 31),
+    OBJECT_WITH_ACTS(53, 564, 942, 1720, 0, 180, 0, 0x0, bhvWorldCannon, 31),
     OBJECT_WITH_ACTS(22, -4567, 980, 331, 0, 0, 0, 0x290000, bhvWarpPipe, 31),
     OBJECT_WITH_ACTS(22, -1901, 942, -813, 0, 0, 0, 0x2a0000, bhvWarpPipe, 31),
     OBJECT_WITH_ACTS(22, 43, 942, -857, 0, 0, 0, 0x2b0000, bhvWarpPipe, 31),

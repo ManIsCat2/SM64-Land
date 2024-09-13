@@ -5,7 +5,7 @@ if _G.OmmEnabled then
         -- Game data --
         ---------------
 
-        _G.OmmApi.omm_register_game_data(-1, 0, LEVEL_NONE, true, true, 0xFFFF00, 500)
+        _G.OmmApi.omm_register_game_data(-1, 0, LEVEL_NONE, true, true, 0xFFFF00, 0)
 
         -----------------
         -- Level stars --
@@ -16,6 +16,7 @@ if _G.OmmEnabled then
         --------------------
         
        -- _G.OmmApi.omm_register_star_behavior(bhv, "name", "NAME", function(bhvParams) return true end)
+       _G.OmmApi.omm_register_star_behavior(id_bhvKingGoomba, "King Goomba", "KING GOOMBA", function(bhvParams) return true end)
 
         --------------------
         -- Camera presets --

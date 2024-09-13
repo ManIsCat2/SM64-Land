@@ -1,6 +1,8 @@
 E_MODEL_NEW_THWOMP = smlua_model_util_get_id("new_thwomp_geo")
 E_MODEL_ROTATING_PLATFORM_JRB = smlua_model_util_get_id("rotating_platform_jrb_geo")
 
+local math_sin = math.sin
+
 function get_star_count()
     local courseMax = 25
     local courseMin = 1
@@ -324,6 +326,7 @@ stuckY = false
 stuckHud = false
 
 function world_cannon_loop(o)
+    obj_set_model_extended(o, E_MODEL_WORLD_CANNON)
     load_object_collision_model()
     local m = gMarioStates[0]
 
@@ -668,7 +671,7 @@ E_MODEL_DANCING_HILL = smlua_model_util_get_id("dancing_hill_geo")
 function bhv_dancing_hill_init(o)
     o.header.gfx.skipInViewCheck = true
     obj_set_model_extended(o, E_MODEL_DANCING_HILL)
-    smlua_anim_util_set_animation(o, "anim_dance_hill")
+    --smlua_anim_util_set_animation(o, "anim_dance_hill")
 end
 
 function bhv_dancing_hill_loop(o)
@@ -772,8 +775,7 @@ function bhv_king_goomba_loop(o)
     if o.oHealth <= 0 then
         spawn_mist_particles_variable(0, 0, 100.0);
         spawn_triangle_break_particles(20, 138, 3.0, 4);
-        star = spawn_default_star(m.pos.x, m.pos.y + 200, m.pos.z)
-        star.oBehParams = (3 << 24)
+        spawn_default_star(m.pos.x, m.pos.y + 200, m.pos.z)
         obj_mark_for_deletion(o)
     end
     --object_step()
@@ -1163,6 +1165,7 @@ id_bhvPushableN64Button = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_pushabl
 COL_JRB_PLATFORM = smlua_collision_util_get("rotating_platform_jrb_collision")
 ---@param o Object
 function bhv_custom_rotating_platform(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     o.collisionData = COL_JRB_PLATFORM
     o.header.gfx.skipInViewCheck = true
     o.oCollisionDistance = 6000
@@ -1397,3 +1400,56 @@ function bhv_ttm_blue_platform_loop(o)
 end
 
 bhvTTMBluePlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ttm_blue_platform, bhv_ttm_blue_platform_loop)
+
+---@param o Object
+function bhv_swinging_thing_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 2000
+    o.collisionData = smlua_collision_util_get("ttm_swingy_thing_collision")
+end
+
+---@param o Object
+function bhv_swinging_thing(o)
+    load_object_collision_model()
+    o.oFaceAngleRoll = math_sin(o.oTimer * 0.02) * 4300
+end
+
+bhvTTMSSwingingThing = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_swinging_thing_init,
+    bhv_swinging_thing)
+
+
+---@param o Object
+function bhv_rr_purple_platform(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+
+    o.header.gfx.skipInViewCheck = true
+    o.collisionData = smlua_collision_util_get("rr_purple_block_collision")
+
+    o.oCollisionDistance = 1000
+end
+
+---@param o Object
+function bhv_rr_purple_platform_loop(o)
+    load_object_collision_model()
+end
+
+bhvRRPurpleBlock = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_rr_purple_platform, bhv_rr_purple_platform_loop)
+
+---@param o Object
+function bhv_rr_rotating_plus_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("rr_rotating_plus_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 3200
+    o.oAngleVelYaw = 100
+    network_init_object(o, true, nil)
+end
+
+function bhv_rr_rotating_plus_loop(o)
+    load_object_collision_model()
+    o.oFaceAngleYaw = o.oFaceAngleYaw + 100
+end
+
+bhvRRRotPlus = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_rr_rotating_plus_init,
+    bhv_rr_rotating_plus_loop)

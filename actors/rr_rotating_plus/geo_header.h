@@ -1,0 +1,12 @@
+extern const GeoLayout rr_rotating_plus_geo[];
+extern Lights1 rr_rotating_plus_Material_0_f3d_lights;
+extern Lights1 rr_rotating_plus_Material_1_f3d_lights;
+extern u8 rr_rotating_plus__0_rgba16[];
+extern u8 rr_rotating_plus__1_rgba16[];
+extern Vtx rr_rotating_plus_Bone_mesh_layer_1_vtx_0[52];
+extern Gfx rr_rotating_plus_Bone_mesh_layer_1_tri_0[];
+extern Vtx rr_rotating_plus_Bone_mesh_layer_1_vtx_1[208];
+extern Gfx rr_rotating_plus_Bone_mesh_layer_1_tri_1[];
+extern Gfx mat_rr_rotating_plus_Material_0_f3d[];
+extern Gfx mat_rr_rotating_plus_Material_1_f3d[];
+extern Gfx rr_rotating_plus_Bone_mesh_layer_1[];

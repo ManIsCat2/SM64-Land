@@ -1,4 +1,4 @@
--- name: \\#FFFF00\\SM64 \\#00ff00\\Land
+-- name: \\#FFFF00\\Super Mario\\#00ff00\\ 64 Land
 -- description: Awesome romhack by Kaze, Ported By I'mYourCat and xLuigiGamerx.\n\nCredits to:\nSteven\nSunk\nBlocky\nWoissil\nRushedAccN64
 -- incompatible: romhack
 
@@ -27,7 +27,7 @@ gLevelValues.fixCollisionBugsGroundPoundBonks = false
 --fix  cap durations
 gLevelValues.metalCapDurationCotmc = 1
 gLevelValues.wingCapDurationTotwc = 1
-
+gLevelValues.vanishCapDurationVcutm = 1
 --really needed
 gServerSettings.stayInLevelAfterStar = true
 gLevelValues.disableActs = true
