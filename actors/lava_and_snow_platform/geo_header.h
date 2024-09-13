@@ -1,0 +1,17 @@
+extern const GeoLayout lava_and_snow_platform_geo[];
+extern Lights1 lava_and_snow_platform_Material_0_f3d_lights;
+extern Lights1 lava_and_snow_platform_Material_1_f3d_lights;
+extern Lights1 lava_and_snow_platform_Material_2_f3d_lights;
+extern u8 lava_and_snow_platform__0_rgba16[];
+extern u8 lava_and_snow_platform__1_rgba16[];
+extern u8 lava_and_snow_platform__2_rgba16[];
+extern Vtx lava_and_snow_platform_000_dp_mesh_layer_1_vtx_0[4];
+extern Gfx lava_and_snow_platform_000_dp_mesh_layer_1_tri_0[];
+extern Vtx lava_and_snow_platform_000_dp_mesh_layer_1_vtx_1[16];
+extern Gfx lava_and_snow_platform_000_dp_mesh_layer_1_tri_1[];
+extern Vtx lava_and_snow_platform_000_dp_mesh_layer_1_vtx_2[4];
+extern Gfx lava_and_snow_platform_000_dp_mesh_layer_1_tri_2[];
+extern Gfx mat_lava_and_snow_platform_Material_0_f3d[];
+extern Gfx mat_lava_and_snow_platform_Material_1_f3d[];
+extern Gfx mat_lava_and_snow_platform_Material_2_f3d[];
+extern Gfx lava_and_snow_platform_000_dp_mesh_layer_1[];

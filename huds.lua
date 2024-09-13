@@ -24,10 +24,10 @@ levelData = {
     [COURSE_CCM] = { { stars = { 2, 1, 0 }, finalStar = 0 }, { stars = { 4, 3, 6 }, finalStar = 3 }, { stars = {}, finalStar = nil } },
     [COURSE_JRB] = { { stars = { 2, 1, 0 }, finalStar = 0 }, { stars = { 3, 5, 4 }, finalStar = 4 } },
     [COURSE_BBH] = { { stars = { 1, 2, 0 }, finalStar = 0 } },
-    [COURSE_HMC] = { { stars = { 0, 1, 2 }, finalStar = 2 } },
+    [COURSE_HMC] = { { stars = { 0, 1, 2 }, finalStar = 2 }, { stars = { 5, 4, 3 }, finalStar = 3 } },
     [COURSE_LLL] = { { stars = {}, finalStar = nil } },
     [COURSE_SSL] = { { stars = { 1, 0 }, finalStar = 0 } },
-    [COURSE_TTM] = { { stars = { 1, 2 }, finalStar = 2 }, {stars = { 3, 4 }, finalStar = 4} }
+    [COURSE_TTM] = { { stars = { 1, 2 }, finalStar = 2 }, { stars = { 3, 4 }, finalStar = 4 } },
 }
 
 bossLevelData = {

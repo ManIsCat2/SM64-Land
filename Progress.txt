@@ -37,7 +37,7 @@ W4 Boss: Bowser Jr.'s Trial - 0%
 World 5: "Cyber-Synth Land"
 5-1: Synthscape Land - 50%
 5-2: Synthspace Concert - 50%
-5-3: Synthcity - 50%
+5-3: Synthcity - 100%
 5-4: Synthmetro - 60%
 5-EX: Toad House - 0%
 W5 Boss: Shadow Mario's Trial - 0%

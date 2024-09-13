@@ -1453,3 +1453,56 @@ end
 
 bhvRRRotPlus = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_rr_rotating_plus_init,
     bhv_rr_rotating_plus_loop)
+
+--[[
+    const BehaviorScript bhvFliptile[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    ID(id_bhvNewId),
+    SET_FLOAT(oDrawingDistance, 20000),
+    LOAD_COLLISION_DATA(fliptiles_collision0),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    BEGIN_LOOP(),
+        CALL_NATIVE(fliptilecode),
+    END_LOOP(),
+};
+    ]]
+
+function flipinit(o)
+    o.oDrawingDistance = 20000
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("lava_and_snow_platform_collision")
+    network_init_object(o, true, {"oAction", "oSubAction", "oTimer", "oFaceAngleRoll"})
+end
+
+---@param o Object
+function fliptilecode(o)
+
+
+    local gMarioState = nearest_mario_state_to_object(o)
+
+    o.oAnimState = o.oBehParams2ndByte
+    if o.oAction == 0 then
+        if o.oSubAction ~= 0 then
+            if (gMarioState.action & 0x03000000) == 0x03000000 or (gMarioState.action & 0x03000000) == 0x01000000 then
+                if gMarioState.action ~= ACT_LAVA_BOOST and gMarioState.action ~= ACT_FORWARD_ROLLOUT then
+                    if gMarioState.vel.y > 10.0 then
+                        o.oAction = 1
+                    end
+                end
+            end
+        else
+            if gMarioState.pos.y == gMarioState.floorHeight then
+                o.oSubAction = 1
+            end
+        end
+        load_object_collision_model()
+    else
+        o.oFaceAngleRoll = o.oFaceAngleRoll + 0x800
+        if o.oTimer > 14 then
+            o.oAction = 0
+        end
+    end
+end
+
+bhvLavaAndSnowFlipBlock = hook_behavior(nil, OBJ_LIST_SURFACE, true, nil,
+    fliptilecode)

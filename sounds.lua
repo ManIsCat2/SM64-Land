@@ -17,6 +17,7 @@ smlua_audio_utils_replace_sequence(47, 26, 75, "6-1(New Perc)")
 smlua_audio_utils_replace_sequence(67, 26, 75, "OW8_Special (1)")
 smlua_audio_utils_replace_sequence(49, 26, 75, "7-2MM5GravityBEEP2")
 smlua_audio_utils_replace_sequence(50, 26, 75, "7-4(SMRPG Weapons)")
+smlua_audio_utils_replace_sequence(38, 28, 75, "Long note for audio playback_lofidkc")
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom")
