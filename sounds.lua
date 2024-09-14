@@ -20,6 +20,7 @@ smlua_audio_utils_replace_sequence(50, 26, 75, "7-4(SMRPG Weapons)")
 smlua_audio_utils_replace_sequence(38, 28, 75, "Long note for audio playback_lofidkc")
 smlua_audio_utils_replace_sequence(43, 37, 75, "0x09 Cloud Cap (Ver 2) NInst 37")
 smlua_audio_utils_replace_sequence(69, 17, 75, "Airship Fortress - Mario Kart DS (SM3DL) v2")
+smlua_audio_utils_replace_sequence(70, 26, 75, "SpaceJunk_Andy_NI26")
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom")
