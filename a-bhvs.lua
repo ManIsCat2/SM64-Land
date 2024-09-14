@@ -1471,13 +1471,11 @@ function flipinit(o)
     o.oDrawingDistance = 20000
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     o.collisionData = smlua_collision_util_get("lava_and_snow_platform_collision")
-    network_init_object(o, true, {"oAction", "oSubAction", "oTimer", "oFaceAngleRoll"})
+    network_init_object(o, true, { "oAction", "oSubAction", "oTimer", "oFaceAngleRoll" })
 end
 
 ---@param o Object
 function fliptilecode(o)
-
-
     local gMarioState = nearest_mario_state_to_object(o)
 
     o.oAnimState = o.oBehParams2ndByte
@@ -1506,3 +1504,55 @@ end
 
 bhvLavaAndSnowFlipBlock = hook_behavior(nil, OBJ_LIST_SURFACE, true, flipinit,
     fliptilecode)
+
+-- From SM64 Last Impact
+
+function really_big_pole(o)
+    o.oInteractType = INTERACT_POLE
+    o.hitboxHeight = o.oBehParams2ndByte * 64.0
+    o.hitboxRadius = 60
+    o.oIntangibleTimer = 0
+end
+
+bhvReallyBigPole = hook_behavior(nil, OBJ_LIST_POLELIKE, true, really_big_pole, function()
+    bhv_pole_base_loop()
+end)
+
+---@param o Object
+function bhv_paperplane_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("paper_plane_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 2000
+    o.oMoveAngleYaw = o.oFaceAngleYaw + 32768
+    cur_obj_set_home_once()
+    ---network_init_object(o, true, nil)
+end
+
+PAPERPLANE_ACT_IDLE = 0
+PAPERPLANE_ACT_FLYING = 1
+
+---@param o Object
+function bhv_paperplane_loop(o)
+    load_object_collision_model()
+
+    if o.oAction == PAPERPLANE_ACT_IDLE then
+        if cur_obj_is_mario_on_platform() ~= 0 then
+            o.oAction = PAPERPLANE_ACT_FLYING
+        end
+    elseif o.oAction == PAPERPLANE_ACT_FLYING then
+        cur_obj_move_xz_using_fvel_and_yaw()
+        o.oForwardVel = approach_s16_symmetric(o.oForwardVel, 40, 0x800)
+        o.oPosY = o.oPosY + math_sin(o.oTimer * 0.2) * 10
+
+        o.oAnimState = o.oAnimState + 1
+
+        if o.oAnimState > (14 * 30) then -- 10 seconds
+            cur_obj_set_pos_to_home()
+            o.oAction = 0
+            o.oAnimState = 0
+        end
+    end
+end
+
+bhvPaperPlane = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_paperplane_init, bhv_paperplane_loop)

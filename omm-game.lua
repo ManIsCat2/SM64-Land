@@ -5,7 +5,7 @@ if _G.OmmEnabled then
         -- Game data --
         ---------------
 
-        _G.OmmApi.omm_register_game_data(-1, 0, LEVEL_NONE, true, true, 0xFFFF00, 0)
+        _G.OmmApi.omm_register_game_data(-1, 0, LEVEL_NONE, true, false, 0xFFFF00, 0)
 
         -----------------
         -- Level stars --

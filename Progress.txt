@@ -21,6 +21,11 @@ W2 Boss: Angry Sun's Trial - 0%
 World 3: "The House"
 3-1: Kitchen - 100%
 3-2: Toy Room - 60%
+    Missing Stuff:
+        * Toy Trains
+        * Jack in a Boxes
+        * Whomp Dominos
+        * Custom Purple Button Activated Only by Whowmp Dominos
 3-3: Bathroom - 60%
 3-4: Fridge - 80%
 3-EX: Toad House - 0%
