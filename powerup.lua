@@ -3,22 +3,23 @@
 
 -- Models
 
-E_MODEL_TANOOKI_MARIO = smlua_model_util_get_id("tanooki_mario_geo")
-E_MODEL_KITSUNE_LUIGI = smlua_model_util_get_id("kitsune_luigi_geo")
-E_MODEL_TANOOKI_TOAD = smlua_model_util_get_id("tanooki_toad_geo")
-E_MODEL_TANOOKI_WARIO = smlua_model_util_get_id("tanooki_wario_geo")
+E_MODEL_TANOOKI_MARI    = smlua_model_util_get_id("tanooki_mario_geo")
+E_MODEL_KITSUNE_LUIG    = smlua_model_util_get_id("kitsune_luigi_geo")
+E_MODEL_TANOOKI_TOAD    = smlua_model_util_get_id("tanooki_toad_geo")
+E_MODEL_TANOOKI_WARI    = smlua_model_util_get_id("tanooki_wario_geo")
 E_MODEL_KITSUNE_WALUIGI = smlua_model_util_get_id("kitsune_waluigi_geo")
-E_MODEL_CAT_MARIO = smlua_model_util_get_id("cat_mario_geo")
-E_MODEL_BEE_MARIO = smlua_model_util_get_id("bee_mario_geo")
-E_MODEL_CLOUD_MARIO = smlua_model_util_get_id("cloud_mario_geo")
+E_MODEL_CAT_MARI        = smlua_model_util_get_id("cat_mario_geo")
+E_MODEL_BEE_MARI        = smlua_model_util_get_id("bee_mario_geo")
+E_MODEL_CLOUD_MARIO     = smlua_model_util_get_id("cloud_mario_geo")
 
 -- Powerups enum
 
-NORMAL = 0
+NORMAL  = 0
 TANOOKI = 1
-CAT = 2
-BEE = 3
-CLOUD = 4
+CAT     = 2
+BEE     = 3
+CLOUD   = 4
+ROCKET  = 5
 
 -- Powerup Relatives
 local cloudcount = 0                       -- for cloud flower
@@ -26,19 +27,19 @@ local cloudcount = 0                       -- for cloud flower
 gPlayerSyncTable[0].activePowerup = NORMAL -- Current Powerup, set to NORMAL to disable any powerup
 
 characterPowerupModels = {
-    [CT_MARIO] = { tanooki = E_MODEL_TANOOKI_MARIO, cat = E_MODEL_CAT_MARIO, bee = E_MODEL_BEE_MARIO, cloud = E_MODEL_CLOUD_MARIO },
-    [CT_LUIGI] = { tanooki = E_MODEL_KITSUNE_LUIGI, cat = nil, bee = nil, cloud = nil },
-    [CT_TOAD] = { tanooki = E_MODEL_TANOOKI_TOAD, cat = nil, bee = nil, cloud = nil },
-    [CT_WARIO] = { tanooki = E_MODEL_TANOOKI_WARIO, cat = nil, bee = nil, cloud = nil },
+    [CT_MARIO]   = { tanooki = E_MODEL_TANOOKI_MARIO, cat = E_MODEL_CAT_MARIO, bee = E_MODEL_BEE_MARIO, cloud = E_MODEL_CLOUD_MARIO },
+    [CT_LUIGI]   = { tanooki = E_MODEL_KITSUNE_LUIGI, cat = nil, bee = nil, cloud = nil },
+    [CT_TOAD]    = { tanooki = E_MODEL_TANOOKI_TOAD, cat = nil, bee = nil, cloud = nil },
+    [CT_WARIO]   = { tanooki = E_MODEL_TANOOKI_WARIO, cat = nil, bee = nil, cloud = nil },
     [CT_WALUIGI] = { tanooki = E_MODEL_KITSUNE_WALUIGI, cat = nil, bee = nil, cloud = nil },
 }
 
 local powerupStates = {
-    [NORMAL] = { modelId = nil },
+    [NORMAL]  = { modelId = nil },
     [TANOOKI] = { modelId = nil },
-    [CAT] = { modelId = nil },
-    [BEE] = { modelId = nil },
-    [CLOUD] = { modelId = nil }
+    [CAT]     = { modelId = nil },
+    [BEE]     = { modelId = nil },
+    [CLOUD]   = { modelId = nil }
 }
 
 -- Powerup States, to add more powerups here, you must first add them to the enum and assign a number
@@ -47,11 +48,12 @@ function get_character_model(m)
     CPM = characterPowerupModels[m.character.type] -- To get the model easily
     CPMM = characterPowerupModels[CT_MARIO]        -- To get Mario's model easily
     powerupStates = {
-        [NORMAL] = { modelId = nil },
+        [NORMAL]  = { modelId = nil },
         [TANOOKI] = { modelId = CPM.tanooki and CPM.tanooki or CPMM.tanooki },
-        [CAT] = { modelId = CPM.cat and CPM.cat or CPMM.cat },
-        [BEE] = { modelId = CPM.bee and CPM.bee or CPMM.bee },
-        [CLOUD] = { modelId = CPM.cloud and CPM.cloud or CPMM.cloud }
+        [CAT]     = { modelId = CPM.cat and CPM.cat or CPMM.cat },
+        [BEE]     = { modelId = CPM.bee and CPM.bee or CPMM.bee },
+        [CLOUD]   = { modelId = CPM.cloud and CPM.cloud or CPMM.cloud },
+        [ROCKET]  = { modelId = nil }
     }
 end
 
@@ -475,7 +477,7 @@ local function limit_angle(a)
 end
 
 ---@param obj Object
-function bhv_catsuit_init(obj)
+function bhv_superbell_init(obj)
     obj.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     obj_set_model_extended(obj, E_MODEL_SUPER_BELL)
     obj_scale(obj, 0.5)
@@ -490,7 +492,7 @@ function bhv_catsuit_init(obj)
 end
 
 ---@param obj Object
-function bhv_catsuit_loop(obj)
+function bhv_superbell_loop(obj)
     object_step()
     load_object_collision_model()
     local nreaetsplayertopwoerup = nearest_player_to_object(obj)
@@ -501,7 +503,7 @@ function bhv_catsuit_loop(obj)
     end
 end
 
-id_bhvSuperBell = hook_behavior(id_bhvMetalCap, OBJ_LIST_GENACTOR, true, bhv_catsuit_init, bhv_catsuit_loop)
+id_bhvSuperBell = hook_behavior(id_bhvMetalCap, OBJ_LIST_GENACTOR, true, bhv_superbell_init, bhv_superbell_loop)
 
 ---@param m MarioState
 function cat_update(m)
@@ -815,3 +817,26 @@ end
 
 bhvCloudFlower = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_cloudflower_init, bhv_cloudflower_loop)
 hook_event(HOOK_MARIO_UPDATE, cloud_powerup)
+
+E_MODEL_ROCKET_POWERUP = smlua_model_util_get_id("rocket_powerup_geo")
+
+---@param obj Object
+function bhv_rocket_powerup_init(obj)
+    obj.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    obj_set_model_extended(obj, E_MODEL_ROCKET_POWERUP)
+    obj.oFaceAngleYaw = obj.oFaceAngleYaw - 32768
+    obj.oIntangibleTimer = 0
+    obj.hitboxRadius = 120
+    obj.hitboxHeight = 120
+    obj.oGravity = 3
+    obj.oFriction = 0.8
+    obj.oBuoyancy = 1
+    network_init_object(obj, true, nil)
+end
+
+---@param obj Object
+function bhv_rocket_powerup_loop(obj)
+    general_powerup_handler(obj, ROCKET)
+end
+
+bhvRocketPowerup = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_rocket_powerup_init, bhv_rocket_powerup_loop)
