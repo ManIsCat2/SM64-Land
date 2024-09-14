@@ -20,14 +20,14 @@ W2 Boss: Angry Sun's Trial - 0%
 
 World 3: "The House"
 3-1: Kitchen - 100%
-3-2: Toy Room - 60%
+3-2: Toy Room - 75%
     Missing Stuff:
         * Toy Trains
         * Jack in a Boxes
         * Whomp Dominos
         * Custom Purple Button Activated Only by Whowmp Dominos
 3-3: Bathroom - 60%
-3-4: Fridge - 80%
+3-4: Fridge - 85%
 3-EX: Toad House - 0%
 W3 Boss: Master Hand's Trial - 0%
 
@@ -64,7 +64,7 @@ World 7: "Power Plant"
 W7 Boss: Wario's Ambush - 0% 
 
 World 8: "Bowser's Space Land"
-8-1: Space Garden - 0%
+8-1: Space Garden - 80%
 8-2: Sun-Moon Casino - 0%
 8-3: Volcano Cluster - 0%
 8-4: Bowser's Space Base - 0%

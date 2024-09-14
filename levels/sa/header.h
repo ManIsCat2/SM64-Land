@@ -2,6 +2,10 @@
 #define SA_HEADER_H
 #include "types.h"
 #include "game/moving_texture.h"
+extern const LevelScript level_sa_entry[];
+extern const LevelScript local_area_sa_1_[];
+extern const LevelScript local_objects_sa_1_[];
+extern const LevelScript local_warps_sa_1_[];
 extern const GeoLayout Geo_sa_1_0x1eaad50[];
 extern Gfx DL_sa_1_0xe05c900[];
 extern Gfx DL_sa_1_0xe06a5c0[];
@@ -10,7 +14,7 @@ extern const Collision col_sa_1_0xe06e9e0[];
 extern struct MovtexQuadCollection sa_1_Movtex_0[];
 extern struct MovtexQuadCollection sa_1_Movtex_1[];
 extern struct MovtexQuadCollection sa_1_Movtex_2[];
-extern const LevelScript level_sa_custom_entry[];
+extern const LevelScript level_sa_entry[];
 extern const LevelScript local_area_sa_1_[];
 extern const LevelScript local_objects_sa_1_[];
 extern const LevelScript local_warps_sa_1_[];

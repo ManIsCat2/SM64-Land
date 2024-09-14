@@ -1556,3 +1556,25 @@ function bhv_paperplane_loop(o)
 end
 
 bhvPaperPlane = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_paperplane_init, bhv_paperplane_loop)
+
+---@param o Object
+function bhv_bowser_can_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("bowser_can_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 3000
+end
+
+bhvKoopaCola = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_bowser_can_init,
+    function() load_object_collision_model() end)
+
+---@param o Object
+function bhv_sa_flower_leaves(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("sa_flower_leaves_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 1000
+end
+
+bhvSAFlowerLeaves = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_sa_flower_leaves,
+    function() load_object_collision_model() end)
