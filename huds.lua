@@ -28,6 +28,7 @@ levelData = {
     [COURSE_LLL] = { { stars = {}, finalStar = nil } },
     [COURSE_SSL] = { { stars = { 1, 0 }, finalStar = 0 } },
     [COURSE_TTM] = { { stars = { 1, 2 }, finalStar = 2 }, { stars = { 3, 4 }, finalStar = 4 } },
+    [COURSE_TTC] = { { stars = { 0 }, finalStar = 0 }, },
 }
 
 bossLevelData = {
@@ -394,14 +395,14 @@ end
 
 function on_hud_render_behind()
     hud_hide()
+    djui_hud_set_color(255, 255, 255, 255)
+    djui_hud_set_resolution(RESOLUTION_N64)
+    djui_hud_set_font(FONT_HUD)
+    cannon_hud()
     if _G.OmmEnabled and _G.OmmApi.omm_get_setting(gMarioStates[0], "hud") == 0 or not _G.OmmEnabled then
-        djui_hud_set_color(255, 255, 255, 255)
-        djui_hud_set_resolution(RESOLUTION_N64)
-        djui_hud_set_font(FONT_HUD)
         lobby_hud()
         level_hud()
         toad_house_hud()
-        cannon_hud()
         power_meter()
 
 

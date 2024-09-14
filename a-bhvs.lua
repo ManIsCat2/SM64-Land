@@ -1504,5 +1504,5 @@ function fliptilecode(o)
     end
 end
 
-bhvLavaAndSnowFlipBlock = hook_behavior(nil, OBJ_LIST_SURFACE, true, nil,
+bhvLavaAndSnowFlipBlock = hook_behavior(nil, OBJ_LIST_SURFACE, true, flipinit,
     fliptilecode)

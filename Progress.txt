@@ -54,7 +54,7 @@ World 7: "Power Plant"
 7-1: Zap Factory - 50%
 7-2: Rhythm Factory - 50%
 7-3: Nuclear Plant - 75%
-7-4: Haunted Clock - 50%
+7-4: Haunted Clock - 100%
 7-EX: Toad House - 0%
 W7 Boss: Wario's Ambush - 0% 
 
