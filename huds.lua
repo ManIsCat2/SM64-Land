@@ -29,6 +29,7 @@ levelData = {
     [COURSE_SSL] = { { stars = { 1, 2, 0 }, finalStar = 0 } },
     [COURSE_TTM] = { { stars = { 1, 2 }, finalStar = 2 }, { stars = { 3, 4 }, finalStar = 4 } },
     [COURSE_TTC] = { { stars = { 0 }, finalStar = 0 }, },
+    [COURSE_SL] = { { stars = { 5, 4, 3 }, finalStar = 3 }, { stars = { 1, 0 }, finalStar = 0 } },
 }
 
 bossLevelData = {
@@ -178,6 +179,7 @@ function mario_update(m)
 end
 
 function lobby_hud()
+    starPower = get_star_count() / curWorld
     if gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS) or gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) then
         -- World Star Counter
 
@@ -194,7 +196,7 @@ function lobby_hud()
             djui_hud_render_texture(worldSpecific[curWorld].starPowerIcon, (djui_hud_get_screen_width() / 2) - 26, 3, 1,
                 1)
             djui_hud_print_text("@", (djui_hud_get_screen_width() / 2) - 10, 4, 1)
-            djui_hud_print_text(tostring(starPower), (djui_hud_get_screen_width() / 2) + 2, 4, 1)
+            djui_hud_print_text(string.format("%d", math.ceil(starPower)), (djui_hud_get_screen_width() / 2) + 2, 4, 1)
         end
 
         -- Star Counter

@@ -3,11 +3,11 @@ SM64 Land Port Progress:
 This txt file shows overall progress to the SM64 Land port. Any changes to the port must be recorded in this file.
 
 World 1: "Mushroom Hills"
-1-1: Tilting Bridges - 80%
+1-1: Tilting Bridges - 100%
 1-2: Mushrooms - 100%
 1-3: Switchboards - 100%
 1-4: Rolling Chomps - 80%
-1-EX: Toad House - 50%
+1-EX: Toad House - 100%
 W1 Boss: Goomba King's Trial - 100%
 
 World 2: "Desert Land"
@@ -15,7 +15,7 @@ World 2: "Desert Land"
 2-2: Thwomps and Rotation - 70%
 2-3: Angry Sun - 70%
 2-4: Tornados - 60%
-2-EX: Toad House - 50%
+2-EX: Toad House - 100%
 W2 Boss: Angry Sun's Trial - 0%
 
 World 3: "The House"
@@ -28,23 +28,23 @@ World 3: "The House"
         * Custom Purple Button Activated Only by Whowmp Dominos
 3-3: Bathroom - 60%
 3-4: Fridge - 85%
-3-EX: Toad House - 0%
+3-EX: Toad House - 100%
 W3 Boss: Master Hand's Trial - 0%
 
 World 4: "Retro Land"
-4-1: Mario Bros. 3 Supershow - 50%
+4-1: Mario Bros. 3 Supershow - 100% // couldnt do npcs that watch the show
 4-2: Bowser's Cart Castle - 50%
 4-3: Paper Jungle Adventure - 70%
 4-4: Super Mario World - 70%
-4-EX: Toad House - 0%
+4-EX: Toad House - 100%
 W4 Boss: Bowser Jr.'s Trial - 0%
 
 World 5: "Cyber-Synth Land"
 5-1: Synthscape Land - 50%
 5-2: Synthspace Concert - 50%
 5-3: Synthcity - 100%
-5-4: Synthmetro - 60%
-5-EX: Toad House - 0%
+5-4: Synthmetro - 90%
+5-EX: Toad House - 100%
 W5 Boss: Shadow Mario's Trial - 0%
 
 World 6: "Sky Haven"
@@ -52,22 +52,22 @@ World 6: "Sky Haven"
 6-2: Pendulums and Beetles - 100%
 6-3: Sandbird - 55%
 6-4: Cloud Rush - 100%
-6-EX: Toad House - 0%
+6-EX: Toad House - 100%
 W6 Boss: Tyrant Tormentoso's Trial - 0%
 
 World 7: "Power Plant"
-7-1: Zap Factory - 50%
+7-1: Zap Factory - 80%
 7-2: Rhythm Factory - 50%
 7-3: Nuclear Plant - 75%
 7-4: Haunted Clock - 100%
-7-EX: Toad House - 0%
+7-EX: Toad House - 100%
 W7 Boss: Wario's Ambush - 0% 
 
 World 8: "Bowser's Space Land"
-8-1: Space Garden - 80%
+8-1: Space Garden - 90%
 8-2: Sun-Moon Casino - 0%
 8-3: Volcano Cluster - 0%
 8-4: Bowser's Space Base - 0%
-8-EX: Toad House - 0%
+8-EX: Toad House - 100%
 W8 Boss: Showdown with Bowser - 0%
 8-C: Champion's Road - 0%

@@ -1,5 +1,5 @@
--- name: \\#FFFF00\\Super Mario\\#00ff00\\ 64 Land
--- description: Awesome romhack by Kaze, Ported By I'mYourCat and xLuigiGamerx.\n\nCredits to:\nSteven\nSunk\nBlocky\nWoissil\nRushedAccN64
+-- name: \\#FFFF00\\SM64\\#00ff00\\ Land
+-- description: A linear hack with 8 Worlds filled with\nlevels to explore, and all new powers-ups, inspired by Super Mario 3D Land and Super Mario 3D World.\n\nPorted By:\nI'mYourCat2\nxLuigiGamerx\nSteven\nSunk\nWoissil\nRushedAccN64
 -- incompatible: romhack
 
 local m = gMarioStates[0]

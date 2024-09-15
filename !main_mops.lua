@@ -392,8 +392,8 @@ function bhv_noteblock_loop(obj)
     if cur_obj_is_mario_on_platform() == 1 and not is_bubbled(m) then
         --this is awful -- It really is -Sunk
         -- Jump. If A is pressed during the jump, increase y_spd.
-        if m.controller.buttonPressed & A_BUTTON ~= 0 then
-            y_spd = y_spd + 12 -- I feel like this should increase with oBehParams2ndByte
+        if m.controller.buttonDown & A_BUTTON ~= 0 then
+            y_spd = y_spd + 18 -- I feel like this should increase with oBehParams2ndByte
             spawn_mist_particles()
         end
         set_mario_action(m, ACT_DOUBLE_JUMP, 0)

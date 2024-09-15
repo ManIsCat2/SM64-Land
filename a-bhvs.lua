@@ -96,13 +96,12 @@ function get_world_star_count(world)
         course3 = COURSE_HMC
     end
 
-    -- WIP (added to avoid hud errors)
-
     if world == 6 then
-        course1 = COURSE_DDD
-        course2 = COURSE_SL
-        course3 = COURSE_HMC
+        course1 = COURSE_TTM
+        course2 = COURSE_THI
     end
+
+    -- WIP (added to avoid hud errors)
 
     if world == 7 then
         course1 = COURSE_DDD
@@ -1577,4 +1576,72 @@ function bhv_sa_flower_leaves(o)
 end
 
 bhvSAFlowerLeaves = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_sa_flower_leaves,
+    function() load_object_collision_model() end)
+
+
+---@param o Object
+function bhv_thi2_spinning_platform(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("thi2_spinning_platform_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 1000
+    o.oAngleVelYaw = 100
+end
+
+bhvTHI2SpinningPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_thi2_spinning_platform,
+    function(o)
+        load_object_collision_model()
+        o.oFaceAngleYaw = o.oFaceAngleYaw + 100
+    end)
+
+
+---@param o Object
+function bhv_thi2_electric_platform_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("thi2_electric_platform_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 900
+    cur_obj_set_home_once()
+end
+
+---@param o Object
+function bhv_thi2_electric_platform_loop(o)
+    load_object_collision_model()
+    o.oPosY = o.oPosY + approach_f32_asymptotic(o.oVelY, (o.oHomeY - o.oPosY) / 8, 0.4)
+    if cur_obj_is_mario_on_platform() ~= 0 then
+        o.oPosY = o.oPosY - 8
+    end
+end
+
+bhvTHI2ElectricPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_thi2_electric_platform_init,
+    bhv_thi2_electric_platform_loop)
+
+---@param o Object
+function bhv_synth_train(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("custom_19000220_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 5000
+end
+
+bhvSynthTrain = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_synth_train,
+    function() load_object_collision_model() end)
+
+---@param o Object
+function bhv_sa_flower_top(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("sa_flower_top_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 1000
+end
+
+bhvSAFlowerTop = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_sa_flower_top,
+    function() load_object_collision_model() end)
+
+---@param o Object
+function bhv_custom_donut_platform(o)
+    o.collisionData = smlua_collision_util_get("custom_donut_platform_collision")
+end
+
+hook_behavior(id_bhvDonutPlatform, OBJ_LIST_SURFACE, false, bhv_custom_donut_platform,
     function() load_object_collision_model() end)

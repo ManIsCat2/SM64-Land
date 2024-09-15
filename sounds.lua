@@ -22,6 +22,9 @@ smlua_audio_utils_replace_sequence(43, 37, 75, "0x09 Cloud Cap (Ver 2) NInst 37"
 smlua_audio_utils_replace_sequence(69, 42, 75, "Airship Fortress - Mario Kart DS (SM3DL) v2") --7-4 done
 smlua_audio_utils_replace_sequence(70, 37, 75, "SpaceJunk_Andy_NI26") --World 8 done
 smlua_audio_utils_replace_sequence(55, 42, 75, "8-1_Good_egg") --8-1 done
+smlua_audio_utils_replace_sequence(48, 16, 75, "Techno Factory - Kirby's Return to Dreamland")
+smlua_audio_utils_replace_sequence(39, 28, 75, "Long note for audio playback_trains")
+smlua_audio_utils_replace_sequence(41, 17, 75, "SMB3Overworld(SM64)")
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom") --Star Collect

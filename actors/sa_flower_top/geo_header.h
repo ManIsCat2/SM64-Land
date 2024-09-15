@@ -1,0 +1,16 @@
+extern const GeoLayout sa_flower_top_geo[];
+extern Lights1 sa_flower_top_Material_0_f3d_lights;
+extern Lights1 sa_flower_top_Material_1_f3d_lights;
+extern u8 sa_flower_top__0_rgba16[];
+extern u8 sa_flower_top__1_rgba16[];
+extern Vtx sa_flower_top_node_mesh_layer_1_vtx_cull[8];
+extern Vtx sa_flower_top_node_mesh_layer_1_vtx_0[48];
+extern Gfx sa_flower_top_node_mesh_layer_1_tri_0[];
+extern Vtx sa_flower_top_node_mesh_layer_4_vtx_cull[8];
+extern Vtx sa_flower_top_node_mesh_layer_4_vtx_0[96];
+extern Gfx sa_flower_top_node_mesh_layer_4_tri_0[];
+extern Gfx mat_sa_flower_top_Material_0_f3d[];
+extern Gfx mat_sa_flower_top_Material_1_f3d[];
+extern Gfx mat_revert_sa_flower_top_Material_1_f3d[];
+extern Gfx sa_flower_top_node_mesh_layer_1[];
+extern Gfx sa_flower_top_node_mesh_layer_4[];

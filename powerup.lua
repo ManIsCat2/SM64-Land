@@ -3,30 +3,30 @@
 
 -- Models
 
-E_MODEL_TANOOKI_MARI    = smlua_model_util_get_id("tanooki_mario_geo")
-E_MODEL_KITSUNE_LUIG    = smlua_model_util_get_id("kitsune_luigi_geo")
-E_MODEL_TANOOKI_TOAD    = smlua_model_util_get_id("tanooki_toad_geo")
-E_MODEL_TANOOKI_WARI    = smlua_model_util_get_id("tanooki_wario_geo")
-E_MODEL_KITSUNE_WALUIGI = smlua_model_util_get_id("kitsune_waluigi_geo")
-E_MODEL_CAT_MARI        = smlua_model_util_get_id("cat_mario_geo")
-E_MODEL_BEE_MARI        = smlua_model_util_get_id("bee_mario_geo")
-E_MODEL_CLOUD_MARIO     = smlua_model_util_get_id("cloud_mario_geo")
+E_MODEL_TANOOKI_MARIO             = smlua_model_util_get_id("tanooki_mario_geo")
+E_MODEL_KITSUNE_LUIGI             = smlua_model_util_get_id("kitsune_luigi_geo")
+E_MODEL_TANOOKI_TOAD              = smlua_model_util_get_id("tanooki_toad_geo")
+E_MODEL_TANOOKI_WARIO             = smlua_model_util_get_id("tanooki_wario_geo")
+E_MODEL_KITSUNE_WALUIGI           = smlua_model_util_get_id("kitsune_waluigi_geo")
+E_MODEL_CAT_MARIO                 = smlua_model_util_get_id("cat_mario_geo")
+E_MODEL_BEE_MARIO                 = smlua_model_util_get_id("bee_mario_geo")
+E_MODEL_CLOUD_MARIO               = smlua_model_util_get_id("cloud_mario_geo")
 
 -- Powerups enum
 
-NORMAL  = 0
-TANOOKI = 1
-CAT     = 2
-BEE     = 3
-CLOUD   = 4
-ROCKET  = 5
+NORMAL                            = 0
+TANOOKI                           = 1
+CAT                               = 2
+BEE                               = 3
+CLOUD                             = 4
+ROCKET                            = 5
 
 -- Powerup Relatives
-local cloudcount = 0                       -- for cloud flower
+local cloudcount                  = 0      -- for cloud flower
 
 gPlayerSyncTable[0].activePowerup = NORMAL -- Current Powerup, set to NORMAL to disable any powerup
 
-characterPowerupModels = {
+characterPowerupModels            = {
     [CT_MARIO]   = { tanooki = E_MODEL_TANOOKI_MARIO, cat = E_MODEL_CAT_MARIO, bee = E_MODEL_BEE_MARIO, cloud = E_MODEL_CLOUD_MARIO },
     [CT_LUIGI]   = { tanooki = E_MODEL_KITSUNE_LUIGI, cat = nil, bee = nil, cloud = nil },
     [CT_TOAD]    = { tanooki = E_MODEL_TANOOKI_TOAD, cat = nil, bee = nil, cloud = nil },
@@ -34,12 +34,13 @@ characterPowerupModels = {
     [CT_WALUIGI] = { tanooki = E_MODEL_KITSUNE_WALUIGI, cat = nil, bee = nil, cloud = nil },
 }
 
-local powerupStates = {
+local powerupStates               = {
     [NORMAL]  = { modelId = nil },
     [TANOOKI] = { modelId = nil },
     [CAT]     = { modelId = nil },
     [BEE]     = { modelId = nil },
-    [CLOUD]   = { modelId = nil }
+    [CLOUD]   = { modelId = nil },
+    [ROCKET]  = { modelId = nil }
 }
 
 -- Powerup States, to add more powerups here, you must first add them to the enum and assign a number
@@ -117,7 +118,7 @@ function general_powerup_handler(obj, powerup)
             obj.oTimer = 0
             cur_obj_play_sound_2(SOUND_MENU_EXIT_PIPE)
             gPlayerSyncTable[network_local_index_from_global(nreaetsplayertopwoerup.globalPlayerIndex)].activePowerup =
-            powerup
+                powerup
         end
     end
 
@@ -129,8 +130,8 @@ function general_powerup_handler(obj, powerup)
             obj.oTimer = 0
             obj.oAction = 0
             cur_obj_unhide()
-            obj.hitboxRadius = 65
-            obj.hitboxHeight = 65
+            obj.hitboxRadius = 80
+            obj.hitboxHeight = 80
         end
     end
 end
