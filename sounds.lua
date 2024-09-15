@@ -22,10 +22,10 @@ smlua_audio_utils_replace_sequence(43, 37, 75, "0x09 Cloud Cap (Ver 2) NInst 37"
 smlua_audio_utils_replace_sequence(69, 42, 75, "Airship Fortress - Mario Kart DS (SM3DL) v2") --7-4 done
 smlua_audio_utils_replace_sequence(70, 37, 75, "SpaceJunk_Andy_NI26") --World 8 done
 smlua_audio_utils_replace_sequence(55, 42, 75, "8-1_Good_egg") --8-1 done
-smlua_audio_utils_replace_sequence(48, 16, 75, "Techno Factory - Kirby's Return to Dreamland")
-smlua_audio_utils_replace_sequence(39, 28, 75, "Long note for audio playback_trains")
-smlua_audio_utils_replace_sequence(41, 17, 75, "SMB3Overworld(SM64)")
-smlua_audio_utils_replace_sequence(60, 24, 75, "Hell_Prominence_Reduced")
+smlua_audio_utils_replace_sequence(48, 42, 75, "Techno Factory - Kirby's Return to Dreamland") --7-1 done
+smlua_audio_utils_replace_sequence(39, 28, 75, "Long note for audio playback_trains") --5-4 use streamed music for this
+smlua_audio_utils_replace_sequence(41, 42, 75, "SMB3Overworld(SM64)") --4-1 done
+smlua_audio_utils_replace_sequence(60, 42, 75, "Hell_Prominence_Reduced") --8-3 done
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom") --Star Collect
@@ -40,8 +40,8 @@ smlua_audio_utils_replace_sequence(0x3B, 0x25, 75, "3B_Seq_custom") --Toad House
 smlua_audio_utils_replace_sequence(0x10, 0x12, 75, "10_Seq_custom") --koopa message
 smlua_audio_utils_replace_sequence(0x12, 0x11, 75, "12_Seq_custom") --Star Collect
 smlua_audio_utils_replace_sequence(0x14, 0x1A, 75, "14_Seq_custom") --race fanfare
-smlua_audio_utils_replace_sequence(0x15, 0x0E, 75, "15_Seq_custom") --star spawn
-smlua_audio_utils_replace_sequence(0x16, 0x15, 75, "16_Seq_custom") --boss
+smlua_audio_utils_replace_sequence(0x15, 0x1C, 90, "15_Seq_custom") --star spawn
+smlua_audio_utils_replace_sequence(0x16, 0x15, 75, "16_Seq_custom") --World 2 Boss
 smlua_audio_utils_replace_sequence(0x17, 0x1A, 75, "17_Seq_custom") --boss win
 smlua_audio_utils_replace_sequence(0x19, 0x2A, 75, "19_Seq_custom") --World 3 done
 smlua_audio_utils_replace_sequence(0x1B, 0x14, 75, "1B_Seq_custom") --secret
