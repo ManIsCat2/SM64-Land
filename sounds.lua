@@ -1,6 +1,6 @@
-smlua_audio_utils_replace_sequence(SEQ_LEVEL_GRASS, 37, 75, "SM3DWZeroVv2") --1-1 done
+smlua_audio_utils_replace_sequence(3, 42, 75, "SM3DWZeroVv2") --1-1 done
 smlua_audio_utils_replace_sequence(72, 42, 75, "1-2_Puzzle_Plank") --1-2 done
-smlua_audio_utils_replace_sequence(37, 26, 75, "Space1") --1-3 done
+smlua_audio_utils_replace_sequence(37, 42, 75, "Space1") --1-3 done
 smlua_audio_utils_replace_sequence(71, 42, 75, "SSBTargetTest_Andy_NI26") --Tutorial done
 smlua_audio_utils_replace_sequence(6, 42, 75, "Super Mario 3D Land - World 7 (SM64Land)") --World 2 done
 smlua_audio_utils_replace_sequence(8, 42, 75, "Kalamari Desert - Mario Kart 64 (Final) 12") --2-1 done
