@@ -115,7 +115,7 @@ function worlds_unlocked()
     return worldsUnlocked
 end
 
-local TEX_SEPERATOR = get_texture_info("custom_hud_slash.rgba16")
+TEX_SEPERATOR = get_texture_info("custom_hud_slash.rgba16")
 TEX_UNCOLLECTED_STAR = get_texture_info("hud_star_uncollected") -- DO NOT LOCALIZE
 TEX_UNCOLLECTED_STAR_100 = get_texture_info("hud_star_100_uncollected")
 local TEX_SCORE = get_texture_info("hud_score")

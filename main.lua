@@ -2,6 +2,13 @@
 -- description: A linear hack made by Kaze Emanuar with 8 Worlds filled with\nlevels to explore, and all new powers-ups, inspired by Super Mario 3D Land and Super Mario 3D World.\n\nPorted By:\n\\#00ff00\\I'mYourCat\\#FF0000\\2 (Creator)\n\\#dcdcdc\\x\\#00FF00\\Luigi\\#434343\\Gamer\\#dcdcdc\\x (Programmer)\n\\#0000FF\\Woissil (Model Porter, Animator)\n\\#105009\\Emeraldsniper (Tester)\n\\#FFC0CB\\Sunk (MOPS)\n\\#00FFFF\\Steven (Rideable Yoshi)
 -- incompatible: romhack
 
+gFloodIsEnabled = false
+for currentMod in pairs(gActiveMods) do
+    if gActiveMods[currentMod].name:find("Flood") then
+        gFloodIsEnabled = true
+    end
+end
+
 local m = gMarioStates[0]
 
 local function mario_update(m)

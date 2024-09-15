@@ -1,6 +1,9 @@
 -- Placed here to remove the need of setting models for every powerup
 -- Uses the definitive model check
 
+-- Localize Funcs
+local math_sin                    = math.sin
+
 -- Models
 
 E_MODEL_TANOOKI_MARIO             = smlua_model_util_get_id("tanooki_mario_geo")
@@ -11,6 +14,7 @@ E_MODEL_KITSUNE_WALUIGI           = smlua_model_util_get_id("kitsune_waluigi_geo
 E_MODEL_CAT_MARIO                 = smlua_model_util_get_id("cat_mario_geo")
 E_MODEL_BEE_MARIO                 = smlua_model_util_get_id("bee_mario_geo")
 E_MODEL_CLOUD_MARIO               = smlua_model_util_get_id("cloud_mario_geo")
+E_MODEL_ELECTRIC_MARIO            = smlua_model_util_get_id("electric_mario_geo")
 
 -- Powerups enum
 
@@ -20,6 +24,7 @@ CAT                               = 2
 BEE                               = 3
 CLOUD                             = 4
 ROCKET                            = 5
+BATTERY                           = 6
 
 -- Powerup Relatives
 local cloudcount                  = 0      -- for cloud flower
@@ -27,11 +32,11 @@ local cloudcount                  = 0      -- for cloud flower
 gPlayerSyncTable[0].activePowerup = NORMAL -- Current Powerup, set to NORMAL to disable any powerup
 
 characterPowerupModels            = {
-    [CT_MARIO]   = { tanooki = E_MODEL_TANOOKI_MARIO, cat = E_MODEL_CAT_MARIO, bee = E_MODEL_BEE_MARIO, cloud = E_MODEL_CLOUD_MARIO },
-    [CT_LUIGI]   = { tanooki = E_MODEL_KITSUNE_LUIGI, cat = nil, bee = nil, cloud = nil },
-    [CT_TOAD]    = { tanooki = E_MODEL_TANOOKI_TOAD, cat = nil, bee = nil, cloud = nil },
-    [CT_WARIO]   = { tanooki = E_MODEL_TANOOKI_WARIO, cat = nil, bee = nil, cloud = nil },
-    [CT_WALUIGI] = { tanooki = E_MODEL_KITSUNE_WALUIGI, cat = nil, bee = nil, cloud = nil },
+    [CT_MARIO]   = { tanooki = E_MODEL_TANOOKI_MARIO, cat = E_MODEL_CAT_MARIO, bee = E_MODEL_BEE_MARIO, cloud = E_MODEL_CLOUD_MARIO, electric = E_MODEL_ELECTRIC_MARIO },
+    [CT_LUIGI]   = { tanooki = E_MODEL_KITSUNE_LUIGI, cat = nil, bee = nil, cloud = nil, electric = nil },
+    [CT_TOAD]    = { tanooki = E_MODEL_TANOOKI_TOAD, cat = nil, bee = nil, cloud = nil, electric = nil },
+    [CT_WARIO]   = { tanooki = E_MODEL_TANOOKI_WARIO, cat = nil, bee = nil, cloud = nil, electric = nil },
+    [CT_WALUIGI] = { tanooki = E_MODEL_KITSUNE_WALUIGI, cat = nil, bee = nil, cloud = nil, electric = nil },
 }
 
 local powerupStates               = {
@@ -40,7 +45,8 @@ local powerupStates               = {
     [CAT]     = { modelId = nil },
     [BEE]     = { modelId = nil },
     [CLOUD]   = { modelId = nil },
-    [ROCKET]  = { modelId = nil }
+    [ROCKET]  = { modelId = nil },
+    [BATTERY] = { modelId = nil },
 }
 
 -- Powerup States, to add more powerups here, you must first add them to the enum and assign a number
@@ -54,7 +60,8 @@ function get_character_model(m)
         [CAT]     = { modelId = CPM.cat and CPM.cat or CPMM.cat },
         [BEE]     = { modelId = CPM.bee and CPM.bee or CPMM.bee },
         [CLOUD]   = { modelId = CPM.cloud and CPM.cloud or CPMM.cloud },
-        [ROCKET]  = { modelId = nil }
+        [ROCKET]  = { modelId = nil },
+        [BATTERY] = { modelId = CPM.electric and CPM.electric or CPMM.electric },
     }
 end
 
@@ -119,6 +126,9 @@ function general_powerup_handler(obj, powerup)
             cur_obj_play_sound_2(SOUND_MENU_EXIT_PIPE)
             gPlayerSyncTable[network_local_index_from_global(nreaetsplayertopwoerup.globalPlayerIndex)].activePowerup =
                 powerup
+            if powerup == BATTERY then
+                spawn_non_sync_object(id_bhvSparkleSpawn, E_MODEL_NONE, obj.oPosX, obj.oPosY, obj.oPosZ, nil);
+            end
         end
     end
 
@@ -130,6 +140,7 @@ function general_powerup_handler(obj, powerup)
             obj.oTimer = 0
             obj.oAction = 0
             cur_obj_unhide()
+
             obj.hitboxRadius = 80
             obj.hitboxHeight = 80
         end
@@ -161,8 +172,8 @@ function general_powerup_handler_DONT_SYNC(obj, powerup)
             obj.oTimer = 0
             obj.oAction = 0
             cur_obj_unhide()
-            obj.hitboxRadius = 65
-            obj.hitboxHeight = 65
+            obj.hitboxRadius = 80
+            obj.hitboxHeight = 80
         end
     end
 end
@@ -841,3 +852,90 @@ function bhv_rocket_powerup_loop(obj)
 end
 
 bhvRocketPowerup = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_rocket_powerup_init, bhv_rocket_powerup_loop)
+
+---@param obj Object
+function bhv_battrey_powerup_init(obj)
+    obj.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    obj.oIntangibleTimer = 0
+    obj.hitboxRadius = 120
+    obj.hitboxHeight = 120
+    obj_scale(obj, 0.2)
+    obj.hitboxDownOffset = 70
+    network_init_object(obj, true, nil)
+end
+
+---@param obj Object
+function bhv_battrey_powerup_loop(obj)
+    obj.oPosY = obj.oPosY + math_sin(obj.oTimer * 0.07) * 2
+    obj.oFaceAngleYaw = obj.oFaceAngleYaw + ((65536 / 360) * 1.5)
+
+    if gFloodIsEnabled then
+        general_powerup_handler_DONT_SYNC(obj, BATTERY)
+    else
+        general_powerup_handler(obj, BATTERY)
+    end
+end
+
+local batted = false
+local batTimer = 0
+local battedTimes = 0
+
+---@param m MarioState
+function battery_powerup(m)
+    if m.playerIndex ~= 0 then return end
+    local gMarioObject = m.marioObj
+    --djui_chat_message_create(tostring(gMarioObject.oHiddenBlueCoinSwitch))
+    if gPlayerSyncTable[0].activePowerup == BATTERY then
+        if m.action & ACT_FLAG_AIR ~= 0 then
+            if m.controller.buttonPressed & B_BUTTON ~= 0 and battedTimes < 3 then
+                m.pos.x = m.pos.x + sins(m.faceAngle.y) * 500
+                battedTimes = battedTimes + 1
+                m.pos.z = m.pos.z + coss(m.faceAngle.y) * 500
+                --m.marioObj.header.gfx.node.flags = m.marioObj.header.gfx.node.flags & ~GRAPH_RENDER_ACTIVE;
+                batted = true
+            end
+        end
+
+        if batted then
+            set_mario_animation(m, MARIO_ANIM_FORWARD_SPINNING)
+            m.forwardVel = 0
+            m.action = ACT_FAKE_FREEFALL
+            m.vel.y = 0
+            batTimer = batTimer + 1
+            if batTimer > 10 then
+                m.marioObj.header.gfx.node.flags = m.marioObj.header.gfx.node.flags | GRAPH_RENDER_ACTIVE;
+                batTimer = 0
+                batted = false
+            end
+        end
+
+        if m.action & ACT_FLAG_AIR == 0 then
+            battedTimes = 0
+        end
+    end
+end
+
+function electtric_mario_hud()
+    if gPlayerSyncTable[0].activePowerup == BATTERY then
+        djui_hud_set_color(255, 255, 255, 255)
+        djui_hud_set_resolution(RESOLUTION_N64)
+        djui_hud_set_font(FONT_HUD)
+        if battedTimes == 2 then
+            djui_hud_render_texture(TEX_SEPERATOR, 8, djui_hud_get_screen_height() - 20, 1, 1)
+        end
+        if battedTimes == 1 then
+            djui_hud_render_texture(TEX_SEPERATOR, 8, djui_hud_get_screen_height() - 20, 1, 1)
+            djui_hud_render_texture(TEX_SEPERATOR, ((8) - 24) + 14 * 2 + 4, djui_hud_get_screen_height() - 20, 1, 1)
+        end
+        if battedTimes == 0 then
+            djui_hud_render_texture(TEX_SEPERATOR, 8, djui_hud_get_screen_height() - 20, 1, 1)
+            djui_hud_render_texture(TEX_SEPERATOR, ((8) - 24) + 14 * 2 + 4, djui_hud_get_screen_height() - 20, 1, 1)
+            djui_hud_render_texture(TEX_SEPERATOR, ((8) - 24) + 14 * 2 + 12, djui_hud_get_screen_height() - 20, 1, 1)
+        end
+    end
+end
+
+hook_event(HOOK_MARIO_UPDATE, battery_powerup)
+hook_event(HOOK_ON_HUD_RENDER_BEHIND, electtric_mario_hud)
+
+bhvBattreyPowerup = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_battrey_powerup_init, bhv_battrey_powerup_loop)
