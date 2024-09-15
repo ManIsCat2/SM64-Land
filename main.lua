@@ -1,5 +1,5 @@
--- name: \\#FFFF00\\SM64\\#00ff00\\ Land
--- description: A linear hack with 8 Worlds filled with\nlevels to explore, and all new powers-ups, inspired by Super Mario 3D Land and Super Mario 3D World.\n\nPorted By:\nI'mYourCat2\nxLuigiGamerx\nSteven\nSunk\nWoissil\nRushedAccN64
+-- name: \\#00FF00\\SM\\#FF4500\\64 Land
+-- description: A linear hack made by Kaze Emanuar with 8 Worlds filled with\nlevels to explore, and all new powers-ups, inspired by Super Mario 3D Land and Super Mario 3D World.\n\nPorted By:\n\\#00ff00\\I'mYourCat\\#FF0000\\2 (Creator)\n\\#dcdcdc\\x\\#00FF00\\Luigi\\#434343\\Gamer\\#dcdcdc\\x (Programmer)\n\\#0000FF\\Woissil (Model Porter, Animator)\n\\#105009\\Emeraldsniper (Tester)\n\\#FFC0CB\\Sunk (MOPS)\n\\#00FFFF\\Steven (Rideable Yoshi)
 -- incompatible: romhack
 
 local m = gMarioStates[0]
@@ -68,13 +68,13 @@ end
 hook_event(HOOK_MARIO_UPDATE, world_map_cam)
 ]]
 
-function level_1_3(m)
-    if m.action & ACT_FLAG_AIR ~= 0 and gNetworkPlayers[0].currLevelNum == LEVEL_WF and gNetworkPlayers[0].currAreaIndex == 2 and m.action ~= ACT_TWIRLING then
+function low_grav(m)
+    if m.action & ACT_FLAG_AIR ~= 0 and (gNetworkPlayers[0].currLevelNum == LEVEL_WF and gNetworkPlayers[0].currAreaIndex == 2 or gNetworkPlayers[0].currLevelNum == LEVEL_CASTLE_COURTYARD and gNetworkPlayers[0].currAreaIndex == 4) and m.action ~= ACT_TWIRLING then
         m.vel.y = m.vel.y + 1.2
     end
 end
 
-hook_event(HOOK_MARIO_UPDATE, level_1_3)
+hook_event(HOOK_MARIO_UPDATE, low_grav)
 
 -- Timer and bonus timer score --
 

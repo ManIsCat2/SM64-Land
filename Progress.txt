@@ -11,10 +11,10 @@ World 1: "Mushroom Hills"
 W1 Boss: Goomba King's Trial - 100%
 
 World 2: "Desert Land"
-2-1: Mushroom Trampolines - 80%
-2-2: Thwomps and Rotation - 70%
-2-3: Angry Sun - 70%
-2-4: Tornados - 60%
+2-1: Mushroom Trampolines - 100%
+2-2: Thwomps and Rotation - 90%
+2-3: Angry Sun - 90%
+2-4: Tornados - 80%
 2-EX: Toad House - 100%
 W2 Boss: Angry Sun's Trial - 0%
 
@@ -27,7 +27,7 @@ World 3: "The House"
         * Whomp Dominos
         * Custom Purple Button Activated Only by Whowmp Dominos
 3-3: Bathroom - 60%
-3-4: Fridge - 85%
+3-4: Fridge - 90%
 3-EX: Toad House - 100%
 W3 Boss: Master Hand's Trial - 0%
 
@@ -65,8 +65,8 @@ W7 Boss: Wario's Ambush - 0%
 
 World 8: "Bowser's Space Land"
 8-1: Space Garden - 90%
-8-2: Sun-Moon Casino - 0%
-8-3: Volcano Cluster - 0%
+8-2: Sun-Moon Casino - 50%
+8-3: Volcano Cluster - 65%
 8-4: Bowser's Space Base - 0%
 8-EX: Toad House - 100%
 W8 Boss: Showdown with Bowser - 0%

@@ -25,6 +25,7 @@ smlua_audio_utils_replace_sequence(55, 42, 75, "8-1_Good_egg") --8-1 done
 smlua_audio_utils_replace_sequence(48, 16, 75, "Techno Factory - Kirby's Return to Dreamland")
 smlua_audio_utils_replace_sequence(39, 28, 75, "Long note for audio playback_trains")
 smlua_audio_utils_replace_sequence(41, 17, 75, "SMB3Overworld(SM64)")
+smlua_audio_utils_replace_sequence(60, 24, 75, "Hell_Prominence_Reduced")
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom") --Star Collect

@@ -29,17 +29,6 @@ function surface_check(m)
                 bounceMultiplier = bounceMultiplier < 3 and bounceMultiplier + math.abs(m.vel.y / 75) or 3
                 set_mario_action(m, ACT_TRIPLE_JUMP, 0)
                 m.vel.y = ((140 / 3) * (bounceMultiplier <= 3 and bounceMultiplier or 3)) * m.floor.normal.y
-                if slopeAngle ~= 0 then
-                    if limit_angle(slopeAngle - m.faceAngle.y) <= 16384 and limit_angle(slopeAngle - m.faceAngle.y) >= -16384 then
-                        mario_set_forward_vel(m, ((80 / 3) * bounceMultiplier) / m.floor.normal.y)
-                    else
-                        m.forwardVel = m.forwardVel - ((24 * m.floor.normal.y) * bounceMultiplier)
-                        if m.forwardVel <= 0 and slopeAngle ~= 0 then
-                            m.faceAngle.y = slopeAngle
-                            mario_set_forward_vel(m, ((80 / 3) * bounceMultiplier) / m.floor.normal.y)
-                        end
-                    end
-                end
                 set_mario_particle_flags(m, (PARTICLE_MIST_CIRCLE | PARTICLE_HORIZONTAL_STAR), 0)
             end
         end
