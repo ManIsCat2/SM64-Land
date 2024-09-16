@@ -56,15 +56,15 @@ World 6: "Sky Haven"
 W6 Boss: Tyrant Tormentoso's Trial - 0%
 
 World 7: "Power Plant"
-7-1: Zap Factory - 80%
-7-2: Rhythm Factory - 50%
+7-1: Zap Factory - 90%
+7-2: Rhythm Factory - 75%
 7-3: Nuclear Plant - 75%
 7-4: Haunted Clock - 100%
 7-EX: Toad House - 100%
 W7 Boss: Wario's Ambush - 0% 
 
 World 8: "Bowser's Space Land"
-8-1: Space Garden - 90%
+8-1: Space Garden - 95%
 8-2: Sun-Moon Casino - 50%
 8-3: Volcano Cluster - 65%
 8-4: Bowser's Space Base - 0%

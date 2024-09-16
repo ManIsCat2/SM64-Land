@@ -1,5 +1,5 @@
 -- name: \\#00FF00\\SM\\#FF4500\\64 Land
--- description: A linear hack made by Kaze Emanuar with 8 Worlds filled with\nlevels to explore, and all new powers-ups, inspired by Super Mario 3D Land and Super Mario 3D World.\n\nPorted By:\n\\#00ff00\\I'mYourCat\\#FF0000\\2 (Creator)\n\\#dcdcdc\\x\\#00FF00\\Luigi\\#434343\\Gamer\\#dcdcdc\\x (Coder, Model Porter)\n\\#0000FF\\Woissil (Model Porter, Animator)\n\\#105009\\Emeraldsniper (Tester)\n\\#FFC0CB\\Sunk (MOPS)\n\\#00FFFF\\Steven (Rideable Yoshi)
+-- description: A linear hack made by Kaze Emanuar with 8 Worlds filled with\nlevels to explore, and all new powers-ups, inspired by Super Mario 3D Land and Super Mario 3D World.\n\nPorted By:\n\\#00ff00\\I'mYourCat\\#FF0000\\2 (Creator)\n\\#dcdcdc\\x\\#00FF00\\Luigi\\#434343\\Gamer\\#dcdcdc\\x (Coder, Model Porter)\n\\#FFC0CB\\MaiskX3 (Music Porter)\n\\#0000FF\\Woissil (Model Porter, Animator)\n\\#105009\\Emeraldsniper (Tester)\n\\#FFC0CB\\Sunk (MOPS)\n\\#00FFFF\\Steven (Rideable Yoshi)
 -- incompatible: romhack
 
 gFloodIsEnabled = false

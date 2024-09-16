@@ -15,6 +15,7 @@ E_MODEL_CAT_MARIO                 = smlua_model_util_get_id("cat_mario_geo")
 E_MODEL_BEE_MARIO                 = smlua_model_util_get_id("bee_mario_geo")
 E_MODEL_CLOUD_MARIO               = smlua_model_util_get_id("cloud_mario_geo")
 E_MODEL_ELECTRIC_MARIO            = smlua_model_util_get_id("electric_mario_geo")
+E_MODEL_ROCKET_MARIO              = smlua_model_util_get_id("rocket_mario_geo")
 
 -- Powerups enum
 
@@ -29,14 +30,17 @@ BATTERY                           = 6
 -- Powerup Relatives
 local cloudcount                  = 0      -- for cloud flower
 
+local chargingRocket              = false  --- for rocket
+local chargingMul                 = 1      --- for rocket
+
 gPlayerSyncTable[0].activePowerup = NORMAL -- Current Powerup, set to NORMAL to disable any powerup
 
 characterPowerupModels            = {
-    [CT_MARIO]   = { tanooki = E_MODEL_TANOOKI_MARIO, cat = E_MODEL_CAT_MARIO, bee = E_MODEL_BEE_MARIO, cloud = E_MODEL_CLOUD_MARIO, electric = E_MODEL_ELECTRIC_MARIO },
-    [CT_LUIGI]   = { tanooki = E_MODEL_KITSUNE_LUIGI, cat = nil, bee = nil, cloud = nil, electric = nil },
-    [CT_TOAD]    = { tanooki = E_MODEL_TANOOKI_TOAD, cat = nil, bee = nil, cloud = nil, electric = nil },
-    [CT_WARIO]   = { tanooki = E_MODEL_TANOOKI_WARIO, cat = nil, bee = nil, cloud = nil, electric = nil },
-    [CT_WALUIGI] = { tanooki = E_MODEL_KITSUNE_WALUIGI, cat = nil, bee = nil, cloud = nil, electric = nil },
+    [CT_MARIO]   = { tanooki = E_MODEL_TANOOKI_MARIO, cat = E_MODEL_CAT_MARIO, bee = E_MODEL_BEE_MARIO, cloud = E_MODEL_CLOUD_MARIO, electric = E_MODEL_ELECTRIC_MARIO, rocket = E_MODEL_ROCKET_MARIO },
+    [CT_LUIGI]   = { tanooki = E_MODEL_KITSUNE_LUIGI, cat = nil, bee = nil, cloud = nil, electric = nil, rocket = nil },
+    [CT_TOAD]    = { tanooki = E_MODEL_TANOOKI_TOAD, cat = nil, bee = nil, cloud = nil, electric = nil, rocket = nil },
+    [CT_WARIO]   = { tanooki = E_MODEL_TANOOKI_WARIO, cat = nil, bee = nil, cloud = nil, electric = nil, rocket = nil },
+    [CT_WALUIGI] = { tanooki = E_MODEL_KITSUNE_WALUIGI, cat = nil, bee = nil, cloud = nil, electric = nil, rocket = nil },
 }
 
 local powerupStates               = {
@@ -60,7 +64,7 @@ function get_character_model(m)
         [CAT]     = { modelId = CPM.cat and CPM.cat or CPMM.cat },
         [BEE]     = { modelId = CPM.bee and CPM.bee or CPMM.bee },
         [CLOUD]   = { modelId = CPM.cloud and CPM.cloud or CPMM.cloud },
-        [ROCKET]  = { modelId = nil },
+        [ROCKET]  = { modelId = CPM.rocket and CPM.rocket or CPMM.rocket },
         [BATTERY] = { modelId = CPM.electric and CPM.electric or CPMM.electric },
     }
 end
@@ -92,6 +96,8 @@ function on_death_warp()
     score = 0
     scoreCounter = 0
     cloudcount = 0
+    chargingMul = 1
+    chargingRocket = false
     gPlayerSyncTable[0].activePowerup = NORMAL
 end
 
@@ -119,6 +125,9 @@ function general_powerup_handler(obj, powerup)
     local nreaetsplayertopwoerup = nearest_player_to_object(obj)
     local nearestmariotopowerup = nearest_mario_state_to_object(obj)
     if obj.oAction == 0 then
+        if powerup == ROCKET or powerup == BATTERY then
+            spawn_non_sync_object(id_bhvSparkleSpawn, E_MODEL_NONE, obj.oPosX, obj.oPosY, obj.oPosZ, nil);
+        end
         if obj_check_hitbox_overlap(nreaetsplayertopwoerup, obj) then
             obj.oAction = 1
             cur_obj_hide()
@@ -126,9 +135,6 @@ function general_powerup_handler(obj, powerup)
             cur_obj_play_sound_2(SOUND_MENU_EXIT_PIPE)
             gPlayerSyncTable[network_local_index_from_global(nreaetsplayertopwoerup.globalPlayerIndex)].activePowerup =
                 powerup
-            if powerup == BATTERY then
-                spawn_non_sync_object(id_bhvSparkleSpawn, E_MODEL_NONE, obj.oPosX, obj.oPosY, obj.oPosZ, nil);
-            end
         end
     end
 
@@ -152,6 +158,9 @@ end
 function general_powerup_handler_DONT_SYNC(obj, powerup)
     local nearestmariotopowerup = gMarioStates[0]
     if obj.oAction == 0 then
+        if powerup == ROCKET or powerup == BATTERY then
+            spawn_non_sync_object(id_bhvSparkleSpawn, E_MODEL_NONE, obj.oPosX, obj.oPosY, obj.oPosZ, nil);
+        end
         if obj_check_hitbox_overlap(nearestmariotopowerup.marioObj, obj) then
             obj.oAction = 1
             cur_obj_hide()
@@ -774,7 +783,7 @@ function bhv_cloudflower_init(obj)
     obj.oGravity = 3
     obj.oFaceAnglePitch = obj.oFaceAnglePitch + -16384
     obj.oGraphYOffset = 0
-    network_init_object(obj, true, nil)
+    --network_init_object(obj, true, nil)
 end
 
 ---@param obj Object
@@ -835,23 +844,81 @@ E_MODEL_ROCKET_POWERUP = smlua_model_util_get_id("rocket_powerup_geo")
 ---@param obj Object
 function bhv_rocket_powerup_init(obj)
     obj.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
-    obj_set_model_extended(obj, E_MODEL_ROCKET_POWERUP)
-    obj.oFaceAngleYaw = obj.oFaceAngleYaw - 32768
     obj.oIntangibleTimer = 0
     obj.hitboxRadius = 120
     obj.hitboxHeight = 120
     obj.oGravity = 3
     obj.oFriction = 0.8
     obj.oBuoyancy = 1
-    network_init_object(obj, true, nil)
+    if not gFloodIsEnabled then
+        network_init_object(obj, true, nil)
+    end
 end
 
 ---@param obj Object
 function bhv_rocket_powerup_loop(obj)
-    general_powerup_handler(obj, ROCKET)
+    obj.oFaceAngleYaw = obj.oFaceAngleYaw + ((65536 / 360) * 1.5)
+    if gFloodIsEnabled then
+        general_powerup_handler_DONT_SYNC(obj, ROCKET)
+    else
+        general_powerup_handler(obj, ROCKET)
+    end
 end
 
+function roceket_powerup(m)
+    if m.playerIndex ~= 0 then return end
+    local gMarioObject = m.marioObj
+    --djui_chat_message_create(tostring(gMarioObject.oHiddenBlueCoinSwitch))
+    if gPlayerSyncTable[0].activePowerup == ROCKET then
+        if m.controller.buttonDown & B_BUTTON ~= 0 and m.action & ACT_FLAG_AIR == 0 then
+            set_mario_animation(m, MARIO_ANIM_STAND_AGAINST_WALL)
+            m.forwardVel = 0
+            chargingRocket = true
+            chargingMul = chargingMul + 0.085
+            -- djui_chat_message_create(tostring(chargingMul))
+        end
+
+        if chargingRocket and m.controller.buttonDown & B_BUTTON == 0 then
+            m.action = ACT_SHOT_FROM_CANNON
+            m.vel.y = 10 * chargingMul
+            m.forwardVel = 12
+            chargingRocket = false
+            chargingMul = 1
+        end
+
+        if chargingMul > 7 then
+            chargingMul = 7
+        end
+    end
+end
+
+hook_event(HOOK_MARIO_UPDATE, roceket_powerup)
+
 bhvRocketPowerup = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_rocket_powerup_init, bhv_rocket_powerup_loop)
+
+TEX_ROCKET_METER = get_texture_info("rocket_boost_meter")
+TEX_ROCKET_METER2 = get_texture_info("rocket_boost_meter2")
+
+function rocket_hud()
+    djui_hud_set_color(255, 255, 255, 255)
+    djui_hud_set_resolution(RESOLUTION_N64)
+    djui_hud_set_font(FONT_HUD)
+
+    djui_hud_set_filter(FILTER_NEAREST)
+
+
+    if gPlayerSyncTable[0].activePowerup == ROCKET then
+        djui_hud_render_texture(TEX_ROCKET_METER, 0, 220, 1, 1)
+        if chargingMul ~= 1 then
+            djui_hud_set_color(0, 255, 0, 255)
+            djui_hud_render_rect(3, 223, chargingMul * 6.85, 2 * 7)
+        end
+        djui_hud_set_color(255, 255, 255, 255)
+        djui_hud_render_texture(TEX_ROCKET_METER2, 0, 220, 1, 1)
+    end
+end
+
+hook_event(HOOK_ON_HUD_RENDER_BEHIND, rocket_hud)
 
 ---@param obj Object
 function bhv_battrey_powerup_init(obj)
@@ -861,7 +928,9 @@ function bhv_battrey_powerup_init(obj)
     obj.hitboxHeight = 120
     obj_scale(obj, 0.2)
     obj.hitboxDownOffset = 70
-    network_init_object(obj, true, nil)
+    if not gFloodIsEnabled then
+        network_init_object(obj, true, nil)
+    end
 end
 
 ---@param obj Object
@@ -888,6 +957,8 @@ function battery_powerup(m)
     if gPlayerSyncTable[0].activePowerup == BATTERY then
         if m.action & ACT_FLAG_AIR ~= 0 then
             if m.controller.buttonPressed & B_BUTTON ~= 0 and battedTimes < 3 then
+                play_sound(SOUND_MOVING_SHOCKED, gGlobalSoundSource)
+                m.faceAngle.y = m.intendedYaw
                 m.pos.x = m.pos.x + sins(m.faceAngle.y) * 500
                 battedTimes = battedTimes + 1
                 m.pos.z = m.pos.z + coss(m.faceAngle.y) * 500
@@ -922,12 +993,10 @@ function electtric_mario_hud()
         djui_hud_set_font(FONT_HUD)
         if battedTimes == 2 then
             djui_hud_render_texture(TEX_SEPERATOR, 8, djui_hud_get_screen_height() - 20, 1, 1)
-        end
-        if battedTimes == 1 then
+        elseif battedTimes == 1 then
             djui_hud_render_texture(TEX_SEPERATOR, 8, djui_hud_get_screen_height() - 20, 1, 1)
             djui_hud_render_texture(TEX_SEPERATOR, ((8) - 24) + 14 * 2 + 4, djui_hud_get_screen_height() - 20, 1, 1)
-        end
-        if battedTimes == 0 then
+        elseif battedTimes == 0 then
             djui_hud_render_texture(TEX_SEPERATOR, 8, djui_hud_get_screen_height() - 20, 1, 1)
             djui_hud_render_texture(TEX_SEPERATOR, ((8) - 24) + 14 * 2 + 4, djui_hud_get_screen_height() - 20, 1, 1)
             djui_hud_render_texture(TEX_SEPERATOR, ((8) - 24) + 14 * 2 + 12, djui_hud_get_screen_height() - 20, 1, 1)
