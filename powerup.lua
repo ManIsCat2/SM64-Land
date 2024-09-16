@@ -167,7 +167,7 @@ function general_powerup_handler_DONT_SYNC(obj, powerup)
             obj.oTimer = 0
             cur_obj_play_sound_2(SOUND_MENU_EXIT_PIPE)
             gPlayerSyncTable[0].activePowerup = powerup
-            if powerup == CLOUD then
+            if powerup == CLOUD and nearestmariotopowerup.playerIndex == 0 then
                 cloudcount = 3
             end
         end
@@ -183,6 +183,24 @@ function general_powerup_handler_DONT_SYNC(obj, powerup)
             cur_obj_unhide()
             obj.hitboxRadius = 80
             obj.hitboxHeight = 80
+        end
+    end
+end
+
+---@param powerup integer
+---@param obj Object
+function general_powerup_handler_DONT_SYNC2(obj, powerup)
+    local nearestmariotopowerup = gMarioStates[0]
+
+    if powerup == ROCKET or powerup == BATTERY then
+        spawn_non_sync_object(id_bhvSparkleSpawn, E_MODEL_NONE, obj.oPosX, obj.oPosY, obj.oPosZ, nil);
+    end
+    if obj_check_hitbox_overlap(nearestmariotopowerup.marioObj, obj) then
+        obj_mark_for_deletion(obj)
+        cur_obj_play_sound_2(SOUND_MENU_EXIT_PIPE)
+        gPlayerSyncTable[0].activePowerup = powerup
+        if powerup == CLOUD and nearestmariotopowerup.playerIndex == 0 then
+            cloudcount = 3
         end
     end
 end
@@ -249,7 +267,6 @@ function bhv_leaf_init(obj)
     obj.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     obj_set_model_extended(obj, E_MODEL_TANOOKI_LEAF)
     obj_scale(obj, 0.5)
-    obj.oFaceAngleYaw = obj.oFaceAngleYaw - 32768 -- watchr is so not awesome
     obj.hitboxRadius = 30
     obj.hitboxHeight = 30
     obj.oIntangibleTimer = 0
@@ -262,13 +279,7 @@ end
 ---@param obj Object
 function bhv_leaf_loop(obj)
     object_step()
-    load_object_collision_model()
-    local nreaetsplayertopwoerup = nearest_player_to_object(obj)
-    if obj_check_hitbox_overlap(nreaetsplayertopwoerup, obj) then
-        obj_mark_for_deletion(obj)
-        gPlayerSyncTable[network_local_index_from_global(nreaetsplayertopwoerup.globalPlayerIndex)].activePowerup =
-            TANOOKI
-    end
+    general_powerup_handler(obj, TANOOKI)
 end
 
 id_bhvSuperLeaf = hook_behavior(id_bhvWingCap, OBJ_LIST_GENACTOR, true, bhv_leaf_init, bhv_leaf_loop)
@@ -411,15 +422,12 @@ end
 
 ---@param obj Object
 function bhv_beesuit_loop(obj)
-    spawn_non_sync_object(id_bhvSparkleSpawn, E_MODEL_NONE, obj.oPosX, obj.oPosY, obj.oPosZ, nil);
-    object_step()
-    load_object_collision_model()
-    obj.oFaceAngleYaw = obj.oFaceAngleYaw + ((65536 / 360) * 1.5)
-    local nreaetsplayertopwoerup = nearest_player_to_object(obj)
-    if obj_check_hitbox_overlap(nreaetsplayertopwoerup, obj) then
-        obj_mark_for_deletion(obj)
-        gPlayerSyncTable[network_local_index_from_global(nreaetsplayertopwoerup.globalPlayerIndex)].activePowerup = BEE
+    if obj.oAction == 0 then
+        spawn_non_sync_object(id_bhvSparkleSpawn, E_MODEL_NONE, obj.oPosX, obj.oPosY, obj.oPosZ, nil);
     end
+    obj.oFaceAngleYaw = obj.oFaceAngleYaw + ((65536 / 360) * 1.5)
+    object_step()
+    general_powerup_handler(obj, BEE)
 end
 
 id_bhvBeeShroom = hook_behavior(id_bhvVanishCap, OBJ_LIST_GENACTOR, true, bhv_beesuit_init, bhv_beesuit_loop)
@@ -515,13 +523,7 @@ end
 ---@param obj Object
 function bhv_superbell_loop(obj)
     object_step()
-    load_object_collision_model()
-    local nreaetsplayertopwoerup = nearest_player_to_object(obj)
-    if obj_check_hitbox_overlap(nreaetsplayertopwoerup, obj) then
-        obj_mark_for_deletion(obj)
-        gPlayerSyncTable[network_local_index_from_global(nreaetsplayertopwoerup.globalPlayerIndex)].activePowerup =
-            CAT
-    end
+    general_powerup_handler(obj, CAT)
 end
 
 id_bhvSuperBell = hook_behavior(id_bhvMetalCap, OBJ_LIST_GENACTOR, true, bhv_superbell_init, bhv_superbell_loop)
@@ -730,6 +732,7 @@ function cloudbox(o)
     end
 end
 
+E_MODEl_CLOUD_FLOWER = smlua_model_util_get_id("cloudflowergeo")
 MODEL_CLOUDSPAWN = smlua_model_util_get_id("cloudspawn")
 
 -- Function to check the cloud count
@@ -781,15 +784,16 @@ function bhv_cloudflower_init(obj)
     obj.hitboxHeight = 80
     obj.oIntangibleTimer = 0
     obj.oGravity = 3
-    obj.oFaceAnglePitch = obj.oFaceAnglePitch + -16384
-    obj.oGraphYOffset = 0
+    obj_set_model_extended(obj, E_MODEl_CLOUD_FLOWER)
     --network_init_object(obj, true, nil)
 end
 
 ---@param obj Object
 function bhv_cloudflower_loop(obj)
+    object_step()
     general_powerup_handler_DONT_SYNC(obj, CLOUD)
 end
+
 
 function cloud_powerup(m)
     checkCloudCount()
