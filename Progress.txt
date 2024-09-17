@@ -40,7 +40,7 @@ World 4: "Retro Land"
 W4 Boss: Bowser Jr.'s Trial - 0%
 
 World 5: "Cyber-Synth Land"
-5-1: Synthscape Land - 50%
+5-1: Synthscape Land - 85%
 5-2: Synthspace Concert - 50%
 5-3: Synthcity - 100%
 5-4: Synthmetro - 90%

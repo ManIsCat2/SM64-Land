@@ -3,6 +3,8 @@
 
 -- Heavily modified by Sunk to be more efficent, accurate, easy to understand, and easy to use
 
+--- Modified to work for Super mario 64 land
+
 ------------------------------
 ------Localize functions------
 ------------------------------
@@ -64,23 +66,23 @@ local cap_flags = {
 
 ---@type ExclamationBoxContents
 local sExclamationBoxContents = {
-    { 0,  0, 0,  E_MODEL_TANOOKI_LEAF, id_bhvWingCap },
-    { 1,  0, 0,  E_MODEL_SUPER_BELL,   id_bhvMetalCap },
-    { 2,  0, 0,  E_MODEL_BEE_SHROOM,   id_bhvVanishCap },
-    { 3,  0, 0,  E_MODEL_KOOPA_SHELL,  id_bhvKoopaShell },
-    { 4,  0, 0,  E_MODEl_CLOUD_FLOWER, bhvCloudFlower2 },
-    { 5,  0, 0,  E_MODEL_NONE,         id_bhvThreeCoinsSpawn },
-    { 6,  0, 0,  E_MODEL_NONE,         id_bhvTenCoinsSpawn },
-    { 7,  0, 0,  E_MODEL_1UP,          id_bhv1upWalking },
-    { 8,  0, 0,  E_MODEL_STAR,         id_bhvSpawnedStar },
-    { 9,  0, 0,  E_MODEL_1UP,          id_bhv1upRunningAway },
-    { 10, 0, 1,  E_MODEL_STAR,         id_bhvSpawnedStar },
-    { 11, 0, 2,  E_MODEL_STAR,         id_bhvSpawnedStar },
-    { 12, 0, 3,  E_MODEL_STAR,         id_bhvSpawnedStar },
-    { 13, 0, 4,  E_MODEL_STAR,         id_bhvSpawnedStar },
-    { 14, 0, 5,  E_MODEL_STAR,         id_bhvSpawnedStar },
-    { 15, 0, 10, E_MODEL_STAR,         id_bhvSpawnedStar },
-    { 99, 0, 0,  E_MODEL_NONE,         nil }
+    { 0,  0, 0,  E_MODEL_TANOOKI_LEAF,    id_bhvWingCap },
+    { 1,  0, 0,  E_MODEL_SUPER_BELL,      id_bhvMetalCap },
+    { 2,  0, 0,  E_MODEL_BEE_SHROOM,      id_bhvVanishCap },
+    { 3,  0, 0,  E_MODEL_GRAVITY_POWERUP, bhvGravityPowerup },
+    { 4,  0, 0,  E_MODEl_CLOUD_FLOWER,    bhvCloudFlower },
+    { 5,  0, 0,  E_MODEL_NONE,            id_bhvThreeCoinsSpawn },
+    { 6,  0, 0,  E_MODEL_NONE,            id_bhvTenCoinsSpawn },
+    { 7,  0, 0,  E_MODEL_1UP,             id_bhv1upWalking },
+    { 8,  0, 0,  E_MODEL_STAR,            id_bhvSpawnedStar },
+    { 9,  0, 0,  E_MODEL_1UP,             id_bhv1upRunningAway },
+    { 10, 0, 1,  E_MODEL_STAR,            id_bhvSpawnedStar },
+    { 11, 0, 2,  E_MODEL_STAR,            id_bhvSpawnedStar },
+    { 12, 0, 3,  E_MODEL_STAR,            id_bhvSpawnedStar },
+    { 13, 0, 4,  E_MODEL_STAR,            id_bhvSpawnedStar },
+    { 14, 0, 5,  E_MODEL_STAR,            id_bhvSpawnedStar },
+    { 15, 0, 10, E_MODEL_STAR,            id_bhvSpawnedStar },
+    { 99, 0, 0,  E_MODEL_NONE,            nil }
 }
 
 _G.CustomExclamationBox = {

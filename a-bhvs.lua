@@ -1546,7 +1546,7 @@ function bhv_paperplane_loop(o)
 
         o.oAnimState = o.oAnimState + 1
 
-        if o.oAnimState > (14 * 30) then -- 10 seconds
+        if o.oAnimState > (14 * 30) then -- 14 seconds
             cur_obj_set_pos_to_home()
             o.oAction = 0
             o.oAnimState = 0
@@ -1645,3 +1645,123 @@ end
 
 hook_behavior(id_bhvDonutPlatform, OBJ_LIST_SURFACE, false, bhv_custom_donut_platform,
     function() load_object_collision_model() end)
+
+
+---@param o Object
+function bhv_ddd_appearing_path_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("ddd_purple_appearing_path_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 9000
+end
+
+local dddappearpathSpeed = 0.35
+
+---@param o Object
+function bhv_ddd_appearing_path_loop(o)
+    load_object_collision_model()
+
+    if o.oAction == 0 then
+        cur_obj_hide()
+    elseif o.oAction == 1 then
+        cur_obj_unhide()
+    end
+
+    if obj_has_behavior_id(o, bhvDDDAppearingPath) ~= 0 then
+        if o.oAction == 1 then
+            o.header.gfx.scale.z = approach_f32_symmetric(o.header.gfx.scale.z, 30, dddappearpathSpeed)
+        end
+    elseif obj_has_behavior_id(o, bhvDDDAppearingPath2) ~= 0 then
+        if o.oAction == 1 then
+            o.header.gfx.scale.z = approach_f32_symmetric(o.header.gfx.scale.z, 30, dddappearpathSpeed)
+        end
+    elseif obj_has_behavior_id(o, bhvDDDAppearingPath3) ~= 0 then
+        if o.oAction == 1 then
+            o.header.gfx.scale.z = approach_f32_symmetric(o.header.gfx.scale.z, 8, dddappearpathSpeed)
+        end
+    elseif obj_has_behavior_id(o, bhvDDDAppearingPath4) ~= 0 then
+        if o.oAction == 1 then
+            o.header.gfx.scale.z = approach_f32_symmetric(o.header.gfx.scale.z, 20, dddappearpathSpeed)
+        end
+    elseif obj_has_behavior_id(o, bhvDDDAppearingPath5) ~= 0 then
+        if o.oAction == 1 then
+            o.header.gfx.scale.z = approach_f32_symmetric(o.header.gfx.scale.z, 7, dddappearpathSpeed)
+        end
+    end
+end
+
+function ddd_white_crystal_init(o)
+    o.oFlags           = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.hitboxRadius     = 140
+    o.hitboxHeight     = 400
+    o.hitboxDownOffset = 200
+    o.oIntangibleTimer = 0
+end
+
+function ddd_white_crystal_loop(o)
+    local thePlayer = nearest_player_to_object(o)
+    if o.oAction == 0 then
+        if obj_check_hitbox_overlap(o, thePlayer) then
+            o.oAction = 1
+            cur_obj_play_sound_1(SOUND_GENERAL_WATER_LEVEL_TRIG)
+        end
+    end
+
+    if o.oAction == 1 then
+        o.oAnimState = o.oAnimState + 1
+
+        if o.oAnimState < 90 then
+            o.oFaceAngleYaw = o.oFaceAngleYaw + 0x930
+        else
+            o.oAction = 2
+        end
+    end
+    if obj_has_behavior_id(o, bhvDDDWhiteCrystal) ~= 0 then
+        if obj_check_hitbox_overlap(o, thePlayer) then
+            obj_get_nearest_object_with_behavior_id(o, bhvDDDAppearingPath).oAction = 1
+        end
+    elseif obj_has_behavior_id(o, bhvDDDWhiteCrystal2) ~= 0 then
+        if obj_check_hitbox_overlap(o, thePlayer) then
+            obj_get_nearest_object_with_behavior_id(o, bhvDDDAppearingPath2).oAction = 1
+        end
+    elseif obj_has_behavior_id(o, bhvDDDWhiteCrystal3and4and5) ~= 0 then
+        if obj_check_hitbox_overlap(o, thePlayer) then
+            obj_get_nearest_object_with_behavior_id(o, bhvDDDAppearingPath3).oAction = 1
+            obj_get_nearest_object_with_behavior_id(o, bhvDDDAppearingPath4).oAction = 1
+            obj_get_nearest_object_with_behavior_id(o, bhvDDDAppearingPath5).oAction = 1
+        end
+    end
+end
+
+bhvDDDAppearingPath = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
+    bhv_ddd_appearing_path_loop)
+bhvDDDAppearingPath2 = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
+    bhv_ddd_appearing_path_loop)
+bhvDDDAppearingPath3 = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
+    bhv_ddd_appearing_path_loop)
+bhvDDDAppearingPath4 = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
+    bhv_ddd_appearing_path_loop)
+bhvDDDAppearingPath5 = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
+    bhv_ddd_appearing_path_loop)
+bhvDDDWhiteCrystal = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white_crystal_init,
+    ddd_white_crystal_loop)
+bhvDDDWhiteCrystal2 = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white_crystal_init,
+    ddd_white_crystal_loop)
+bhvDDDWhiteCrystal3and4and5 = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white_crystal_init,
+    ddd_white_crystal_loop)
+
+---@param o Object
+function polygon_stone(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("polygon_stone_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 1000
+   -- obj_scale(o, 0.6)
+end
+
+bhvPolygonStone = hook_behavior(nil, OBJ_LIST_SURFACE, true, polygon_stone,
+    function(o)
+        load_object_collision_model()
+        o.oFaceAngleRoll = o.oFaceAngleRoll + 0x160 / 4
+        o.oFaceAngleYaw = o.oFaceAngleYaw + 0x240 / 4
+    end)

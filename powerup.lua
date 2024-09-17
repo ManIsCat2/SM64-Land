@@ -16,6 +16,7 @@ E_MODEL_BEE_MARIO                 = smlua_model_util_get_id("bee_mario_geo")
 E_MODEL_CLOUD_MARIO               = smlua_model_util_get_id("cloud_mario_geo")
 E_MODEL_ELECTRIC_MARIO            = smlua_model_util_get_id("electric_mario_geo")
 E_MODEL_ROCKET_MARIO              = smlua_model_util_get_id("rocket_mario_geo")
+E_MODEL_GRAVITY_MARIO             = smlua_model_util_get_id("gravity_mario_geo")
 
 -- Powerups enum
 
@@ -26,6 +27,7 @@ BEE                               = 3
 CLOUD                             = 4
 ROCKET                            = 5
 BATTERY                           = 6
+GRAVITY                           = 7
 
 -- Powerup Relatives
 local cloudcount                  = 0      -- for cloud flower
@@ -36,11 +38,11 @@ local chargingMul                 = 1      --- for rocket
 gPlayerSyncTable[0].activePowerup = NORMAL -- Current Powerup, set to NORMAL to disable any powerup
 
 characterPowerupModels            = {
-    [CT_MARIO]   = { tanooki = E_MODEL_TANOOKI_MARIO, cat = E_MODEL_CAT_MARIO, bee = E_MODEL_BEE_MARIO, cloud = E_MODEL_CLOUD_MARIO, electric = E_MODEL_ELECTRIC_MARIO, rocket = E_MODEL_ROCKET_MARIO },
-    [CT_LUIGI]   = { tanooki = E_MODEL_KITSUNE_LUIGI, cat = nil, bee = nil, cloud = nil, electric = nil, rocket = nil },
-    [CT_TOAD]    = { tanooki = E_MODEL_TANOOKI_TOAD, cat = nil, bee = nil, cloud = nil, electric = nil, rocket = nil },
-    [CT_WARIO]   = { tanooki = E_MODEL_TANOOKI_WARIO, cat = nil, bee = nil, cloud = nil, electric = nil, rocket = nil },
-    [CT_WALUIGI] = { tanooki = E_MODEL_KITSUNE_WALUIGI, cat = nil, bee = nil, cloud = nil, electric = nil, rocket = nil },
+    [CT_MARIO]   = { tanooki = E_MODEL_TANOOKI_MARIO, cat = E_MODEL_CAT_MARIO, bee = E_MODEL_BEE_MARIO, cloud = E_MODEL_CLOUD_MARIO, electric = E_MODEL_ELECTRIC_MARIO, rocket = E_MODEL_ROCKET_MARIO, gravity = E_MODEL_GRAVITY_MARIO },
+    [CT_LUIGI]   = { tanooki = E_MODEL_KITSUNE_LUIGI, cat = nil, bee = nil, cloud = nil, electric = nil, rocket = nil, gravity = nil },
+    [CT_TOAD]    = { tanooki = E_MODEL_TANOOKI_TOAD, cat = nil, bee = nil, cloud = nil, electric = nil, rocket = nil, gravity = nil },
+    [CT_WARIO]   = { tanooki = E_MODEL_TANOOKI_WARIO, cat = nil, bee = nil, cloud = nil, electric = nil, rocket = nil, gravity = nil },
+    [CT_WALUIGI] = { tanooki = E_MODEL_KITSUNE_WALUIGI, cat = nil, bee = nil, cloud = nil, electric = nil, rocket = nil, gravity = nil },
 }
 
 local powerupStates               = {
@@ -51,6 +53,7 @@ local powerupStates               = {
     [CLOUD]   = { modelId = nil },
     [ROCKET]  = { modelId = nil },
     [BATTERY] = { modelId = nil },
+    [GRAVITY] = { modelId = nil },
 }
 
 -- Powerup States, to add more powerups here, you must first add them to the enum and assign a number
@@ -66,6 +69,7 @@ function get_character_model(m)
         [CLOUD]   = { modelId = CPM.cloud and CPM.cloud or CPMM.cloud },
         [ROCKET]  = { modelId = CPM.rocket and CPM.rocket or CPMM.rocket },
         [BATTERY] = { modelId = CPM.electric and CPM.electric or CPMM.electric },
+        [GRAVITY] = { modelId = CPM.gravity and CPM.gravity or CPMM.gravity },
     }
 end
 
@@ -150,6 +154,26 @@ function general_powerup_handler(obj, powerup)
             obj.hitboxRadius = 80
             obj.hitboxHeight = 80
         end
+    end
+end
+
+---@param powerup integer
+---@param obj Object
+function general_powerup_handler2(obj, powerup)
+    local nreaetsplayertopwoerup = nearest_player_to_object(obj)
+    local nearestmariotopowerup = nearest_mario_state_to_object(obj)
+
+    if powerup == ROCKET or powerup == BATTERY then
+        spawn_non_sync_object(id_bhvSparkleSpawn, E_MODEL_NONE, obj.oPosX, obj.oPosY, obj.oPosZ, nil);
+    end
+    if obj_check_hitbox_overlap(nreaetsplayertopwoerup, obj) then
+        obj.oAction = 1
+        cur_obj_hide()
+        obj.oTimer = 0
+        cur_obj_play_sound_2(SOUND_MENU_EXIT_PIPE)
+        gPlayerSyncTable[network_local_index_from_global(nreaetsplayertopwoerup.globalPlayerIndex)].activePowerup =
+            powerup
+        obj_mark_for_deletion(obj)
     end
 end
 
@@ -794,7 +818,6 @@ function bhv_cloudflower_loop(obj)
     general_powerup_handler_DONT_SYNC(obj, CLOUD)
 end
 
-
 function cloud_powerup(m)
     checkCloudCount()
     --djui_chat_message_create(tostring(cloudcount))
@@ -1012,3 +1035,59 @@ hook_event(HOOK_MARIO_UPDATE, battery_powerup)
 hook_event(HOOK_ON_HUD_RENDER_BEHIND, electtric_mario_hud)
 
 bhvBattreyPowerup = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_battrey_powerup_init, bhv_battrey_powerup_loop)
+
+E_MODEL_GRAVITY_POWERUP = smlua_model_util_get_id("gravity_powerup_geo")
+
+---@param obj Object
+function bhv_gravity_powerup_init(obj)
+    obj.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    obj.oIntangibleTimer = 0
+    obj.hitboxRadius = 80
+    obj.hitboxHeight = 80
+    obj.oGravity = 3
+    obj_scale(obj, 0.6)
+    network_init_object(obj, true, nil)
+end
+
+---@param obj Object
+function bhv_gravity_powerup_loop(obj)
+    if obj.oAction == 0 then
+        spawn_non_sync_object(id_bhvSparkleSpawn, E_MODEL_NONE, obj.oPosX, obj.oPosY, obj.oPosZ, nil);
+    end
+    obj.oPosY = obj.oPosY + math_sin(obj.oTimer * 0.07) * 2
+    obj.oFaceAngleYaw = obj.oFaceAngleYaw + ((65536 / 360) * 1.5)
+    object_step()
+    general_powerup_handler2(obj, GRAVITY)
+end
+
+bhvGravityPowerup = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_gravity_powerup_init, bhv_gravity_powerup_loop)
+
+local didGravDefyingTrick = false
+
+---@param m MarioState
+function gravity_powerup(m)
+    if m.playerIndex ~= 0 then return end
+    local gMarioObject = m.marioObj
+    --djui_chat_message_create(tostring(gMarioObject.oHiddenBlueCoinSwitch))
+    if gPlayerSyncTable[0].activePowerup == GRAVITY then
+        if m.action & ACT_FLAG_AIR ~= 0 then
+            m.actionTimer = m.actionTimer + 1
+        end
+
+        if m.action & ACT_FLAG_AIR == 0 then
+            didGravDefyingTrick = false
+        end
+
+        if m.controller.buttonPressed & A_BUTTON ~= 0 and m.actionTimer > 1 and not didGravDefyingTrick then
+            m.action = ACT_SPECIAL_TRIPLE_JUMP
+            m.vel.y = 60
+            didGravDefyingTrick = true
+        end
+
+        if m.action == ACT_SPECIAL_TRIPLE_JUMP then
+            m.vel.y = m.vel.y + 2.5
+        end
+    end
+end
+
+hook_event(HOOK_MARIO_UPDATE, gravity_powerup)
