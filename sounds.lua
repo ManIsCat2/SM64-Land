@@ -26,6 +26,7 @@ smlua_audio_utils_replace_sequence(48, 42, 75, "Techno Factory - Kirby's Return 
 smlua_audio_utils_replace_sequence(39, 28, 75, "Long note for audio playback_trains") --5-4 use streamed music for this
 smlua_audio_utils_replace_sequence(41, 42, 75, "SMB3Overworld(SM64)") --4-1 done
 smlua_audio_utils_replace_sequence(60, 42, 75, "Hell_Prominence_Reduced") --8-3 done
+smlua_audio_utils_replace_sequence(53, 26, 75, "5-2Cotton") --8-3 done
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom") --Star Collect

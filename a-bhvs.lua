@@ -1687,6 +1687,14 @@ function bhv_ddd_appearing_path_loop(o)
         if o.oAction == 1 then
             o.header.gfx.scale.z = approach_f32_symmetric(o.header.gfx.scale.z, 7, dddappearpathSpeed)
         end
+    elseif obj_has_behavior_id(o, bhvDDDAppearingPath6) ~= 0 then
+        if o.oAction == 1 then
+            o.header.gfx.scale.z = approach_f32_symmetric(o.header.gfx.scale.z, 55, dddappearpathSpeed)
+        end
+    elseif obj_has_behavior_id(o, bhvDDDAppearingPath7) ~= 0 then
+        if o.oAction == 1 then
+            o.header.gfx.scale.z = approach_f32_symmetric(o.header.gfx.scale.z, 55, dddappearpathSpeed)
+        end
     end
 end
 
@@ -1730,33 +1738,49 @@ function ddd_white_crystal_loop(o)
             obj_get_nearest_object_with_behavior_id(o, bhvDDDAppearingPath4).oAction = 1
             obj_get_nearest_object_with_behavior_id(o, bhvDDDAppearingPath5).oAction = 1
         end
+    elseif obj_has_behavior_id(o, bhvDDDWhiteCrystal6) ~= 0 then
+        if obj_check_hitbox_overlap(o, thePlayer) then
+            obj_get_nearest_object_with_behavior_id(o, bhvDDDAppearingPath6).oAction = 1
+        end
+    elseif obj_has_behavior_id(o, bhvDDDWhiteCrystal7) ~= 0 then
+        if obj_check_hitbox_overlap(o, thePlayer) then
+            obj_get_nearest_object_with_behavior_id(o, bhvDDDAppearingPath7).oAction = 1
+        end
     end
 end
 
-bhvDDDAppearingPath = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
+bhvDDDAppearingPath         = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
     bhv_ddd_appearing_path_loop)
-bhvDDDAppearingPath2 = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
+bhvDDDAppearingPath2        = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
     bhv_ddd_appearing_path_loop)
-bhvDDDAppearingPath3 = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
+bhvDDDAppearingPath3        = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
     bhv_ddd_appearing_path_loop)
-bhvDDDAppearingPath4 = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
+bhvDDDAppearingPath4        = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
     bhv_ddd_appearing_path_loop)
-bhvDDDAppearingPath5 = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
+bhvDDDAppearingPath5        = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
     bhv_ddd_appearing_path_loop)
-bhvDDDWhiteCrystal = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white_crystal_init,
+bhvDDDAppearingPath6        = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
+    bhv_ddd_appearing_path_loop)
+bhvDDDAppearingPath7        = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
+    bhv_ddd_appearing_path_loop)
+
+bhvDDDWhiteCrystal          = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white_crystal_init,
     ddd_white_crystal_loop)
-bhvDDDWhiteCrystal2 = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white_crystal_init,
+bhvDDDWhiteCrystal2         = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white_crystal_init,
     ddd_white_crystal_loop)
 bhvDDDWhiteCrystal3and4and5 = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white_crystal_init,
     ddd_white_crystal_loop)
-
+bhvDDDWhiteCrystal6         = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white_crystal_init,
+    ddd_white_crystal_loop)
+bhvDDDWhiteCrystal7         = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white_crystal_init,
+    ddd_white_crystal_loop)
 ---@param o Object
 function polygon_stone(o)
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     o.collisionData = smlua_collision_util_get("polygon_stone_collision")
     o.header.gfx.skipInViewCheck = true
     o.oCollisionDistance = 1000
-   -- obj_scale(o, 0.6)
+    -- obj_scale(o, 0.6)
 end
 
 bhvPolygonStone = hook_behavior(nil, OBJ_LIST_SURFACE, true, polygon_stone,
@@ -1764,4 +1788,35 @@ bhvPolygonStone = hook_behavior(nil, OBJ_LIST_SURFACE, true, polygon_stone,
         load_object_collision_model()
         o.oFaceAngleRoll = o.oFaceAngleRoll + 0x160 / 4
         o.oFaceAngleYaw = o.oFaceAngleYaw + 0x240 / 4
+    end)
+
+
+---@param o Object
+function bhv_music_disc(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("music_disc_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 2100
+    o.oAngleVelYaw = 160 * 3
+    -- obj_scale(o, 0.6)
+end
+
+bhvMusicDisc = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_music_disc,
+    function(o)
+        load_object_collision_model()
+        o.oFaceAngleYaw = o.oFaceAngleYaw + 160 * 3
+    end)
+
+
+---@param o Object
+function bhv_growing_block(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("ddd_growing_block_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 1200
+end
+
+bhvDDDGrowingBlock = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_growing_block,
+    function(o)
+        load_object_collision_model()
     end)
