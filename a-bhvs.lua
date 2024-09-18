@@ -1653,6 +1653,7 @@ function bhv_ddd_appearing_path_init(o)
     o.collisionData = smlua_collision_util_get("ddd_purple_appearing_path_collision")
     o.header.gfx.skipInViewCheck = true
     o.oCollisionDistance = 9000
+    network_init_object(o, true, {"oAction"})
 end
 
 local dddappearpathSpeed = 0.35
@@ -1695,6 +1696,10 @@ function bhv_ddd_appearing_path_loop(o)
         if o.oAction == 1 then
             o.header.gfx.scale.z = approach_f32_symmetric(o.header.gfx.scale.z, 55, dddappearpathSpeed)
         end
+    elseif obj_has_behavior_id(o, bhvDDDAppearingPath8) ~= 0 then
+        if o.oAction == 1 then
+            o.header.gfx.scale.z = approach_f32_symmetric(o.header.gfx.scale.z, 50, dddappearpathSpeed)
+        end
     end
 end
 
@@ -1704,6 +1709,7 @@ function ddd_white_crystal_init(o)
     o.hitboxHeight     = 400
     o.hitboxDownOffset = 200
     o.oIntangibleTimer = 0
+    network_init_object(o, true, {"oAction", "oAnimState", "oFaceAngleYaw"})
 end
 
 function ddd_white_crystal_loop(o)
@@ -1746,6 +1752,10 @@ function ddd_white_crystal_loop(o)
         if obj_check_hitbox_overlap(o, thePlayer) then
             obj_get_nearest_object_with_behavior_id(o, bhvDDDAppearingPath7).oAction = 1
         end
+    elseif obj_has_behavior_id(o, bhvDDDWhiteCrystal8) ~= 0 then
+        if obj_check_hitbox_overlap(o, thePlayer) then
+            obj_get_nearest_object_with_behavior_id(o, bhvDDDAppearingPath8).oAction = 1
+        end
     end
 end
 
@@ -1763,6 +1773,8 @@ bhvDDDAppearingPath6        = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd
     bhv_ddd_appearing_path_loop)
 bhvDDDAppearingPath7        = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
     bhv_ddd_appearing_path_loop)
+bhvDDDAppearingPath8        = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_ddd_appearing_path_init,
+    bhv_ddd_appearing_path_loop)
 
 bhvDDDWhiteCrystal          = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white_crystal_init,
     ddd_white_crystal_loop)
@@ -1773,6 +1785,8 @@ bhvDDDWhiteCrystal3and4and5 = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white
 bhvDDDWhiteCrystal6         = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white_crystal_init,
     ddd_white_crystal_loop)
 bhvDDDWhiteCrystal7         = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white_crystal_init,
+    ddd_white_crystal_loop)
+bhvDDDWhiteCrystal8         = hook_behavior(nil, OBJ_LIST_LEVEL, true, ddd_white_crystal_init,
     ddd_white_crystal_loop)
 ---@param o Object
 function polygon_stone(o)
