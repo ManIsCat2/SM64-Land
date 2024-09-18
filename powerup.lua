@@ -1080,6 +1080,7 @@ function gravity_powerup(m)
 
         if m.controller.buttonPressed & A_BUTTON ~= 0 and m.actionTimer > 1 and not didGravDefyingTrick then
             spawn_mist_particles()
+            m.faceAngle.y = m.intendedYaw
             m.action = ACT_SPECIAL_TRIPLE_JUMP
             m.vel.y = 60
             didGravDefyingTrick = true

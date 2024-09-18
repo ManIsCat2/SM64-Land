@@ -1811,14 +1811,14 @@ function bhv_music_disc(o)
     o.collisionData = smlua_collision_util_get("music_disc_collision")
     o.header.gfx.skipInViewCheck = true
     o.oCollisionDistance = 2100
-    o.oAngleVelYaw = 160 * 3
+    o.oAngleVelYaw = 160 * 5
     -- obj_scale(o, 0.6)
 end
 
 bhvMusicDisc = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_music_disc,
     function(o)
         load_object_collision_model()
-        o.oFaceAngleYaw = o.oFaceAngleYaw + 160 * 3
+        o.oFaceAngleYaw = o.oFaceAngleYaw + 160 * 5
     end)
 
 
