@@ -1,0 +1,13 @@
+extern const GeoLayout bitfs_light_platform_geo[];
+extern Lights1 bitfs_light_platform_Material_0_f3d_lights;
+extern Lights1 bitfs_light_platform_Material_1_f3d_lights;
+extern u8 bitfs_light_platform__0_rgba16[];
+extern u8 bitfs_light_platform__1_rgba16[];
+extern Vtx bitfs_light_platform_node_mesh_layer_1_vtx_cull[8];
+extern Vtx bitfs_light_platform_node_mesh_layer_1_vtx_0[8];
+extern Gfx bitfs_light_platform_node_mesh_layer_1_tri_0[];
+extern Vtx bitfs_light_platform_node_mesh_layer_1_vtx_1[32];
+extern Gfx bitfs_light_platform_node_mesh_layer_1_tri_1[];
+extern Gfx mat_bitfs_light_platform_Material_0_f3d[];
+extern Gfx mat_bitfs_light_platform_Material_1_f3d[];
+extern Gfx bitfs_light_platform_node_mesh_layer_1[];

@@ -1660,7 +1660,6 @@ local dddappearpathSpeed = 0.35
 
 ---@param o Object
 function bhv_ddd_appearing_path_loop(o)
-
     if o.oAction == 0 then
         cur_obj_hide()
     elseif o.oAction == 1 then
@@ -1856,3 +1855,53 @@ end
 
 bhvNuclearPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_nuclear_platform,
     bhv_nuclear_platform_loop)
+
+---@param o Object
+function bhv_bitfs_moving_pyramd(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("bitfs_moving_pyramid_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 900
+    obj_set_model_extended(o, smlua_model_util_get_id("bitfs_moving_pyramid_geo"))
+end
+
+bhvBITFSMovingPyramid = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_bitfs_moving_pyramd,
+    function(o)
+        load_object_collision_model()
+    end)
+
+
+function bhv_bitfs_yellow_pole(o)
+    o.oInteractType = INTERACT_POLE
+    o.hitboxHeight = 40 * 35.0
+    o.hitboxRadius = 100
+    o.oIntangibleTimer = 0
+end
+
+bhvBITFSYellowPole = hook_behavior(nil, OBJ_LIST_POLELIKE, true, bhv_bitfs_yellow_pole, function()
+    bhv_pole_base_loop()
+end)
+
+---@param o Object
+function bhv_bitfs_light_platform(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("bitfs_light_platform_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 2000
+end
+
+---@param o Object
+function bhv_bitfs_light_platform_loop(o)
+    load_object_collision_model()
+
+    if o.oAction == 0 then
+        if cur_obj_is_mario_on_platform() ~= 0 then
+            o.oAction = 1
+        end
+    elseif o.oAction == 1 then
+        o.oFaceAnglePitch = approach_s16_symmetric(o.oFaceAnglePitch, 7300, 0x400)
+    end
+end
+
+bhvBIRFSLightPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_bitfs_light_platform,
+    bhv_bitfs_light_platform_loop)

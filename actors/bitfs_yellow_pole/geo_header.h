@@ -1,0 +1,13 @@
+extern const GeoLayout bitfs_yellow_pole_geo[];
+extern Lights1 bitfs_yellow_pole_Material_0_f3d_lights;
+extern u8 bitfs_yellow_pole__0_rgba16[];
+extern u8 bitfs_yellow_pole__1_rgba16[];
+extern Vtx bitfs_yellow_pole_node_mesh_layer_1_vtx_cull[8];
+extern Vtx bitfs_yellow_pole_node_mesh_layer_1_vtx_0[13];
+extern Gfx bitfs_yellow_pole_node_mesh_layer_1_tri_0[];
+extern Vtx bitfs_yellow_pole_node_mesh_layer_1_vtx_1[24];
+extern Gfx bitfs_yellow_pole_node_mesh_layer_1_tri_1[];
+extern Gfx mat_bitfs_yellow_pole_Material_0_f3d[];
+extern Gfx mat_bitfs_yellow_pole_Material_1_f3d[];
+extern Gfx mat_revert_bitfs_yellow_pole_Material_1_f3d[];
+extern Gfx bitfs_yellow_pole_node_mesh_layer_1[];
