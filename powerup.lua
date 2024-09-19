@@ -303,7 +303,7 @@ end
 ---@param obj Object
 function bhv_leaf_loop(obj)
     object_step()
-    general_powerup_handler(obj, TANOOKI)
+    general_powerup_handler2(obj, TANOOKI)
 end
 
 id_bhvSuperLeaf = hook_behavior(id_bhvWingCap, OBJ_LIST_GENACTOR, true, bhv_leaf_init, bhv_leaf_loop)
@@ -451,7 +451,7 @@ function bhv_beesuit_loop(obj)
     end
     obj.oFaceAngleYaw = obj.oFaceAngleYaw + ((65536 / 360) * 1.5)
     object_step()
-    general_powerup_handler(obj, BEE)
+    general_powerup_handler2(obj, BEE)
 end
 
 id_bhvBeeShroom = hook_behavior(id_bhvVanishCap, OBJ_LIST_GENACTOR, true, bhv_beesuit_init, bhv_beesuit_loop)
@@ -547,7 +547,7 @@ end
 ---@param obj Object
 function bhv_superbell_loop(obj)
     object_step()
-    general_powerup_handler(obj, CAT)
+    general_powerup_handler2(obj, CAT)
 end
 
 id_bhvSuperBell = hook_behavior(id_bhvMetalCap, OBJ_LIST_GENACTOR, true, bhv_superbell_init, bhv_superbell_loop)

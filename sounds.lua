@@ -38,6 +38,7 @@ smlua_audio_utils_replace_sequence(0x0D, 0x16, 75, "0D_Seq_custom") --star selec
 smlua_audio_utils_replace_sequence(0x0E, 0x17, 75, "0E_Seq_custom") --powerful mario
 smlua_audio_utils_replace_sequence(0x0F, 0x18, 75, "0F_Seq_custom") --metallic mario
 smlua_audio_utils_replace_sequence(0x3B, 0x25, 75, "3B_Seq_custom") --Toad House
+smlua_audio_utils_replace_sequence(0x09, 0x18, 75, "09_Seq_custom") -- champions road
 smlua_audio_utils_replace_sequence(0x10, 0x12, 75, "10_Seq_custom") --koopa message
 smlua_audio_utils_replace_sequence(0x12, 0x11, 75, "12_Seq_custom") --Star Collect
 smlua_audio_utils_replace_sequence(0x14, 0x1A, 75, "14_Seq_custom") --race fanfare
