@@ -26,8 +26,8 @@ smlua_audio_utils_replace_sequence(48, 42, 75, "Techno Factory - Kirby's Return 
 smlua_audio_utils_replace_sequence(39, 28, 75, "Long note for audio playback_trains") --5-4 use streamed music for this
 smlua_audio_utils_replace_sequence(41, 42, 75, "SMB3Overworld(SM64)") --4-1 done
 smlua_audio_utils_replace_sequence(60, 42, 75, "Hell_Prominence_Reduced") --8-3 done
-smlua_audio_utils_replace_sequence(53, 26, 75, "5-2Cotton") --8-3 done
-smlua_audio_utils_replace_sequence(83, 26, 75, "8-4_Bowser_Final")
+smlua_audio_utils_replace_sequence(53, 42, 75, "5-2Cotton") --5-2 done
+smlua_audio_utils_replace_sequence(83, 42, 75, "8-4_Bowser_Final") --8-4 done
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom") --Star Collect
@@ -39,7 +39,7 @@ smlua_audio_utils_replace_sequence(0x0D, 0x16, 75, "0D_Seq_custom") --star selec
 smlua_audio_utils_replace_sequence(0x0E, 0x17, 75, "0E_Seq_custom") --powerful mario
 smlua_audio_utils_replace_sequence(0x0F, 0x18, 75, "0F_Seq_custom") --metallic mario
 smlua_audio_utils_replace_sequence(0x3B, 0x25, 75, "3B_Seq_custom") --Toad House
-smlua_audio_utils_replace_sequence(0x09, 0x18, 75, "09_Seq_custom")
+smlua_audio_utils_replace_sequence(0x09, 0x2A, 75, "09_Seq_custom") --Champion's Road done
 smlua_audio_utils_replace_sequence(0x10, 0x12, 75, "10_Seq_custom") --koopa message
 smlua_audio_utils_replace_sequence(0x12, 0x11, 75, "12_Seq_custom") --Star Collect
 smlua_audio_utils_replace_sequence(0x14, 0x1A, 75, "14_Seq_custom") --race fanfare
