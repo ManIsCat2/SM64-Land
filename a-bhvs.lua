@@ -1660,11 +1660,11 @@ local dddappearpathSpeed = 0.35
 
 ---@param o Object
 function bhv_ddd_appearing_path_loop(o)
-    load_object_collision_model()
 
     if o.oAction == 0 then
         cur_obj_hide()
     elseif o.oAction == 1 then
+        load_object_collision_model()
         cur_obj_unhide()
     end
 

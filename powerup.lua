@@ -1064,13 +1064,19 @@ bhvGravityPowerup = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_gravity_powe
 
 local didGravDefyingTrick = false
 
+local gravIgnore = {
+    [ACT_STAR_DANCE_NO_EXIT] = true,
+    [ACT_STAR_DANCE_EXIT] = true,
+    [ACT_STAR_DANCE_WATER] = true,
+}
+
 ---@param m MarioState
 function gravity_powerup(m)
     if m.playerIndex ~= 0 then return end
     local gMarioObject = m.marioObj
     --djui_chat_message_create(tostring(gMarioObject.oHiddenBlueCoinSwitch))
     if gPlayerSyncTable[0].activePowerup == GRAVITY then
-        if m.action & ACT_FLAG_AIR ~= 0 then
+        if m.action & ACT_FLAG_AIR ~= 0 and m.action ~= ACT_GROUND_POUND then
             m.actionTimer = m.actionTimer + 1
         end
 
@@ -1078,7 +1084,7 @@ function gravity_powerup(m)
             didGravDefyingTrick = false
         end
 
-        if m.controller.buttonPressed & A_BUTTON ~= 0 and m.actionTimer > 1 and not didGravDefyingTrick then
+        if m.controller.buttonPressed & A_BUTTON ~= 0 and m.actionTimer > 1 and not didGravDefyingTrick and not gravIgnore[m.action] then
             spawn_mist_particles()
             m.faceAngle.y = m.intendedYaw
             m.action = ACT_SPECIAL_TRIPLE_JUMP
