@@ -18,6 +18,7 @@ movtexqc_register('ending_2_Movtex_0', 25, 1, 0)
 movtexqc_register('ending_2_Movtex_1', 25, 1, 0)
 movtexqc_register('ending_2_Movtex_2', 25, 1, 0)
 movtexqc_register("lll_1_Movtex_0", 22, 1, 0)
+movtexqc_register("bbh_1_Movtex_0", 4, 1, 0)
 
 --for all hubs with water:
 -- OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/4, /*vtx count*/size, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ id, RM_Scroll_Texture, 31),
