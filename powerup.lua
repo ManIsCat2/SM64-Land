@@ -907,8 +907,13 @@ function roceket_powerup(m)
 
         if chargingRocket and m.controller.buttonDown & B_BUTTON == 0 then
             m.action = ACT_SHOT_FROM_CANNON
-            m.vel.y = 10 * chargingMul
-            m.forwardVel = 12
+            if m.controller.stickY < 1 then
+                m.vel.y = 10 * chargingMul
+                m.forwardVel = 18
+            else
+                m.vel.y = 9 * chargingMul
+                m.forwardVel = 33 * 2.54
+            end
             chargingRocket = false
             chargingMul = 1
         end

@@ -1,0 +1,13 @@
+extern const GeoLayout fast_moving_wall_geo[];
+extern Lights1 fast_moving_wall_Material_0_f3d_lights;
+extern Lights1 fast_moving_wall_Material_1_f3d_lights;
+extern u8 fast_moving_wall__0_rgba16[];
+extern u8 fast_moving_wall__1_rgba16[];
+extern Vtx fast_moving_wall_node_mesh_layer_1_vtx_cull[8];
+extern Vtx fast_moving_wall_node_mesh_layer_1_vtx_0[319];
+extern Gfx fast_moving_wall_node_mesh_layer_1_tri_0[];
+extern Vtx fast_moving_wall_node_mesh_layer_1_vtx_1[28];
+extern Gfx fast_moving_wall_node_mesh_layer_1_tri_1[];
+extern Gfx mat_fast_moving_wall_Material_0_f3d[];
+extern Gfx mat_fast_moving_wall_Material_1_f3d[];
+extern Gfx fast_moving_wall_node_mesh_layer_1[];

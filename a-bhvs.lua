@@ -1900,8 +1900,138 @@ function bhv_bitfs_light_platform_loop(o)
         end
     elseif o.oAction == 1 then
         o.oFaceAnglePitch = approach_s16_symmetric(o.oFaceAnglePitch, 7300, 0x400)
+        o.oSubAction = o.oSubAction + 1
+        if o.oSubAction > (9 * 30) then -- 9 seconds
+            o.oAction = 0
+            o.oFaceAnglePitch = 0
+        end
     end
 end
 
 bhvBIRFSLightPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_bitfs_light_platform,
     bhv_bitfs_light_platform_loop)
+
+
+---@param o Object
+function bhv_fast_moving_wall(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("fast_moving_wall_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 1000
+    cur_obj_set_home_once()
+end
+
+local movingwallspeed = 0x140 / 3
+---@param o Object
+function bhv_fast_moving_wall_loop(o)
+    load_object_collision_model()
+
+    local wall4 = obj_get_nearest_object_with_behavior_id(o, bhvFastMovingWall4)
+    local wall3 = obj_get_nearest_object_with_behavior_id(o, bhvFastMovingWall3)
+    local wall2 = obj_get_nearest_object_with_behavior_id(o, bhvFastMovingWall2)
+    local wall1 = obj_get_nearest_object_with_behavior_id(o, bhvFastMovingWall)
+
+    local mWall = gMarioStates[0]
+
+    if mWall.wall and mWall.wall.object == o then
+        if mWall.wall ~= nil and mWall.action == ACT_WALL_SLIDE then
+            mWall.vel.y = 0
+            if obj_has_behavior_id(o, bhvFastMovingWall) ~= 0 or obj_has_behavior_id(o, bhvFastMovingWall2) ~= 0 then
+                mWall.pos.z = o.oPosZ
+            else
+                mWall.pos.x = o.oPosX
+            end
+        end
+    end
+    if o.oAction == 0 or o.oAction == 2 then
+        o.oSubAction = o.oSubAction + 1
+    end
+    if o.oSubAction > 90 and o.oAction == 0 then
+        o.oAction = 1
+    end
+
+    if o.oSubAction > 90 and o.oAction == 2 then
+        o.oAction = 3
+    end
+    if o.oAction == 1 then
+        if obj_has_behavior_id(o, bhvFastMovingWall) ~= 0 then
+            o.oPosZ = approach_f32_symmetric(o.oPosZ,
+                wall2.oHomeZ, movingwallspeed)
+
+            if o.oPosZ == wall2.oHomeZ then
+                o.oAction = 2
+                o.oSubAction = 0
+            end
+        end
+
+        if obj_has_behavior_id(o, bhvFastMovingWall2) ~= 0 then
+            o.oPosZ = approach_f32_symmetric(o.oPosZ,
+                wall1.oHomeZ, movingwallspeed)
+
+            if o.oPosZ == wall1.oHomeZ then
+                o.oAction = 2
+                o.oSubAction = 0
+            end
+        end
+
+        if obj_has_behavior_id(o, bhvFastMovingWall3) ~= 0 then
+            o.oPosX = approach_f32_symmetric(o.oPosX,
+                wall4.oHomeX, movingwallspeed)
+
+            if o.oPosX == wall4.oHomeX then
+                o.oAction = 2
+                o.oSubAction = 0
+            end
+        end
+
+        if obj_has_behavior_id(o, bhvFastMovingWall4) ~= 0 then
+            o.oPosX = approach_f32_symmetric(o.oPosX,
+                wall3.oHomeX, movingwallspeed)
+
+            if o.oPosX == wall3.oHomeX then
+                o.oAction = 2
+                o.oSubAction = 0
+            end
+        end
+    elseif o.oAction == 3 then
+        if obj_has_behavior_id(o, bhvFastMovingWall) ~= 0 or obj_has_behavior_id(o, bhvFastMovingWall2) ~= 0 then
+            o.oPosZ = approach_f32_symmetric(o.oPosZ,
+                o.oHomeZ, movingwallspeed)
+
+            if o.oPosZ == o.oHomeZ then
+                o.oAction = 0
+                o.oSubAction = 0
+            end
+        else
+            o.oPosX = approach_f32_symmetric(o.oPosX,
+                o.oHomeX, movingwallspeed)
+
+            if o.oPosX == o.oHomeX then
+                o.oAction = 0
+                o.oSubAction = 0
+            end
+        end
+    end
+end
+
+bhvFastMovingWall = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_fast_moving_wall,
+    bhv_fast_moving_wall_loop)
+bhvFastMovingWall2 = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_fast_moving_wall,
+    bhv_fast_moving_wall_loop)
+bhvFastMovingWall3 = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_fast_moving_wall,
+    bhv_fast_moving_wall_loop)
+bhvFastMovingWall4 = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_fast_moving_wall,
+    bhv_fast_moving_wall_loop)
+
+
+---@param o Object
+function bhv_broken_stairs(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("broken_stairs_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 2100
+    cur_obj_set_home_once()
+end
+
+bhvBrokenStairs = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_broken_stairs,
+    bhv_nuclear_platform_loop)
