@@ -1,6 +1,7 @@
 SURFACE_BOUNCY_CUSTOM = 0x2
 SURFACE_BOUNCY = 0xff
 SURFACE_CANNON_CUSTOM = 0x6
+SURFACE_ACID = 0xFD
 
 bounceMultiplier = 1
 
@@ -10,8 +11,10 @@ end
 
 function surface_check(m)
     if m.playerIndex ~= 0 then return end
-
     if m.floor ~= nil then
+        if m.floor and m.floor.type == SURFACE_ACID then
+            m.floor.type = SURFACE_BURNING
+        end
         local slopeAngle = atan2s(m.floor.normal.z, m.floor.normal.x)
 
         if m.floor and (m.floor.type == SURFACE_BOUNCY_CUSTOM or m.floor.type == SURFACE_BOUNCY) and m.floorHeight == m.pos.y and m.action ~= ACT_STAR_DANCE_NO_EXIT then

@@ -1653,7 +1653,7 @@ function bhv_ddd_appearing_path_init(o)
     o.collisionData = smlua_collision_util_get("ddd_purple_appearing_path_collision")
     o.header.gfx.skipInViewCheck = true
     o.oCollisionDistance = 9000
-    network_init_object(o, true, {"oAction"})
+    network_init_object(o, true, { "oAction" })
 end
 
 local dddappearpathSpeed = 0.35
@@ -1709,7 +1709,7 @@ function ddd_white_crystal_init(o)
     o.hitboxHeight     = 400
     o.hitboxDownOffset = 200
     o.oIntangibleTimer = 0
-    network_init_object(o, true, {"oAction", "oAnimState", "oFaceAngleYaw"})
+    network_init_object(o, true, { "oAction", "oAnimState", "oFaceAngleYaw" })
 end
 
 function ddd_white_crystal_loop(o)
@@ -1834,3 +1834,25 @@ bhvDDDGrowingBlock = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_growing_bloc
     function(o)
         load_object_collision_model()
     end)
+
+
+---@param o Object
+function bhv_nuclear_platform(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("nuclear_platform_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 900
+    cur_obj_set_home_once()
+end
+
+---@param o Object
+function bhv_nuclear_platform_loop(o)
+    load_object_collision_model()
+    o.oPosY = o.oPosY + approach_f32_asymptotic(o.oVelY, (o.oHomeY - o.oPosY) / 8, 0.4)
+    if cur_obj_is_mario_on_platform() ~= 0 then
+        o.oPosY = o.oPosY - 4
+    end
+end
+
+bhvNuclearPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_nuclear_platform,
+    bhv_nuclear_platform_loop)
