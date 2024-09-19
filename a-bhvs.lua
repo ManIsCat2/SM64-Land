@@ -2058,3 +2058,14 @@ end
 
 bhvCasinoDice = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_casino_dice,
     function() load_object_collision_model() end)
+
+---@param o Object
+function bhv_wmotr_static_platform(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("wmotr_static_platform_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 1000
+end
+
+bhvWMOTRStaticPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_wmotr_static_platform,
+    function() load_object_collision_model() end)
