@@ -1,5 +1,6 @@
 #include "custom.model.inc.h"
-const GeoLayout Geo_bob_4_0x1351ff0[]= {
+
+const GeoLayout bob_4_geo[]= {
 GEO_NODE_SCREEN_AREA(10,160,120,160,120),
 GEO_OPEN_NODE(),
 GEO_ZBUFFER(0),

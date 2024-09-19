@@ -74,6 +74,7 @@ JUMP_LINK(script_func_global_15),
 JUMP_LINK(local_area_bob_1_),
 JUMP_LINK(local_area_bob_2_),
 JUMP_LINK(local_area_bob_3_),
+JUMP_LINK(local_area_bob_4_),
 FREE_LEVEL_POOL(),
 MARIO_POS(2,90,-10345,500,-21),
 CALL(/*arg*/ 0, /*func*/ lvl_init_or_update),
@@ -398,5 +399,38 @@ WARP_NODE(10,9,3,0,0),
 WARP_NODE(240,16,1,108,0),
 WARP_NODE(241,16,1,109,0),
 RETURN()
+};
+
+const LevelScript local_area_bob_4_[] = {
+	AREA(4, bob_4_geo),
+	TERRAIN(bob_4_collision),
+	SET_BACKGROUND_MUSIC(0, 9),
+	TERRAIN_TYPE(TERRAIN_GRASS),
+	JUMP_LINK(local_objects_bob_4_),
+	JUMP_LINK(local_warps_bob_4_),
+	END_AREA(),
+	RETURN(),
+};
+
+const LevelScript local_objects_bob_4_[] = {
+	OBJECT_WITH_ACTS(0, -7454, 1380, 4551, 0, 90, 0, 0xa0000, bhvSpinAirborneWarp, 31),
+	OBJECT_WITH_ACTS(55, -2957, 1309, 3966, 0, 90, 0, 0x30001, bhvSeesawPlatform, 31),
+	OBJECT_WITH_ACTS(55, -380, 1982, 3989, 0, 90, 0, 0x30001, bhvSeesawPlatform, 31),
+	OBJECT_WITH_ACTS(137, 1630, 3476, 3408, 0, 0, 0, 0x0, bhvExclamationBox, 31),
+	OBJECT_WITH_ACTS(55, 13248, 3776, 3913, 0, 90, 0, 0x30001, bhvSeesawPlatform, 31),
+	OBJECT_WITH_ACTS(22, 23085, 3533, 1152, 0, 0, 0, 0x50000, bhvWarpPipe, 31),
+	OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x1005520, bhvCustom0x00377c40, 31),
+	OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x0, bhvCustom0x0041f3e0, 31),
+	OBJECT_WITH_ACTS(0, 23095, 3533, 1095, 0, 0, 0, 0x0, bhvGoombaTripletSpawner, 31),
+	OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x20004e20, bhvCustom0x1300003c, 31),
+	RETURN(),
+};
+
+const LevelScript local_warps_bob_4_[] = {
+	WARP_NODE(10,9,4,0,0),
+	WARP_NODE(5,12,3,10,0),
+	WARP_NODE(240,6,1,50,0),
+	WARP_NODE(241,26,4,102,0),
+	RETURN(),
 };
 
