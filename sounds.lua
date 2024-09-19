@@ -28,6 +28,7 @@ smlua_audio_utils_replace_sequence(41, 42, 75, "SMB3Overworld(SM64)") --4-1 done
 smlua_audio_utils_replace_sequence(60, 42, 75, "Hell_Prominence_Reduced") --8-3 done
 smlua_audio_utils_replace_sequence(53, 42, 75, "5-2Cotton") --5-2 done
 smlua_audio_utils_replace_sequence(83, 42, 75, "8-4_Bowser_Final") --8-4 done
+smlua_audio_utils_replace_sequence(56, 26, 75, "8-3 Casino") 
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom") --Star Collect

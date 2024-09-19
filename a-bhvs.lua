@@ -1935,7 +1935,7 @@ function bhv_fast_moving_wall_loop(o)
 
     if mWall.wall and mWall.wall.object == o then
         if mWall.wall ~= nil and mWall.action == ACT_WALL_SLIDE then
-            mWall.vel.y = 0
+            mWall.vel.y = -1.2
             if obj_has_behavior_id(o, bhvFastMovingWall) ~= 0 or obj_has_behavior_id(o, bhvFastMovingWall2) ~= 0 then
                 mWall.pos.z = o.oPosZ
             else
@@ -2035,3 +2035,26 @@ end
 
 bhvBrokenStairs = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_broken_stairs,
     bhv_nuclear_platform_loop)
+
+
+---@param o Object
+function bhv_casino_card(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("casino_card_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 800
+end
+
+bhvCasinoCard = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_casino_card,
+    function() load_object_collision_model() end)
+
+---@param o Object
+function bhv_casino_dice(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("casino_dice_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 1000
+end
+
+bhvCasinoDice = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_casino_dice,
+    function() load_object_collision_model() end)

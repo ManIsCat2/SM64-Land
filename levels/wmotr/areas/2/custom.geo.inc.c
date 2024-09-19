@@ -1,12 +1,13 @@
 #include "custom.model.inc.h"
-const GeoLayout Geo_wmotr_2_0x20441d0[]= {
+
+const GeoLayout wmotr_2_geo[]= {
 GEO_NODE_SCREEN_AREA(10,160,120,160,120),
 GEO_OPEN_NODE(),
 GEO_ZBUFFER(0),
 GEO_OPEN_NODE(),
 GEO_NODE_ORTHO(100),
 GEO_OPEN_NODE(),
-GEO_BACKGROUND(0, geo_skybox_main),
+GEO_BACKGROUND_COLOR(0x0001),
 GEO_CLOSE_NODE(),
 GEO_CLOSE_NODE(),
 GEO_ZBUFFER(1),

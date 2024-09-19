@@ -2,24 +2,38 @@
 #define WMOTR_HEADER_H
 #include "types.h"
 #include "game/moving_texture.h"
-extern const GeoLayout Geo_wmotr_1_0x2043ff0[];
+extern const LevelScript level_wmotr_entry[];
+extern const LevelScript local_area_wmotr_1_[];
+extern const LevelScript local_objects_wmotr_1_[];
+extern const LevelScript local_warps_wmotr_1_[];
+extern const LevelScript local_area_wmotr_2_[];
+extern const LevelScript local_objects_wmotr_2_[];
+extern const LevelScript local_warps_wmotr_2_[];
+extern const GeoLayout wmotr_1_geo[];
 extern Gfx DL_wmotr_1_0xe075130[];
 extern Gfx DL_wmotr_1_0xe085dd0[];
 extern Gfx DL_wmotr_1_0xe086578[];
-extern const Collision col_wmotr_1_0xe0867e0[];
+extern const Collision wmotr_1_collision[];
 extern struct MovtexQuadCollection wmotr_1_Movtex_0[];
 extern struct MovtexQuadCollection wmotr_1_Movtex_1[];
 extern struct MovtexQuadCollection wmotr_1_Movtex_2[];
-extern const GeoLayout Geo_wmotr_2_0x20441d0[];
+extern const LevelScript level_wmotr_entry[];
+extern const LevelScript local_area_wmotr_1_[];
+extern const LevelScript local_objects_wmotr_1_[];
+extern const LevelScript local_warps_wmotr_1_[];
+extern const LevelScript local_area_wmotr_2_[];
+extern const LevelScript local_objects_wmotr_2_[];
+extern const LevelScript local_warps_wmotr_2_[];
+extern const GeoLayout wmotr_2_geo[];
 extern Gfx DL_wmotr_2_0xe0747f0[];
 extern Gfx DL_wmotr_2_0xe08ab10[];
 extern Gfx DL_wmotr_2_0xe08ad68[];
 extern Gfx DL_wmotr_2_0x7025340[];
-extern const Collision col_wmotr_2_0xe08b000[];
+extern const Collision wmotr_2_collision[];
 extern struct MovtexQuadCollection wmotr_2_Movtex_0[];
 extern struct MovtexQuadCollection wmotr_2_Movtex_1[];
 extern struct MovtexQuadCollection wmotr_2_Movtex_2[];
-extern const LevelScript level_wmotr_custom_entry[];
+extern const LevelScript level_wmotr_entry[];
 extern const LevelScript local_area_wmotr_1_[];
 extern const LevelScript local_objects_wmotr_1_[];
 extern const LevelScript local_warps_wmotr_1_[];

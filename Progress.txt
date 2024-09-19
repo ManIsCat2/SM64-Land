@@ -65,7 +65,7 @@ W7 Boss: Wario's Ambush - 0%
 
 World 8: "Bowser's Space Land"
 8-1: Space Garden - 95%
-8-2: Sun-Moon Casino - 50%
+8-2: Sun-Moon Casino - 80%
 8-3: Volcano Cluster - 65%
 8-4: Bowser's Space Base - 90%
 8-EX: Toad House - 100%
