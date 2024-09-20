@@ -1899,7 +1899,7 @@ function bhv_bitfs_light_platform_loop(o)
             o.oAction = 1
         end
     elseif o.oAction == 1 then
-        o.oFaceAnglePitch = approach_s16_symmetric(o.oFaceAnglePitch, 7300, 0x400)
+        o.oFaceAnglePitch = approach_s16_symmetric(o.oFaceAnglePitch, 7300, 0x230)
         o.oSubAction = o.oSubAction + 1
         if o.oSubAction > (9 * 30) then -- 9 seconds
             o.oAction = 0
