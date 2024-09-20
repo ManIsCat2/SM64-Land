@@ -32,13 +32,25 @@ levelData = {
     [COURSE_SL] = { { stars = { 5, 4, 3 }, finalStar = 3 }, { stars = { 1, 0 }, finalStar = 0 } },
     [COURSE_THI] = { { stars = { 1, 0 }, finalStar = 0 }, { stars = { 4, 5 }, finalStar = 5 } },
     [COURSE_DDD] = { { stars = { 1, 0 }, finalStar = 0 }, { stars = { 3, 4, 5, 6 }, coinStar = 6, finalStar = 4 }, },
-    [COURSE_BITFS] = { { stars = { 1, 0, 2 }, finalStar = 2 }, stars = {} },
+    [COURSE_BITFS] = { { stars = { 1, 0, 2 }, finalStar = 2 } },
+    [COURSE_WDW] = { { stars = { 1, 0, 2, 3 }, finalStar = 3 } },
 }
 
 bossLevelData = {
     [COURSE_BOB] = { [3] = true },
     [COURSE_CCM] = { [3] = true },
     [COURSE_BITFS] = { [2] = true },
+}
+
+championsRoadLevlData = {
+    [COURSE_BOB] = { [4] = true },
+    [COURSE_JRB] = { [3] = true },
+    [COURSE_BBH] = { [2] = true },
+    [COURSE_WDW] = { [3] = true },
+    [COURSE_HMC] = { [3] = true },
+    [COURSE_TTM] = { [3] = true },
+    [COURSE_THI] = { [3] = true },
+    [COURSE_BITFS] = { [3] = true },
 }
 
 local xCursorIndex = 1
@@ -218,11 +230,13 @@ function level_hud()
     local curAreaIndex = gNetworkPlayers[0].currAreaIndex
     local bossLevel = bossLevelData[curCourseNum] and bossLevelData[curCourseNum][curAreaIndex] and
         bossLevelData[curCourseNum][curAreaIndex]
+    local championsroadLevel = championsRoadLevlData[curCourseNum] and championsRoadLevlData[curCourseNum][curAreaIndex] and
+        championsRoadLevlData[curCourseNum][curAreaIndex]
     local hubLevel = gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) or
         gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS)
     local toadHouse = gNetworkPlayers[0].currLevelNum == (LEVEL_COTMC) or
         gNetworkPlayers[0].currLevelNum == (LEVEL_VCUTM) or gNetworkPlayers[0].currLevelNum == (LEVEL_TOTWC)
-    if not hubLevel and not bossLevel and not toadHouse and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) then
+    if not hubLevel and not bossLevel and not toadHouse and not championsroadLevel and gNetworkPlayers[0].currLevelNum ~= (LEVEL_CASTLE) then
         -- Score Counter
 
         djui_hud_render_texture(TEX_SCORE, 8, 4, 1, 1)

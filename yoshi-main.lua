@@ -1,5 +1,5 @@
--- name: Rideable Yoshi v1.5
--- description: This mod adds a rideable Yoshi that ya can spawn by pressin' D-Pad Down in-game. \n\nMod by \\#00ffff\\steven.
+-- name: Rideable Yoshi v1.8
+-- description: Run around with a Yoshi friend with this mod. \n\nMod by \\#00ffff\\steven.
 ACT_RIDE_YOSHI_IDLE = allocate_mario_action(ACT_GROUP_STATIONARY | ACT_FLAG_STATIONARY | ACT_FLAG_IDLE)
 ACT_RIDE_YOSHI_WALK = allocate_mario_action(ACT_GROUP_MOVING | ACT_FLAG_MOVING)
 ACT_RIDE_YOSHI_JUMP = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR | ACT_FLAG_CONTROL_JUMP_HEIGHT)
@@ -9,6 +9,8 @@ ACT_RIDE_YOSHI_FALL = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR | 
 local SOUND_YOSHI_FLUTTER = audio_sample_load("flutter.mp3")
 
 E_MODEL_YOSHI_NEST = smlua_model_util_get_id("yoshi_nest_geo")
+YOSHI_NEST_COLLISION = smlua_collision_util_get("yoshi_nest_collision")
+E_MODEL_YOSHI_RIDEABLE_EGG = smlua_model_util_get_id("yoshi_rideable_egg_geo")
 
 RY_DEBUG_MODE = false
 gGlobalSyncTable.host_only = true
@@ -42,6 +44,43 @@ function yoshi_dismount_check(m)
     end
 end
 
+function yoshi_mount_update_walking_speed(m)
+    local maxTargetSpeed = 0
+    local targetSpeed = 0
+
+    if (m.floor ~= nil and m.floor.type == SURFACE_SLOW) then
+        maxTargetSpeed = 32.0
+    else
+        maxTargetSpeed = 48.0
+    end
+
+    if m.intendedMag < 24 then
+        targetSpeed = m.intendedMag
+    else
+        targetSpeed = maxTargetSpeed
+    end
+
+    if (m.quicksandDepth > 10.0) then
+        targetSpeed = targetSpeed * (6.25 / m.quicksandDepth)
+    end
+
+    if (m.forwardVel <= 0.0) then
+        m.forwardVel = m.forwardVel + 1.1
+    elseif (m.forwardVel <= targetSpeed) then
+        m.forwardVel = m.forwardVel + (1.1 - m.forwardVel / targetSpeed)
+    elseif (m.floor ~= nil and m.floor.normal.y >= 0.95) then
+        m.forwardVel = m.forwardVel - 1.0
+    end
+
+    if (m.forwardVel > 64.0) then
+        m.forwardVel = 64.0
+    end
+
+    m.faceAngle.y = m.intendedYaw - approach_s32(convert_s16(m.intendedYaw - m.faceAngle.y), 0, 0x800, 0x800)
+
+    apply_slope_accel(m)
+end
+
 function act_ride_yoshi_idle(m)
     local e = gStateExtras[m.playerIndex]
     set_mario_animation(m, MARIO_ANIM_SLIDING_ON_BOTTOM_WITH_LIGHT_OBJ)
@@ -69,11 +108,16 @@ function act_ride_yoshi_walk(m)
     set_mario_animation(m, MARIO_ANIM_SLIDING_ON_BOTTOM_WITH_LIGHT_OBJ)
     smlua_anim_util_set_animation(m.marioObj, "MARIO_RIDING_YOSHI_RUN")
 
-    update_walking_speed(m)
+    yoshi_mount_update_walking_speed(m)
     local stepResult = perform_ground_step(m)
 
     if stepResult == GROUND_STEP_LEFT_GROUND then
         return set_mario_action(m, ACT_RIDE_YOSHI_FALL, 1)
+    elseif stepResult == GROUND_STEP_HIT_WALL then
+        m.forwardVel = 6
+        if (m.input & INPUT_ZERO_MOVEMENT) ~= 0 then
+            return set_mario_action(m, ACT_RIDE_YOSHI_IDLE, 0)
+        end
     elseif stepResult == GROUND_STEP_NONE then
         if (m.intendedMag - m.forwardVel > 16.0) then
             m.particleFlags = m.particleFlags | PARTICLE_DUST
@@ -226,7 +270,7 @@ function mario_update(m)
                 spawn_sync_object(id_bhvYoshiRideable, E_MODEL_YOSHI, m.pos.x + 150, m.pos.y, m.pos.z, nil)
             end
             if (m.controller.buttonPressed & U_JPAD) ~= 0 then
-                spawn_sync_object(id_bhvYoshiSpawnEgg, E_MODEL_YOSHI_EGG, m.pos.x + 150, m.pos.y, m.pos.z, nil)
+                spawn_sync_object(id_bhvYoshiSpawnEgg, E_MODEL_YOSHI_RIDEABLE_EGG, m.pos.x + 150, m.pos.y, m.pos.z, nil)
             end
             if (m.controller.buttonPressed & R_JPAD) ~= 0 then
                 spawn_sync_object(id_bhvYoshiNest, E_MODEL_YOSHI_NEST, m.pos.x + 150, m.pos.y, m.pos.z, nil)
@@ -243,16 +287,16 @@ function mario_update(m)
     return 0
 end
 
+local yoshiRidingActions = {
+    [ACT_RIDE_YOSHI_IDLE] = true,
+    [ACT_RIDE_YOSHI_WALK] = true,
+    [ACT_RIDE_YOSHI_JUMP] = true,
+    [ACT_RIDE_YOSHI_FALL] = true,
+    [ACT_RIDE_YOSHI_FLUTTER] = true
+}
+
 function allow_interact(m, o, intType)
     local e = gStateExtras[m.playerIndex]
-
-    local yoshiRidingActions = {
-        [ACT_RIDE_YOSHI_IDLE] = true,
-        [ACT_RIDE_YOSHI_WALK] = true,
-        [ACT_RIDE_YOSHI_JUMP] = true,
-        [ACT_RIDE_YOSHI_FALL] = true,
-        [ACT_RIDE_YOSHI_FLUTTER] = true
-    }
 
     if intType == INTERACT_POLE or intType == INTERACT_KOOPA_SHELL then
         if yoshiRidingActions[m.action] then
@@ -272,9 +316,9 @@ function on_interact(m, obj, intType)
         end
         if
             (m.action & ACT_FLAG_AIR) == 0 and
-                ((m.action & ACT_FLAG_ATTACKING) ~= 0 and
-                    (m.action & (ACT_FLAG_BUTT_OR_STOMACH_SLIDE | ACT_FLAG_DIVING)) == 0)
-         then
+            ((m.action & ACT_FLAG_ATTACKING) ~= 0 and
+                (m.action & (ACT_FLAG_BUTT_OR_STOMACH_SLIDE | ACT_FLAG_DIVING)) == 0)
+        then
             lua_bounce_back_from_attack(m, e.interactionType)
         end
     end
@@ -317,10 +361,12 @@ end
 hook_event(HOOK_MARIO_UPDATE, mario_update)
 hook_event(HOOK_ON_SET_MARIO_ACTION, mario_on_set_action)
 hook_event(HOOK_ALLOW_INTERACT, allow_interact)
---hook_event(HOOK_ON_INTERACT, on_interact)
+hook_event(HOOK_ON_INTERACT, on_interact)
+hook_event(HOOK_ALLOW_HAZARD_SURFACE,
+    function(MS, S) if S == HAZARD_TYPE_LAVA_FLOOR and yoshiRidingActions[MS.action] then return false end end)
 
-hook_mario_action(ACT_RIDE_YOSHI_IDLE, {every_frame = act_ride_yoshi_idle})
-hook_mario_action(ACT_RIDE_YOSHI_WALK, {every_frame = act_ride_yoshi_walk})
-hook_mario_action(ACT_RIDE_YOSHI_JUMP, {every_frame = act_ride_yoshi_jump})
-hook_mario_action(ACT_RIDE_YOSHI_FLUTTER, {every_frame = act_ride_yoshi_flutter})
-hook_mario_action(ACT_RIDE_YOSHI_FALL, {every_frame = act_ride_yoshi_fall})
+hook_mario_action(ACT_RIDE_YOSHI_IDLE, { every_frame = act_ride_yoshi_idle })
+hook_mario_action(ACT_RIDE_YOSHI_WALK, { every_frame = act_ride_yoshi_walk })
+hook_mario_action(ACT_RIDE_YOSHI_JUMP, { every_frame = act_ride_yoshi_jump })
+hook_mario_action(ACT_RIDE_YOSHI_FLUTTER, { every_frame = act_ride_yoshi_flutter })
+hook_mario_action(ACT_RIDE_YOSHI_FALL, { every_frame = act_ride_yoshi_fall })
