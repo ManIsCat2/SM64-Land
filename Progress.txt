@@ -70,4 +70,4 @@ World 8: "Bowser's Space Land"
 8-4: Bowser's Space Base - 90%
 8-EX: Toad House - 100%
 W8 Boss: Showdown with Bowser - 0%
-8-C: Champion's Road - 0%
+8-C: Champion's Road - 100%
