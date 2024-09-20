@@ -1,5 +1,6 @@
 #include "custom.model.inc.h"
-const GeoLayout Geo_wdw_3_0x1ade0a0[]= {
+
+const GeoLayout wdw_3_geo[]= {
 GEO_NODE_SCREEN_AREA(10,160,120,160,120),
 GEO_OPEN_NODE(),
 GEO_ZBUFFER(0),

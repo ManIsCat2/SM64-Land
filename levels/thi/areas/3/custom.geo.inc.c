@@ -1,12 +1,13 @@
 #include "custom.model.inc.h"
-const GeoLayout Geo_thi_3_0x1c9f0b0[]= {
+
+const GeoLayout thi_3_geo[]= {
 GEO_NODE_SCREEN_AREA(10,160,120,160,120),
 GEO_OPEN_NODE(),
 GEO_ZBUFFER(0),
 GEO_OPEN_NODE(),
 GEO_NODE_ORTHO(100),
 GEO_OPEN_NODE(),
-GEO_BACKGROUND(1, geo_skybox_main),
+GEO_BACKGROUND_COLOR(0),
 GEO_CLOSE_NODE(),
 GEO_CLOSE_NODE(),
 GEO_ZBUFFER(1),

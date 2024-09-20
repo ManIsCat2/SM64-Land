@@ -1,4 +1,4 @@
-const Collision col_ttm_2_0xe03f440[] = {
+const Collision ttm_2_collision[] = {
 COL_INIT(),
 COL_VERTEX_INIT(2270),
 COL_VERTEX( 11804, 1384, 14948),

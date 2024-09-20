@@ -252,7 +252,7 @@ const LevelScript local_objects_bitfs_1_[] = {
 	OBJECT_WITH_ACTS(192, -8596, -1832, -4044, 0, 0, 0, 0x0, bhvGoomba, 31),
 	OBJECT_WITH_ACTS(129, -168, 3300, 2618, 0, 0, 0, 0x0, bhvHiddenObject, 31),
 	OBJECT_WITH_ACTS(239, -7980, 2557, 286, 0, 0, 0, 0x0, bhvCustom0x040086a0, 31),
-	OBJECT_WITH_ACTS(0, 256, 5, 230, 0, 2, 7, 2, RM_Scroll_Texture, 31),
+	OBJECT_WITH_ACTS(0, 256, 5, 230, 0, 2, 7, 2, bhvStaticObject, 31),
 	RETURN(),
 };
 

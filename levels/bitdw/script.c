@@ -82,7 +82,7 @@ RETURN()
 const LevelScript local_objects_bitdw_2_[] = {
 OBJECT_WITH_ACTS(0,-90,0,-1710,0,0,0,0xa0000, bhvSpinAirborneWarp,31),
 //OBJECT_WITH_ACTS(0,0,122,0,0,180,0,0x0,0x0701e000,31),
-OBJECT_WITH_ACTS(0,81,-32748,60,0,0,0,0xe008b60, RM_Scroll_Texture,31),
+OBJECT_WITH_ACTS(0,81,-32748,60,0,0,0,0xe008b60, bhvStaticObject,31),
 RETURN()
 };
 const LevelScript local_warps_bitdw_2_[] = {

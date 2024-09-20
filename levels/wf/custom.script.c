@@ -131,7 +131,7 @@ OBJECT_WITH_ACTS(0, 13157, 105, -7977, 0, 270, 0, 0xa0000, bhvSpinAirborneWarp, 
 	OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x1004e20, 0x1300003c, 31),
 	OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x0, 0x0040eb54, 31),*/
 	OBJECT_WITH_ACTS(195, 9986, 93, -19958, 0, 0, 0, 0x4d0000, bhvBobombBuddy, 31),
-OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/4, /*vtx count*/53, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ 0xe023e10, RM_Scroll_Texture, 31),
+OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/4, /*vtx count*/53, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ 0xe023e10, bhvStaticObject, 31),
 RETURN()
 };
 const LevelScript local_warps_wf_1_[] = {
@@ -245,9 +245,9 @@ OBJECT_WITH_ACTS(0, -6152, 1620, -16460, 0, 90, 0, 0xa0000, bhvSpinAirborneWarp,
 	OBJECT_WITH_ACTS(215, -8686, 3269, 4, 0, 0, 0, 0x0, bhvRedCoin, 31),
 	OBJECT_WITH_ACTS(180, -12935, 3184, 3095, 0, 0, 0, 0x0, bhvFireSpitter, 31),
 	OBJECT_WITH_ACTS(180, -13681, 3250, -1430, 0, 0, 0, 0x0, bhvFireSpitter, 31),
-OBJECT_WITH_ACTS(0,696,-32748,60,0,0,0,0xe00e9f0, RM_Scroll_Texture,31),
-OBJECT_WITH_ACTS(0,446,-32748,60,0,0,0,0xe011570, RM_Scroll_Texture,31),
-OBJECT_WITH_ACTS(0,355,-32748,60,0,0,0,0xe013150, RM_Scroll_Texture,31),
+OBJECT_WITH_ACTS(0,696,-32748,60,0,0,0,0xe00e9f0, bhvStaticObject,31),
+OBJECT_WITH_ACTS(0,446,-32748,60,0,0,0,0xe011570, bhvStaticObject,31),
+OBJECT_WITH_ACTS(0,355,-32748,60,0,0,0,0xe013150, bhvStaticObject,31),
 RETURN()
 };
 const LevelScript local_warps_wf_2_[] = {

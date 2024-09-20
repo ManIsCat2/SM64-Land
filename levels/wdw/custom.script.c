@@ -68,6 +68,7 @@ JUMP_LINK(script_func_global_1),
 JUMP_LINK(script_func_global_11),
 JUMP_LINK(local_area_wdw_1_),
 JUMP_LINK(local_area_wdw_2_),
+JUMP_LINK(local_area_wdw_3_),
 FREE_LEVEL_POOL(),
 MARIO_POS(1,0,0,0,0),
 CALL(/*arg*/ 0, /*func*/ lvl_init_or_update),
@@ -189,9 +190,9 @@ OBJECT_WITH_ACTS(0,-3040,3000,5233,0,0,0,0x0, bhvGoombaTripletSpawner,31),
 OBJECT_WITH_ACTS(212,-6250,3568,6750,0,0,0,0x0, bhv1Up,31),
 OBJECT_WITH_ACTS(212,-4750,3068,5250,0,0,0,0x0, bhv1Up,31),
 OBJECT_WITH_ACTS(239,-3318,3000,4913,0,0,0,0x0, Bhv_Custom_0x040086a0,31),
-OBJECT_WITH_ACTS(0,6,4,5151,0,0,20,3, RM_Scroll_Texture,31),
-//OBJECT_WITH_ACTS(0,512,5,2838,0,2,6,4, RM_Scroll_Texture,31),
-//OBJECT_WITH_ACTS(0,20,2,5151,0,1,1,5, RM_Scroll_Texture,31),
+OBJECT_WITH_ACTS(0,6,4,5151,0,0,20,3, bhvStaticObject,31),
+//OBJECT_WITH_ACTS(0,512,5,2838,0,2,6,4, bhvStaticObject,31),
+//OBJECT_WITH_ACTS(0,20,2,5151,0,1,1,5, bhvStaticObject,31),
 RETURN()
 };
 const LevelScript local_warps_wdw_1_[] = {
@@ -267,3 +268,50 @@ WARP_NODE(240,26,2,33,0),
 WARP_NODE(241,26,2,43,0),
 RETURN()
 };
+
+const LevelScript local_area_wdw_3_[] = {
+	AREA(3, wdw_3_geo),
+	TERRAIN(wdw_3_collision),
+	SET_BACKGROUND_MUSIC(0, 9),
+	TERRAIN_TYPE(TERRAIN_GRASS),
+	JUMP_LINK(local_objects_wdw_3_),
+	JUMP_LINK(local_warps_wdw_3_),
+	END_AREA(),
+	RETURN(),
+};
+
+const LevelScript local_objects_wdw_3_[] = {
+	OBJECT_WITH_ACTS(0, -4259, 1000, -6989, 0, 0, 0, 0xa0000, bhvSpinAirborneWarp, 31),
+	OBJECT_WITH_ACTS(85, -3850, 3000, -751, 0, 90, 0, 0x0, bhvYoshi, 31),
+	OBJECT_WITH_ACTS(54, -3200, 3000, 3200, 0, 0, 0, 0x101003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(55, -3966, 2476, -2616, 0, 180, 0, 0x80000, bhvCustom0x07003000, 31),
+	OBJECT_WITH_ACTS(54, -3200, 3250, 5200, 0, 0, 0, 0x101003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(54, -1200, 3500, 5200, 0, 0, 0, 0x101003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(54, 3500, 4000, 6240, 0, 0, 0, 0x1003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(54, 3500, 4250, 6240, 0, 0, 0, 0x1003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(54, 3500, 4500, 6240, 0, 0, 0, 0x1003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(54, 3500, 4750, 6240, 0, 0, 0, 0x1003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(54, 3500, 5000, 6240, 0, 0, 0, 0x1003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(54, 3500, 5250, 6240, 0, 0, 0, 0x1003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(54, 2890, 3750, 5799, 0, 0, 0, 0x101003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(54, 1800, 3500, 4922, 0, 0, 0, 0x2003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(22, 5092, 5567, 6167, 0, 270, 0, 0x50000, bhvWarpPipe, 31),
+	OBJECT_WITH_ACTS(54, 3500, 5500, 6240, 0, 0, 0, 0x1003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(54, 3500, 5750, 6240, 0, 0, 0, 0x1003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(54, 3500, 6000, 6240, 0, 0, 0, 0x1003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(54, 3500, 6250, 6240, 0, 0, 0, 0x1003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(54, 3500, 6500, 6240, 0, 0, 0, 0x1003f, bhvCustom0x07002600, 31),
+	OBJECT_WITH_ACTS(0, 90, 0, -1800, 0, 0, 0, 0x7002520, bhvCustom0x00377c40, 31),
+	OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x10000, bhvCustom0x0041f3e0, 31),
+	OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x20004e20, bhvCustom0x1300003c, 31),
+	RETURN(),
+};
+
+const LevelScript local_warps_wdw_3_[] = {
+	WARP_NODE(10,4,2,5,0),
+	WARP_NODE(5,7,3,10,0),
+	WARP_NODE(240,6,1,50,0),
+	WARP_NODE(241,26,4,102,0),
+	RETURN(),
+};
+

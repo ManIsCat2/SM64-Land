@@ -1,5 +1,6 @@
 #include "custom.model.inc.h"
-const GeoLayout Geo_ttm_1_0x1b83d10[]= {
+
+const GeoLayout ttm_1_geo[]= {
 GEO_NODE_SCREEN_AREA(10,160,120,160,120),
 GEO_OPEN_NODE(),
 GEO_ZBUFFER(0),
