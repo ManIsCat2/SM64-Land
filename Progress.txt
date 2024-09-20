@@ -35,7 +35,7 @@ World 4: "Retro Land"
 4-1: Mario Bros. 3 Supershow - 100% // couldnt do npcs that watch the show
 4-2: Bowser's Cart Castle - 50%
 4-3: Paper Jungle Adventure - 70%
-4-4: Super Mario World - 70%
+4-4: Super Mario World - 80%
 4-EX: Toad House - 100%
 W4 Boss: Bowser Jr.'s Trial - 0%
 

@@ -1048,18 +1048,6 @@ COL_FLIP_BLOCK = smlua_collision_util_get("flip_block_collision")
 ACT_FLIP_BLOCK_IDLE = 0
 ACT_FLIP_BLOCK_FLIPPING = 1
 
-local sFlipBlockHitbox = {
-    interactType = nil,
-    downOffset = 0,
-    damageOrCoinValue = 0,
-    health = 0,
-    numLootCoins = 0,
-    radius = 0,
-    height = 0,
-    hurtboxHeight = 0,
-    hurtboxRadius = 0
-}
-
 define_custom_obj_fields({
     oBlockExtX = "f32",
     oBlockExtZ = "f32",
@@ -1070,60 +1058,40 @@ define_custom_obj_fields({
 function bhv_flip_block_init(o)
     o.header.gfx.skipInViewCheck = true
     o.collisionData = COL_FLIP_BLOCK
+    o.oInteractType = INTERACT_BREAKABLE
     o.oCollisionDistance = 1000
     o.oAction = ACT_FLIP_BLOCK_IDLE
+    o.hitboxHeight = 260
+    o.hitboxDownOffset = 130
+    o.hitboxRadius = 230
+    o.oIntangibleTimer = 0
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     o.oBlockExtX = ((o.oBehParams >> 16) & 0xFF)
     o.oBlockExtZ = ((o.oBehParams >> 24) & 0xFF)
     o.oBlockExtDiagonal = (o.oBlockExtX + o.oBlockExtZ) ^ 2 * (o.oBlockExtX * o.oBlockExtZ)
     o.oBlockExtDelay = ((o.oBehParams >> 0) & 0xFF)
-    obj_set_hitbox(o, sFlipBlockHitbox)
     obj_set_model_extended(o, E_MODEL_FLIP_BLOCK)
     network_init_object(o, true, { "oBlockExtX", "oBlockExtZ", "oBlockExtDiagonal", "oBlockExtDelay" })
 end
 
 function bhv_flip_block_loop(o)
-    if ((o.oBehParams >> 24) & 0xFF) == 0 and ((o.oBehParams >> 16) & 0xFF) == 0 and ((o.oBehParams >> 0) & 0xFF) == 0 then
-        if o.oAction == ACT_FLIP_BLOCK_IDLE then
-            o.oTimer = 0
-            o.oFaceAnglePitch = 0
-            load_object_collision_model()
-            obj_scale_xyz(o, 1, 1, 1)
-        elseif o.oAction == ACT_FLIP_BLOCK_FLIPPING then
-            o.oFaceAnglePitch = cubicOut(0, 344064, 1, o.oTimer / 150)
-            o.oAction = o.oTimer < 150 and ACT_FLIP_BLOCK_FLIPPING or ACT_FLIP_BLOCK_IDLE
-            --obj_scale_xyz(o, 1, 1, 0.02)
-        end
+    --if ((o.oBehParams >> 24) & 0xFF) == 0 and ((o.oBehParams >> 16) & 0xFF) == 0 and ((o.oBehParams >> 0) & 0xFF) == 0 then
+    if o.oAction == ACT_FLIP_BLOCK_IDLE then
+        o.oTimer = 0
+        load_object_collision_model()
 
-        ---@type MarioState
-        local m = gMarioStates[0]
-        if not is_bubbled(m) and (cur_obj_was_attacked_or_ground_pounded() ~= 0 or (m.vel.y < 0 and m.ceil and m.ceil.object == o and m.pos.y + m.marioObj.hitboxHeight + 156 >= m.ceil.lowerY)) and o.oAction == ACT_FLIP_BLOCK_IDLE then
+        local nearM = nearest_mario_state_to_object(o)
+
+        if (cur_obj_was_attacked_or_ground_pounded() ~= 0) or nearM.ceil ~= nil and nearM.ceil.object == o and obj_check_hitbox_overlap(o, nearM.marioObj) then
             o.oAction = ACT_FLIP_BLOCK_FLIPPING
         end
-    else
-        load_object_collision_model()
-    end
-    if cur_obj_is_mario_on_platform() ~= 0 then
-        --[[djui_chat_message_create("1: "..tostring((o.oBehParams >> 24) & 0xFF))
-        djui_chat_message_create("2: "..tostring((o.oBehParams >> 16) & 0xFF))
-        djui_chat_message_create("3: "..tostring((o.oBehParams >> 8) & 0xFF)) -- USELESS!
-        djui_chat_message_create("4: "..tostring((o.oBehParams >> 0) & 0xFF))
-        if gMarioStates[0].controller.buttonDown & Y_BUTTON ~= 0 then
-            djui_chat_message_create("X Blocks: "..tostring(o.oBlockExtX))
-            djui_chat_message_create("Z Blocks: "..tostring(o.oBlockExtZ))
-            djui_chat_message_create("Diagonal Blocks: "..tostring(o.oBlockExtDiagonal))
-            djui_chat_message_create("Extension Delay: "..tostring(o.oBlockExtDelay))
-        else
-            for i = 1, o.oBlockExtX*2 do
-                djui_chat_message_create("x block "..tostring(i))
-            end
-            for i = 1, o.oBlockExtZ*2 do
-                djui_chat_message_create("z block "..tostring(i))
-            end
-            for i = 1, o.oBlockExtDiagonal do
-                djui_chat_message_create("diagonal block "..tostring(i))
-            end
-        end]]
+    elseif o.oAction == ACT_FLIP_BLOCK_FLIPPING then
+        o.oFaceAnglePitch = cubicOut(0, 344064, 1, o.oTimer / 150)
+        o.oInteractStatus = 0
+        if o.oTimer > 150 then
+            o.oAction = ACT_FLIP_BLOCK_IDLE
+        end
+        --obj_scale_xyz(o, 1, 1, 0.02)
     end
 end
 
@@ -1899,7 +1867,7 @@ function bhv_bitfs_light_platform_loop(o)
             o.oAction = 1
         end
     elseif o.oAction == 1 then
-        o.oFaceAnglePitch = approach_s16_symmetric(o.oFaceAnglePitch, 7300, 0x230)
+        o.oFaceAnglePitch = approach_s16_symmetric(o.oFaceAnglePitch, 7300, 0x280)
         o.oSubAction = o.oSubAction + 1
         if o.oSubAction > (9 * 30) then -- 9 seconds
             o.oAction = 0
@@ -2068,4 +2036,15 @@ function bhv_wmotr_static_platform(o)
 end
 
 bhvWMOTRStaticPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_wmotr_static_platform,
+    function() load_object_collision_model() end)
+
+---@param o Object
+function bhv_mario_world_block(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("mario_world_block_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 800
+end
+
+bhvMarioWorldBlock = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mario_world_block,
     function() load_object_collision_model() end)
