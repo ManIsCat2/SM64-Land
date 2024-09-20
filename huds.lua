@@ -32,11 +32,13 @@ levelData = {
     [COURSE_SL] = { { stars = { 5, 4, 3 }, finalStar = 3 }, { stars = { 1, 0 }, finalStar = 0 } },
     [COURSE_THI] = { { stars = { 1, 0 }, finalStar = 0 }, { stars = { 4, 5 }, finalStar = 5 } },
     [COURSE_DDD] = { { stars = { 1, 0 }, finalStar = 0 }, { stars = { 3, 4, 5, 6 }, coinStar = 6, finalStar = 4 }, },
+    [COURSE_BITFS] = { { stars = { 1, 0, 2 }, finalStar = 2 }, stars = {} },
 }
 
 bossLevelData = {
     [COURSE_BOB] = { [3] = true },
     [COURSE_CCM] = { [3] = true },
+    [COURSE_BITFS] = { [2] = true },
 }
 
 local xCursorIndex = 1
@@ -198,7 +200,7 @@ function lobby_hud()
             djui_hud_render_texture(worldSpecific[curWorld].starPowerIcon, (djui_hud_get_screen_width() / 2) - 26, 3, 1,
                 1)
             djui_hud_print_text("@", (djui_hud_get_screen_width() / 2) - 10, 4, 1)
-            djui_hud_print_text(string.format("%d", math.ceil(starPower)), (djui_hud_get_screen_width() / 2) + 2, 4, 1)
+            djui_hud_print_text(string.format("%d", math.floor(starPower)), (djui_hud_get_screen_width() / 2) + 2, 4, 1)
         end
 
         -- Star Counter

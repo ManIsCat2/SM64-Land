@@ -901,18 +901,18 @@ function roceket_powerup(m)
             set_mario_animation(m, MARIO_ANIM_STAND_AGAINST_WALL)
             m.forwardVel = 0
             chargingRocket = true
-            chargingMul = chargingMul + 0.085
+            chargingMul = chargingMul + 0.075
             -- djui_chat_message_create(tostring(chargingMul))
         end
 
         if chargingRocket and m.controller.buttonDown & B_BUTTON == 0 then
             m.action = ACT_SHOT_FROM_CANNON
             if m.controller.stickY < 1 then
-                m.vel.y = 10 * chargingMul
-                m.forwardVel = 18
+                m.vel.y = 12 * chargingMul
+                m.forwardVel = 19
             else
                 m.vel.y = 9 * chargingMul
-                m.forwardVel = 33 * 2.54
+                m.forwardVel = 35
             end
             chargingRocket = false
             chargingMul = 1
