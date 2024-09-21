@@ -2048,3 +2048,21 @@ end
 
 bhvMarioWorldBlock = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_mario_world_block,
     function() load_object_collision_model() end)
+
+---@param o Object
+function bhv_soap_bar_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.collisionData = smlua_collision_util_get("soap_bar_collision")
+    o.header.gfx.skipInViewCheck = true
+    o.oCollisionDistance = 1600
+end
+
+---@param o Object
+function bhv_soap_bar_loop(o)
+    load_object_collision_model()
+
+    o.oPosY = gMarioStates[0].waterLevel
+end
+
+bhvSoapBar = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_soap_bar_init,
+    bhv_soap_bar_loop)

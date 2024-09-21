@@ -26,7 +26,7 @@ World 3: "The House"
         * Jack in a Boxes
         * Whomp Dominos
         * Custom Purple Button Activated Only by Whowmp Dominos
-3-3: Bathroom - 60%
+3-3: Bathroom - 80%
 3-4: Fridge - 90%
 3-EX: Toad House - 100%
 W3 Boss: Master Hand's Trial - 0%
