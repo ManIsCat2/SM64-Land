@@ -93,6 +93,7 @@ function get_world_star_count(world)
     if world == 3 then
         course1 = COURSE_BBH
         course2 = COURSE_SSL
+        course3 = COURSE_HMC
     end
 
     if world == 4 then
@@ -135,10 +136,12 @@ function get_world_star_count(world)
         end
     end
 
+    local totalcourseHub = save_file_get_course_star_count(get_current_save_file_num() - 1, COURSE_NONE - 1)
+
     if course3 ~= nil then
-        return stars_world + save_file_get_course_star_count(get_current_save_file_num() - 1, course3 - 1)
+        return stars_world + save_file_get_course_star_count(get_current_save_file_num() - 1, course3 - 1) + totalcourseHub
     else
-        return stars_world
+        return stars_world + totalcourseHub
     end
 end
 
@@ -2111,10 +2114,32 @@ end
 bhvMasterHandBomb = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_master_hand_bomb,
     bhv_master_hand_bomb_loop)
 
+---@param o Object
+function bhv_paper_pin_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+
+    o.hitboxHeight = 300
+    o.hitboxRadius = 200
+
+    o.oIntangibleTimer = 0
+
+    obj_scale(o, 3)
+    network_init_object(o, true, nil)
+end
+
+---@param o Object
+function bhv_paper_pin_loop(o)
+
+end
+
+bhvPaperPin = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_paper_pin_init,
+    bhv_paper_pin_loop)
+
 local MASTER_HAND_IDLE = 0
 local MASTER_HAND_FOLLOW = 1
 local MASTER_HAND_SHOOT = 2
 local MASTER_HAND_SMASH = 3
+local MASTER_HAND_DAMAGED = 4
 
 local MODEL_MASTER_HAND = smlua_model_util_get_id("master_hand_open_geo")
 local MODEL_MASTER_HAND_SHOOT = smlua_model_util_get_id("master_hand_shoot_geo")
@@ -2122,6 +2147,15 @@ local MODEL_MASTER_HAND_SHOOT = smlua_model_util_get_id("master_hand_shoot_geo")
 ---@param o Object
 function bhv_master_hand_init(o)
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+
+    o.oInteractType = INTERACT_DAMAGE
+    o.oDamageOrCoinValue = 2
+    o.oIntangibleTimer = 0
+    o.hitboxHeight = 300
+    o.hitboxRadius = 430
+    o.hitboxDownOffset = 100
+
+    o.oHealth = 3
 
     network_init_object(o, true,
         { "oPosX", "oPosY", "oPosZ", "oFaceAngleYaw", "oAction", "oSubAction", "oAnimState", "oBobombBuddyPosXCopy",
@@ -2139,6 +2173,8 @@ end
 
 ---@param o Object
 function bhv_master_hand_loop(o)
+    local nearestpin = obj_get_nearest_object_with_behavior_id(o, bhvPaperPin)
+    o.oInteractStatus = 0
     local m = nearest_mario_state_to_object(o)
     if o.oAction == MASTER_HAND_IDLE then
         if should_start_or_continue_dialog(m, o) ~= 0 and cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_019) ~= 0 then
@@ -2172,14 +2208,46 @@ function bhv_master_hand_loop(o)
         end
     elseif o.oAction == MASTER_HAND_SMASH then
         o.oCapUnkF4 = o.oCapUnkF4 + 1
+        o.oPosX = approach_f32_symmetric(o.oPosX, m.pos.x, 20 * 5)
+        o.oPosZ = approach_f32_symmetric(o.oPosZ, m.pos.z, 20 * 5)
 
-        if o.oCapUnkF4 > 30 then
+        if o.oCapUnkF4 > 40 then
             o.oPosY = o.oPosY - 20
-            if o.oCapUnkF4 > 70 then
-                o.oCapUnkF4 = 0
 
-                --check hitbox overlap with nearest spike
+            --check hitbox overlap with nearest spike
+
+            if obj_check_hitbox_overlap(o, nearestpin) then
+                obj_mark_for_deletion(nearestpin)
+
+                spawn_triangle_break_particles(20, 138, 3.0, 4);
+
+                o.oAction = MASTER_HAND_DAMAGED
+
+                play_sound(SOUND_OBJ_KING_WHOMP_DEATH, o.header.gfx.cameraToObject)
+
+                o.oSubAction = 0
+
+                o.oHealth = o.oHealth - 1
+                o.oCapUnkF4 = 0
             end
+
+            if o.oCapUnkF4 > 90 then
+                o.oCapUnkF4 = 0
+                o.oAction = MASTER_HAND_FOLLOW
+            end
+        else
+            o.oPosY = approach_f32_symmetric(o.oPosY, m.pos.y + 800, 20 * 5)
+        end
+    elseif o.oAction == MASTER_HAND_DAMAGED then
+        o.oFaceAnglePitch = o.oFaceAnglePitch + 0x400 * 2
+        o.oFaceAngleYaw = o.oFaceAngleYaw + 0x100* 2
+        o.oSubAction = o.oSubAction + 1
+
+        if o.oSubAction > 60 then
+            o.oAction = MASTER_HAND_FOLLOW
+            o.oFaceAnglePitch = 0
+            o.oFaceAngleYaw = 0
+            o.oSubAction = 0
         end
     end
 
@@ -2187,6 +2255,12 @@ function bhv_master_hand_loop(o)
         obj_set_model_extended(o, MODEL_MASTER_HAND_SHOOT)
     else
         obj_set_model_extended(o, MODEL_MASTER_HAND)
+    end
+
+    if o.oHealth <= 0 then
+        obj_mark_for_deletion(o)
+
+        spawn_red_coin_cutscene_star(o.oPosX, o.oPosY - 70, o.oPosZ)
     end
 end
 

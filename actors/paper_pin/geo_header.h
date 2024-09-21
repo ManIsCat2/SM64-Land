@@ -1,0 +1,15 @@
+extern const GeoLayout paper_pin_geo[];
+extern Lights1 paper_pin_Pin_lights;
+extern Lights1 paper_pin_Pin_Head_lights;
+extern u8 paper_pin__39939638_c_i8[];
+extern u8 paper_pin__23DBDB62_c_ci4[];
+extern u8 paper_pin__23DBDB62_c_pal_rgba16[];
+extern Vtx paper_pin_Pin_mesh_layer_1_vtx_cull[8];
+extern Vtx paper_pin_Pin_mesh_layer_1_vtx_0[56];
+extern Gfx paper_pin_Pin_mesh_layer_1_tri_0[];
+extern Vtx paper_pin_Pin_mesh_layer_1_vtx_1[96];
+extern Gfx paper_pin_Pin_mesh_layer_1_tri_1[];
+extern Gfx mat_paper_pin_Pin[];
+extern Gfx mat_paper_pin_Pin_Head[];
+extern Gfx mat_revert_paper_pin_Pin_Head[];
+extern Gfx paper_pin_Pin_mesh_layer_1[];
