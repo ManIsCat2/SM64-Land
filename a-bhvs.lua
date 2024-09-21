@@ -9,6 +9,17 @@ function get_star_count()
     return save_file_get_total_star_count(get_current_save_file_num() - 1, courseMin - 1, courseMax - 1)
 end
 
+---@param parent Object
+---@param model ModelExtendedId
+---@param behaviorId BehaviorId
+function spawn_object2(parent, model, behaviorId)
+    local obj = spawn_sync_object(behaviorId, model, 0, 0, 0, nil)
+    if not obj then return nil end
+
+    obj_copy_pos_and_angle(obj, parent)
+    return obj
+end
+
 local function obj_set_hitbox(obj, hitbox)
     if not obj or not hitbox then return end
     -- Sets other hitbox values once
@@ -2066,3 +2077,118 @@ end
 
 bhvSoapBar = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_soap_bar_init,
     bhv_soap_bar_loop)
+
+---@param o Object
+function bhv_master_hand_bomb(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.oAnimations = gObjectAnimations.bobomb_seg8_anims_0802396C
+    cur_obj_init_animation(0)
+
+    o.hitboxHeight = 100
+    o.hitboxRadius = 100
+    o.oFriction = 1
+    o.oForwardVel = 45
+
+    o.oMoveAngleYaw = o.parentObj.oFaceAngleYaw
+
+    o.oPosY = o.oPosY - 100
+
+    network_init_object(o, true, nil)
+end
+
+---@param o Object
+function bhv_master_hand_bomb_loop(o)
+    local m = nearest_mario_state_to_object(o)
+
+    local ResultStep = object_step()
+
+    if obj_check_hitbox_overlap(m.marioObj, o) or ResultStep & OBJ_COL_FLAG_GROUNDED == 1 or ResultStep & OBJ_COL_FLAG_HIT_WALL ~= 0 then
+        spawn_sync_object(id_bhvExplosion, E_MODEL_EXPLOSION, o.oPosX, o.oPosY, o.oPosZ, nil)
+        obj_mark_for_deletion(o)
+    end
+end
+
+bhvMasterHandBomb = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_master_hand_bomb,
+    bhv_master_hand_bomb_loop)
+
+local MASTER_HAND_IDLE = 0
+local MASTER_HAND_FOLLOW = 1
+local MASTER_HAND_SHOOT = 2
+local MASTER_HAND_SMASH = 3
+
+local MODEL_MASTER_HAND = smlua_model_util_get_id("master_hand_open_geo")
+local MODEL_MASTER_HAND_SHOOT = smlua_model_util_get_id("master_hand_shoot_geo")
+
+---@param o Object
+function bhv_master_hand_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+
+    network_init_object(o, true,
+        { "oPosX", "oPosY", "oPosZ", "oFaceAngleYaw", "oAction", "oSubAction", "oAnimState", "oBobombBuddyPosXCopy",
+            "oCapUnkF4" })
+end
+
+local function do_master_handstep(m, o)
+    o.oPosY = approach_f32_symmetric(o.oPosY, m.pos.y + 200, 20 * 5)
+
+    o.oPosX = m.pos.x + 1200
+    o.oPosZ = m.pos.z
+
+    o.oFaceAngleYaw = obj_angle_to_object(o, m.marioObj)
+end
+
+---@param o Object
+function bhv_master_hand_loop(o)
+    local m = nearest_mario_state_to_object(o)
+    if o.oAction == MASTER_HAND_IDLE then
+        if should_start_or_continue_dialog(m, o) ~= 0 and cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_019) ~= 0 then
+            o.oAction = MASTER_HAND_FOLLOW
+        end
+    elseif o.oAction == MASTER_HAND_FOLLOW then
+        do_master_handstep(m, o)
+
+        o.oSubAction = o.oSubAction + 1
+
+        if o.oSubAction > 180 then
+            if m.pos.y < 1700 then
+                o.oAction = MASTER_HAND_SHOOT
+            else
+                o.oAction = MASTER_HAND_SMASH
+            end
+            o.oSubAction = 0
+        end
+    elseif o.oAction == MASTER_HAND_SHOOT then
+        do_master_handstep(m, o)
+        o.oAnimState = o.oAnimState + 1
+        if o.oAnimState > 30 then
+            spawn_object2(o, E_MODEL_BLACK_BOBOMB, bhvMasterHandBomb)
+            o.oAnimState = 0
+            o.oBobombBuddyPosXCopy = o.oBobombBuddyPosXCopy + 1
+        end
+
+        if o.oBobombBuddyPosXCopy >= 3 then
+            o.oAction = MASTER_HAND_FOLLOW
+            o.oBobombBuddyPosXCopy = 0
+        end
+    elseif o.oAction == MASTER_HAND_SMASH then
+        o.oCapUnkF4 = o.oCapUnkF4 + 1
+
+        if o.oCapUnkF4 > 30 then
+            o.oPosY = o.oPosY - 20
+            if o.oCapUnkF4 > 70 then
+                o.oCapUnkF4 = 0
+
+                --check hitbox overlap with nearest spike
+            end
+        end
+    end
+
+    if o.oAction == MASTER_HAND_SHOOT then
+        obj_set_model_extended(o, MODEL_MASTER_HAND_SHOOT)
+    else
+        obj_set_model_extended(o, MODEL_MASTER_HAND)
+    end
+end
+
+bhvMasterHand = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_master_hand_init,
+    bhv_master_hand_loop)
