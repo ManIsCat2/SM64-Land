@@ -763,7 +763,7 @@ MODEL_CLOUDSPAWN = smlua_model_util_get_id("cloudspawn")
 function checkCloudCount()
     local gMarioState = gMarioStates[0]
     local gMarioObject = gMarioState.marioObj
-    local o
+    local oclou
 
     if cloudcount > obj_count_objects_with_behavior_id(bhvCloudFollow) then
         oclou = spawn_object(gMarioObject, MODEL_CLOUDSPAWN, bhvCloudFollow)

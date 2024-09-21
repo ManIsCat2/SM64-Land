@@ -1,4 +1,4 @@
-const Collision col_ssl_1_0xe047580[] = {
+const Collision ssl_1_collision[] = {
 COL_INIT(),
 COL_VERTEX_INIT(2600),
 COL_VERTEX( -8088, 723, 125),

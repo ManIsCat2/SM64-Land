@@ -88,8 +88,8 @@ SLEEP_BEFORE_EXIT(/*frames*/ 1),
 EXIT(),
 };
 const LevelScript local_area_ssl_1_[] = {
-AREA(1,ssl_area_1),
-TERRAIN(col_ssl_1_0xe047580),
+AREA(1,ssl_1_geo),
+TERRAIN(ssl_1_collision),
 SET_BACKGROUND_MUSIC(0,51),
 TERRAIN_TYPE(0),
 JUMP_LINK(local_objects_ssl_1_),
