@@ -897,11 +897,16 @@ function roceket_powerup(m)
     local gMarioObject = m.marioObj
     --djui_chat_message_create(tostring(gMarioObject.oHiddenBlueCoinSwitch))
     if gPlayerSyncTable[0].activePowerup == ROCKET then
-        if m.controller.buttonDown & B_BUTTON ~= 0 and m.action & ACT_FLAG_AIR == 0 then
-            set_mario_animation(m, MARIO_ANIM_STAND_AGAINST_WALL)
-            m.forwardVel = 0
-            chargingRocket = true
-            chargingMul = chargingMul + 0.075
+        if m.action & ACT_FLAG_AIR == 0 then
+            if m.controller.buttonDown & B_BUTTON ~= 0 then
+                set_mario_animation(m, MARIO_ANIM_STAND_AGAINST_WALL)
+                m.forwardVel = 0
+                chargingRocket = true
+                chargingMul = chargingMul + 0.075
+            end
+            if m.controller.buttonPressed & B_BUTTON ~= 0 then
+                play_sound(SOUND_OBJ_CANNON1, gGlobalSoundSource)
+            end
             -- djui_chat_message_create(tostring(chargingMul))
         end
 
@@ -942,11 +947,11 @@ function rocket_hud()
     if gPlayerSyncTable[0].activePowerup == ROCKET then
         djui_hud_render_texture(TEX_ROCKET_METER, 0, 220, 1, 1)
         if chargingMul ~= 1 then
-            djui_hud_set_color(0, 255, 0, 255)
-            djui_hud_render_rect(3, 223, chargingMul * 6.85, 2 * 7)
+            djui_hud_set_color(15, 255, 0, 140)
+            djui_hud_render_rect(3, 221, chargingMul * 7, 17)
         end
         djui_hud_set_color(255, 255, 255, 255)
-        djui_hud_render_texture(TEX_ROCKET_METER2, 0, 220, 1, 1)
+        --djui_hud_render_texture(TEX_ROCKET_METER2, 0, 220, 1, 1)
     end
 end
 
