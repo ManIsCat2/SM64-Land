@@ -139,7 +139,8 @@ function get_world_star_count(world)
     local totalcourseHub = save_file_get_course_star_count(get_current_save_file_num() - 1, COURSE_NONE - 1)
 
     if course3 ~= nil then
-        return stars_world + save_file_get_course_star_count(get_current_save_file_num() - 1, course3 - 1) + totalcourseHub
+        return stars_world + save_file_get_course_star_count(get_current_save_file_num() - 1, course3 - 1) +
+            totalcourseHub
     else
         return stars_world + totalcourseHub
     end
@@ -1916,12 +1917,14 @@ function bhv_fast_moving_wall_loop(o)
     local mWall = gMarioStates[0]
 
     if mWall.wall and mWall.wall.object == o then
-        if mWall.wall ~= nil and mWall.action == ACT_WALL_SLIDE then
-            mWall.vel.y = -1.2
-            if obj_has_behavior_id(o, bhvFastMovingWall) ~= 0 or obj_has_behavior_id(o, bhvFastMovingWall2) ~= 0 then
-                mWall.pos.z = o.oPosZ
-            else
-                mWall.pos.x = o.oPosX
+        if mWall.wall ~= nil then
+            if mWall.action == ACT_WALL_SLIDE or _G.OmmEnabled and _G.OmmApi["ACT_OMM_WALL_SLIDE"] then
+                mWall.vel.y = -1.2
+                if obj_has_behavior_id(o, bhvFastMovingWall) ~= 0 or obj_has_behavior_id(o, bhvFastMovingWall2) ~= 0 then
+                    mWall.pos.z = o.oPosZ
+                else
+                    mWall.pos.x = o.oPosX
+                end
             end
         end
     end
@@ -2240,7 +2243,7 @@ function bhv_master_hand_loop(o)
         end
     elseif o.oAction == MASTER_HAND_DAMAGED then
         o.oFaceAnglePitch = o.oFaceAnglePitch + 0x400 * 2
-        o.oFaceAngleYaw = o.oFaceAngleYaw + 0x100* 2
+        o.oFaceAngleYaw = o.oFaceAngleYaw + 0x100 * 2
         o.oSubAction = o.oSubAction + 1
 
         if o.oSubAction > 60 then
@@ -2266,3 +2269,14 @@ end
 
 bhvMasterHand = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_master_hand_init,
     bhv_master_hand_loop)
+
+
+---@param o Object
+function bhv_mario_world_hill(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+
+    o.header.gfx.skipInViewCheck = true
+end
+
+bhvMarioWorldHill = hook_behavior(nil, OBJ_LIST_LEVEL, true, bhv_mario_world_hill,
+    nil)

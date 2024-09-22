@@ -29,7 +29,7 @@ World 3: "The House"
 3-3: Bathroom - 80%
 3-4: Fridge - 90%
 3-EX: Toad House - 100%
-W3 Boss: Master Hand's Trial - 0%
+W3 Boss: Master Hand's Trial - 100%
 
 World 4: "Retro Land"
 4-1: Mario Bros. 3 Supershow - 100% // couldnt do npcs that watch the show
