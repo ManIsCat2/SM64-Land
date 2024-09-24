@@ -1,35 +1,37 @@
-smlua_audio_utils_replace_sequence(3, 42, 75, "SM3DWZeroVv2") --1-1 done
-smlua_audio_utils_replace_sequence(72, 42, 75, "1-2_Puzzle_Plank") --1-2 done
-smlua_audio_utils_replace_sequence(37, 42, 75, "Space1") --1-3 done
-smlua_audio_utils_replace_sequence(71, 42, 75, "SSBTargetTest_Andy_NI26") --Tutorial done
-smlua_audio_utils_replace_sequence(6, 42, 75, "Super Mario 3D Land - World 7 (SM64Land)") --World 2 done
-smlua_audio_utils_replace_sequence(8, 42, 75, "Kalamari Desert - Mario Kart 64 (Final) 12") --2-1 done
-smlua_audio_utils_replace_sequence(78, 42, 75, "2-2_Piranha_Creeper_Creek") --2-2 done
-smlua_audio_utils_replace_sequence(36, 37, 75, "0x41 -sewer song Ninst37") --3-1 done
-smlua_audio_utils_replace_sequence(35, 23, 75, "0x38 giant desk theme Ninst23") --3-3 done
-smlua_audio_utils_replace_sequence(51, 42, 75, "3-4outside") --3-4 done
-smlua_audio_utils_replace_sequence(54, 42, 75, "OW4_Retro_Remix2") --World 4 done
+smlua_audio_utils_replace_sequence(3, 42, 75, "SM3DWZeroVv2")                                   --1-1 done
+smlua_audio_utils_replace_sequence(72, 42, 75, "1-2_Puzzle_Plank")                              --1-2 done
+smlua_audio_utils_replace_sequence(37, 42, 75, "Space1")                                        --1-3 done
+smlua_audio_utils_replace_sequence(71, 42, 75, "SSBTargetTest_Andy_NI26")                       --Tutorial done
+smlua_audio_utils_replace_sequence(6, 42, 75, "Super Mario 3D Land - World 7 (SM64Land)")       --World 2 done
+smlua_audio_utils_replace_sequence(8, 42, 75, "Kalamari Desert - Mario Kart 64 (Final) 12")     --2-1 done
+smlua_audio_utils_replace_sequence(78, 42, 75, "2-2_Piranha_Creeper_Creek")                     --2-2 done
+smlua_audio_utils_replace_sequence(36, 37, 75, "0x41 -sewer song Ninst37")                      --3-1 done
+smlua_audio_utils_replace_sequence(35, 23, 75, "0x38 giant desk theme Ninst23")                 --3-3 done
+smlua_audio_utils_replace_sequence(51, 42, 75, "3-4outside")                                    --3-4 done
+smlua_audio_utils_replace_sequence(54, 42, 75, "OW4_Retro_Remix2")                              --World 4 done
 smlua_audio_utils_replace_sequence(40, 17, 75, "Super Mario World - Athletic Remix (NInst 17)") --4-4 done
-smlua_audio_utils_replace_sequence(5, 19, 75, "Dire, Dire Docks") --3-2 done
-smlua_audio_utils_replace_sequence(68, 42, 45, "1-4_Yoshi_Star") --1-4 done
-smlua_audio_utils_replace_sequence(44, 37, 75, "Super Mario 64 Slide Remix Ninst 37") --6-4 done
-smlua_audio_utils_replace_sequence(47, 42, 75, "6-1(New Perc)3") --6-1 done
-smlua_audio_utils_replace_sequence(67, 42, 75, "OW8_Special (1)") --World 6 done
-smlua_audio_utils_replace_sequence(49, 42, 75, "7-2MM5GravityBEEP2") --7-2 done
-smlua_audio_utils_replace_sequence(50, 42, 75, "7-4(SMRPG Weapons)") --7-3 done
-smlua_audio_utils_replace_sequence(38, 28, 75, "Long note for audio playback_lofidkc") --5-3 use streamed music for this
-smlua_audio_utils_replace_sequence(43, 37, 75, "0x09 Cloud Cap (Ver 2) NInst 37") --6-2 done
-smlua_audio_utils_replace_sequence(69, 42, 75, "Airship Fortress - Mario Kart DS (SM3DL) v2") --7-4 done
-smlua_audio_utils_replace_sequence(70, 37, 75, "SpaceJunk_Andy_NI26") --World 8 done
-smlua_audio_utils_replace_sequence(55, 42, 75, "8-1_Good_egg") --8-1 done
-smlua_audio_utils_replace_sequence(48, 42, 75, "Techno Factory - Kirby's Return to Dreamland") --7-1 done
-smlua_audio_utils_replace_sequence(39, 28, 75, "Long note for audio playback_trains") --5-4 use streamed music for this
-smlua_audio_utils_replace_sequence(41, 42, 75, "SMB3Overworld(SM64)") --4-1 done
-smlua_audio_utils_replace_sequence(60, 42, 75, "Hell_Prominence_Reduced") --8-3 done
-smlua_audio_utils_replace_sequence(53, 42, 75, "5-2Cotton") --5-2 done
-smlua_audio_utils_replace_sequence(83, 42, 75, "8-4_Bowser_Final") --8-4 done
-smlua_audio_utils_replace_sequence(56, 26, 75, "8-3 Casino") 
-smlua_audio_utils_replace_sequence(58, 26, 75, "SM64_3D_Land_Master_Hand_Boss") 
+smlua_audio_utils_replace_sequence(5, 19, 75, "Dire, Dire Docks")                               --3-2 done
+smlua_audio_utils_replace_sequence(68, 42, 45, "1-4_Yoshi_Star")                                --1-4 done
+smlua_audio_utils_replace_sequence(44, 37, 75, "Super Mario 64 Slide Remix Ninst 37")           --6-4 done
+smlua_audio_utils_replace_sequence(47, 42, 75, "6-1(New Perc)3")                                --6-1 done
+smlua_audio_utils_replace_sequence(67, 42, 75, "OW8_Special (1)")                               --World 6 done
+smlua_audio_utils_replace_sequence(49, 42, 75, "7-2MM5GravityBEEP2")                            --7-2 done
+smlua_audio_utils_replace_sequence(50, 42, 75, "7-4(SMRPG Weapons)")                            --7-3 done
+smlua_audio_utils_replace_sequence(38, 28, 75, "Long note for audio playback_lofidkc")          --5-3 use streamed music for this
+smlua_audio_utils_replace_sequence(43, 37, 75, "0x09 Cloud Cap (Ver 2) NInst 37")               --6-2 done
+smlua_audio_utils_replace_sequence(69, 42, 75, "Airship Fortress - Mario Kart DS (SM3DL) v2")   --7-4 done
+smlua_audio_utils_replace_sequence(70, 37, 75, "SpaceJunk_Andy_NI26")                           --World 8 done
+smlua_audio_utils_replace_sequence(55, 42, 75, "8-1_Good_egg")                                  --8-1 done
+smlua_audio_utils_replace_sequence(48, 42, 75, "Techno Factory - Kirby's Return to Dreamland")  --7-1 done
+smlua_audio_utils_replace_sequence(39, 28, 75, "Long note for audio playback_trains")           --5-4 use streamed music for this
+smlua_audio_utils_replace_sequence(41, 42, 75, "SMB3Overworld(SM64)")                           --4-1 done
+smlua_audio_utils_replace_sequence(60, 42, 75, "Hell_Prominence_Reduced")                       --8-3 done
+smlua_audio_utils_replace_sequence(53, 42, 75, "5-2Cotton")                                     --5-2 done
+smlua_audio_utils_replace_sequence(83, 42, 75, "8-4_Bowser_Final")                              --8-4 done
+smlua_audio_utils_replace_sequence(56, 26, 75, "8-3 Casino")
+smlua_audio_utils_replace_sequence(58, 26, 75, "SM64_3D_Land_Master_Hand_Boss")
+smlua_audio_utils_replace_sequence(52, 25, 75, "4-3_Bowser_Castle")
+smlua_audio_utils_replace_sequence(61, 24, 75, "Octopus_Boss_-_Fraaz_Theme")
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom") --Star Collect

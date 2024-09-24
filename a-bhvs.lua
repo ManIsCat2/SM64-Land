@@ -2280,3 +2280,31 @@ end
 
 bhvMarioWorldHill = hook_behavior(nil, OBJ_LIST_LEVEL, true, bhv_mario_world_hill,
     nil)
+
+---@param o Object
+function bhv_bush(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.header.gfx.skipInViewCheck = true
+    obj_set_billboard(o)
+end
+
+bhvBush = hook_behavior(nil, OBJ_LIST_LEVEL, true, bhv_bush,
+    nil)
+
+
+---@param o Object
+function bhv_octopus_boss_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+
+    o.header.gfx.skipInViewCheck = true
+end
+
+---@param o Object
+function bhv_octopus_boss_loop(o)
+    local nearestMario = nearest_mario_state_to_object(o)
+
+    o.oFaceAngleYaw = obj_angle_to_object(o, nearestMario.marioObj)
+end
+
+bhvOctopusBoss = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_octopus_boss_init,
+    bhv_octopus_boss_loop)
