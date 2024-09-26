@@ -28,10 +28,10 @@ smlua_audio_utils_replace_sequence(41, 42, 75, "SMB3Overworld(SM64)")           
 smlua_audio_utils_replace_sequence(60, 42, 75, "Hell_Prominence_Reduced")                       --8-3 done
 smlua_audio_utils_replace_sequence(53, 42, 75, "5-2Cotton")                                     --5-2 done
 smlua_audio_utils_replace_sequence(83, 42, 75, "8-4_Bowser_Final")                              --8-4 done
-smlua_audio_utils_replace_sequence(56, 26, 75, "8-3 Casino")
-smlua_audio_utils_replace_sequence(58, 26, 75, "SM64_3D_Land_Master_Hand_Boss")
-smlua_audio_utils_replace_sequence(52, 25, 75, "4-3_Bowser_Castle")
-smlua_audio_utils_replace_sequence(61, 24, 75, "Octopus_Boss_-_Fraaz_Theme")
+smlua_audio_utils_replace_sequence(56, 42, 75, "8-3 Casino")                                    --8-2 done
+smlua_audio_utils_replace_sequence(58, 42, 75, "SM64_3D_Land_Master_Hand_Boss")                 --3-Boss done
+smlua_audio_utils_replace_sequence(52, 25, 75, "4-3_Bowser_Castle")                             --4-2 done
+smlua_audio_utils_replace_sequence(61, 42, 75, "Octopus_Boss_-_Fraaz_Theme")                    --6-Boss done
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom") --Star Collect
@@ -48,7 +48,7 @@ smlua_audio_utils_replace_sequence(0x10, 0x12, 75, "10_Seq_custom") --koopa mess
 smlua_audio_utils_replace_sequence(0x12, 0x11, 75, "12_Seq_custom") --Star Collect
 smlua_audio_utils_replace_sequence(0x14, 0x1A, 75, "14_Seq_custom") --race fanfare
 smlua_audio_utils_replace_sequence(0x15, 0x1C, 90, "15_Seq_custom") --star spawn
-smlua_audio_utils_replace_sequence(0x16, 0x15, 75, "16_Seq_custom") --World 2 Boss
+smlua_audio_utils_replace_sequence(0x16, 0x2A, 75, "16_Seq_custom") --2-Boss done
 smlua_audio_utils_replace_sequence(0x17, 0x1A, 75, "17_Seq_custom") --boss win
 smlua_audio_utils_replace_sequence(0x19, 0x2A, 75, "19_Seq_custom") --World 3 done
 smlua_audio_utils_replace_sequence(0x1B, 0x14, 75, "1B_Seq_custom") --secret
