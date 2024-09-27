@@ -2308,3 +2308,60 @@ end
 
 bhvOctopusBoss = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_octopus_boss_init,
     bhv_octopus_boss_loop)
+
+---@param o Object
+function bhv_octopus_boss_cannon_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+
+    o.header.gfx.skipInViewCheck = true
+
+    cur_obj_scale(2.1)
+
+    o.hitboxRadius = 160
+    o.hitboxHeight = 440
+
+    o.oIntangibleTimer = 0
+end
+
+local ACT_IN_CANNON_CUSTOM = allocate_mario_action(ACT_FLAG_STATIONARY)
+
+function act_in_cannon_custom(m)
+    m.actionTimer = m.actionTimer + 1
+
+    if m.actionTimer > 30 then
+        m.action = ACT_SHOT_FROM_CANNON
+        m.vel.y = 50
+        m.forwardVel = 60
+    end
+end
+
+hook_mario_action(ACT_IN_CANNON_CUSTOM, act_in_cannon_custom)
+local cannonSpeed = 1300
+---@param o Object
+function bhv_octopus_boss_cannon_loop(o)
+    local localM = gMarioStates[0]
+
+    if o.oAction == 0 then
+        o.oFaceAnglePitch = approach_s16_symmetric(o.oFaceAnglePitch, 0, cannonSpeed)
+        if obj_check_hitbox_overlap(o, localM.marioObj) then
+            localM.marioObj.header.gfx.pos.x = o.oPosX
+            localM.marioObj.header.gfx.pos.y = o.oPosY
+            localM.marioObj.header.gfx.pos.z = o.oPosZ
+            localM.pos.x = o.oPosX
+            localM.pos.y = o.oPosY
+            localM.pos.z = o.oPosZ
+            localM.faceAngle.y = o.oFaceAngleYaw
+            localM.action = ACT_IN_CANNON_CUSTOM
+
+            o.oAction = 1
+        end
+    elseif o.oAction == 1 then
+        o.oFaceAnglePitch = approach_s16_symmetric(o.oFaceAnglePitch, 11000, cannonSpeed)
+        if not obj_check_hitbox_overlap(o, localM.marioObj) then
+            o.oAction = 0
+        end
+    end
+end
+
+bhvOctopusBossCannon = hook_behavior(nil, OBJ_LIST_LEVEL, true, bhv_octopus_boss_cannon_init,
+    bhv_octopus_boss_cannon_loop)

@@ -41,6 +41,7 @@ bossLevelData = {
     [COURSE_CCM] = { [3] = true },
     [COURSE_SSL] = { [3] = true },
     [COURSE_BITFS] = { [2] = true },
+    [COURSE_BITDW] = { [1] = true },
 }
 
 championsRoadLevlData = {
