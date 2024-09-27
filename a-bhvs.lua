@@ -9,6 +9,14 @@ function get_star_count()
     return save_file_get_total_star_count(get_current_save_file_num() - 1, courseMin - 1, courseMax - 1)
 end
 
+function for_each_object_with_behavior(behavior, func) --* function by Isaac
+    local o = obj_get_first_with_behavior_id(behavior)
+    while o do
+        func(o)
+        o = obj_get_next_with_same_behavior_id(o)
+    end
+end
+
 ---@param parent Object
 ---@param model ModelExtendedId
 ---@param behaviorId BehaviorId
@@ -1278,7 +1286,7 @@ local sAngrySunHitbox = {
     health = 3,
     numLootCoins = 0,
     radius = 180,
-    height = 180,
+    height = 180 * 3,
     hurtboxHeight = 180,
     hurtboxRadius = 180,
     numLootScore = 0
@@ -1289,22 +1297,24 @@ E_MODEL_ANGRYSUN = smlua_model_util_get_id("angry_sun_geo")
 ACT_ANGRYSUN_CHARGING = 0
 ACT_ANGRYSUN_MOVING = 1
 ACT_ANGRYSUN_IDLE = 2
+ACT_ANGRYSUN_HURT = 3
+ACT_ANGRYSUN_DIE = 4
 
 ---@param o Object
 function bhv_angry_sun_init(o)
-    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_MOVE_XZ_USING_FVEL
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_MOVE_XZ_USING_FVEL|OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW
     o.oFriction = 1
     o.header.gfx.skipInViewCheck = true
     obj_set_billboard(o)
     obj_scale(o, 0.8)
+    o.oHealth = 3
     obj_set_hitbox(o, sAngrySunHitbox)
     network_init_object(o, true, nil)
 end
 
 ---@param o Object
 function bhv_angry_sun_loop(o)
-    local m = gMarioStates[0]
-    djui_chat_message_create(tostring(o.oSubAction))
+    local m = nearest_mario_state_to_object(o)
     if o.oAction == ACT_ANGRYSUN_CHARGING then
         o.oForwardVel = 0
         o.oPosY = o.oPosY + (math.sin(o.oTimer * 0.07) * 8)
@@ -1321,10 +1331,50 @@ function bhv_angry_sun_loop(o)
     end
 
     if o.oAction == ACT_ANGRYSUN_MOVING then
-        o.oFaceAngleYaw = obj_angle_to_object(o, m.marioObj)
-        o.oMoveAngleYaw = obj_angle_to_object(o, m.marioObj)
+        o.oMoveAngleYaw = approach_s16_symmetric(o.oMoveAngleYaw, obj_angle_to_object(o, m.marioObj), 0x230)
         o.oForwardVel = approach_f32(o.oForwardVel, 25, 5, 0)
         o.oPosY = approach_s32(o.oPosY, m.pos.y, 10, 10)
+
+        o.oSubAction = o.oSubAction + 1
+        if o.oSubAction >= 120 then
+            local flameeee = spawn_object2(o, E_MODEL_RED_FLAME, id_bhvFlameBouncing)
+            obj_scale(flameeee, 3.5)
+            flameeee.hitboxRadius = 90
+            flameeee.hitboxHeight = 90
+            o.oAction = ACT_ANGRYSUN_CHARGING
+        end
+    end
+
+    if o.oAction == ACT_ANGRYSUN_HURT then
+        spawn_mist_particles_with_sound(5)
+        o.oForwardVel = 0
+        -- cur_obj_play_sound_1(SOUND_OBJ_ENEMY_DEATH_HIGH)
+
+        o.oSubAction = o.oSubAction + 1
+        if o.oSubAction >= 75 then
+            o.oAction = ACT_ANGRYSUN_MOVING
+        end
+    end
+
+    local nearWaterbuc = obj_get_nearest_object_with_behavior_id(o, id_bhvBetaHoldableObject)
+
+    if nearWaterbuc then
+        if obj_check_hitbox_overlap(o, nearWaterbuc) and o.oAction ~= ACT_ANGRYSUN_HURT and nearWaterbuc.oCoinUnk110 == 92 then
+            o.oAction = ACT_ANGRYSUN_HURT
+            o.oHealth = o.oHealth - 1
+            nearWaterbuc.oCoinUnk110 = 0
+        end
+    end
+
+    if o.oAction == ACT_ANGRYSUN_DIE then
+        spawn_triangle_break_particles(20, 138, 3.0, 4);
+        obj_mark_for_deletion(o)
+        spawn_default_star(m.pos.x, m.pos.y + 230, m.pos.z)
+        play_sound(SOUND_OBJ_KING_WHOMP_DEATH, o.header.gfx.cameraToObject)
+    end
+
+    if o.oHealth <= 0 and o.oAction ~= ACT_ANGRYSUN_DIE then
+        o.oAction = ACT_ANGRYSUN_DIE
     end
 end
 
@@ -1336,35 +1386,36 @@ local sWaterBucketHitbox = {
     interactType = INTERACT_GRABBABLE,
     downOffset = 0,
     damageOrCoinValue = 0,
-    health = 0,
+    health = 1,
     numLootCoins = 0,
-    radius = 160,
-    height = 100,
-    hurtboxHeight = 0,
-    hurtboxRadius = 0,
+    radius = 60,
+    height = 60,
+    hurtboxHeight = 60,
+    hurtboxRadius = 60,
     numLootScore = 0
 }
 
 E_MODEL_WATER_BUCKET_FULL = smlua_model_util_get_id("bucket_water_geo")
 E_MODEL_WATER_BUCKET_EMPTY = smlua_model_util_get_id("bucket_no_water_geo")
 
----@param o Object
-function bhv_water_bucket_init(o)
-    obj_set_hitbox(o, sWaterBucketHitbox)
-    cur_obj_scale(1.3)
+function custom_water_bucket_holdable()
+    for_each_object_with_behavior(id_bhvBetaHoldableObject,
+        ---@param o Object
+        function(o)
+            if o.header.gfx.pos.y < 1555 then
+                o.oCoinUnk110 = 92
+            end
+
+            if o.oCoinUnk110 == 92 then
+                obj_set_model_extended(o, E_MODEL_WATER_BUCKET_FULL)
+            else
+                obj_set_model_extended(o, E_MODEL_WATER_BUCKET_EMPTY)
+            end
+        end
+    )
 end
 
----@param o Object
-function bhv_water_bucket_loop(o)
-    if o.oPosY <= 1445 then --hardcoded since idk how to check if its in water
-        obj_set_model_extended(o, E_MODEL_WATER_BUCKET_FULL)
-    end
-    if obj_check_hitbox_overlap(o, obj_get_first_with_behavior_id(id_bhvAngrySun)) then
-        obj_set_model_extended(o, E_MODEL_WATER_BUCKET_EMPTY)
-    end
-end
-
-id_bhvWaterBucket = hook_behavior(nil, OBJ_LIST_DESTRUCTIVE, true, bhv_water_bucket_init, bhv_water_bucket_loop)
+hook_event(HOOK_UPDATE, custom_water_bucket_holdable)
 
 ---@param o Object
 function bhv_ttm_blue_platform(o)

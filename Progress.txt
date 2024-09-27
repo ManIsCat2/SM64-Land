@@ -16,7 +16,7 @@ World 2: "Desert Land"
 2-3: Angry Sun - 90%
 2-4: Tornados - 80%
 2-EX: Toad House - 100%
-W2 Boss: Angry Sun's Trial - 0%
+W2 Boss: Angry Sun's Trial - 100%
 
 World 3: "The House"
 3-1: Kitchen - 100%
