@@ -693,7 +693,7 @@ E_MODEL_DANCING_HILL = smlua_model_util_get_id("dancing_hill_geo")
 function bhv_dancing_hill_init(o)
     o.header.gfx.skipInViewCheck = true
     obj_set_model_extended(o, E_MODEL_DANCING_HILL)
-    --smlua_anim_util_set_animation(o, "anim_dance_hill")
+    smlua_anim_util_set_animation(o, "anim_dance_hill")
 end
 
 function bhv_dancing_hill_loop(o)
@@ -1309,7 +1309,7 @@ function bhv_angry_sun_init(o)
     obj_scale(o, 0.8)
     o.oHealth = 3
     obj_set_hitbox(o, sAngrySunHitbox)
-    network_init_object(o, true, nil)
+    network_init_object(o, true, {"oAction", "oSubAction", "oInteractStatus", "oPosZ", "oPosY", "oPosX", "oHealth"})
 end
 
 ---@param o Object
