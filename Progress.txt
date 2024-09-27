@@ -53,7 +53,7 @@ World 6: "Sky Haven"
 6-3: Sandbird - 55%
 6-4: Cloud Rush - 100%
 6-EX: Toad House - 100%
-W6 Boss: Tyrant Tormentoso's Trial - 0%
+W6 Boss: Tyrant Tormentoso's Trial - 70%
 
 World 7: "Power Plant"
 7-1: Zap Factory - 90%
