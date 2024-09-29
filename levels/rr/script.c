@@ -30,6 +30,7 @@ LOAD_MODEL_FROM_GEO(54, rr_purple_block_geo),
 LOAD_MODEL_FROM_GEO(56, rr_rotating_plus_geo),
 LOAD_MODEL_FROM_GEO(63, nuclear_platform_geo),
 LOAD_MODEL_FROM_GEO(64, nuclear_platform2_geo),
+LOAD_MODEL_FROM_GEO(61,battery_powerup_geo),
 JUMP_LINK(script_func_global_1),
 JUMP_LINK(script_func_global_18),
 JUMP_LINK(local_area_rr_1_),
@@ -54,7 +55,7 @@ RETURN()
 };
 const LevelScript local_objects_rr_1_[] = {
 OBJECT_WITH_ACTS(0,452,31,-5791,0,0,0,0xa0000, bhvSpinAirborneWarp,31),
-//OBJECT_WITH_ACTS(61,4308,1584,-7167,0,0,0,0x0,0x0701c4e0,31),
+OBJECT_WITH_ACTS(61,4308,1584,-7167,0,0,0,0x0,bhvBattreyPowerup,31),
 OBJECT_WITH_ACTS(54,-23,478,-5168,0,90,0,0x1000000,bhvRRPurpleBlock,31),
 OBJECT_WITH_ACTS(54,-423,1378,-5746,0,90,0,0x10000,bhvRRPurpleBlock,31),
 OBJECT_WITH_ACTS(54,-423,778,-5457,0,90,0,0x10000,bhvRRPurpleBlock,31),

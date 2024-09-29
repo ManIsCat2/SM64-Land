@@ -3,6 +3,23 @@ E_MODEL_ROTATING_PLATFORM_JRB = smlua_model_util_get_id("rotating_platform_jrb_g
 
 local math_sin = math.sin
 
+---from SM64 Last Impact
+---@param obj Object
+---@param animTable table
+---@param animIndex integer
+function obj_init_animation_from_custom_table(obj, animTable, animIndex, vanillaAnim, speed)
+    ---@type string|Animation
+    local setAnim = animTable[animIndex]
+    if animTable then
+        obj.header.gfx.animInfo.animAccel = speed and speed * 65536 or 65536
+        if not vanillaAnim then
+            smlua_anim_util_set_animation(obj, setAnim)
+        else
+            obj.header.gfx.animInfo.curAnim = setAnim
+        end
+    end
+end
+
 function get_star_count()
     local courseMax = 25
     local courseMin = 1
@@ -1309,7 +1326,7 @@ function bhv_angry_sun_init(o)
     obj_scale(o, 0.8)
     o.oHealth = 3
     obj_set_hitbox(o, sAngrySunHitbox)
-    network_init_object(o, true, {"oAction", "oSubAction", "oInteractStatus", "oPosZ", "oPosY", "oPosX", "oHealth"})
+    network_init_object(o, true, { "oAction", "oSubAction", "oInteractStatus", "oPosZ", "oPosY", "oPosX", "oHealth" })
 end
 
 ---@param o Object
@@ -2416,3 +2433,35 @@ end
 
 bhvOctopusBossCannon = hook_behavior(nil, OBJ_LIST_LEVEL, true, bhv_octopus_boss_cannon_init,
     bhv_octopus_boss_cannon_loop)
+
+local bossWarioAnims = {
+    [0] = get_mario_vanilla_animation(MARIO_ANIM_FIRST_PERSON),
+    get_mario_vanilla_animation(MARIO_ANIM_RUNNING),
+    get_mario_vanilla_animation(MARIO_ANIM_FIRST_PUNCH),
+}
+
+
+---@param o Object
+function bhv_wario_boss_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+
+    o.header.gfx.skipInViewCheck = true
+
+    obj_init_animation_from_custom_table(o, bossWarioAnims, 0, true)
+    o.oGraphYOffset = 40
+end
+
+WARIO_IDLE = 0
+WARIO_WALK = 1
+
+---@param o Object
+function bhv_wario_boss_loop(o)
+    local neastMario = nearest_mario_state_to_object(o)
+
+    if o.oAction == WARIO_IDLE and should_start_or_continue_dialog(neastMario, o) ~= 0 and cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_046) ~= 0 then
+        o.oAction = WARIO_WALK
+    end
+end
+
+bhvWarioBoss = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_wario_boss_init,
+    bhv_wario_boss_loop)
