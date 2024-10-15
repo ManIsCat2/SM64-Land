@@ -2436,7 +2436,7 @@ bhvOctopusBossCannon = hook_behavior(nil, OBJ_LIST_LEVEL, true, bhv_octopus_boss
 
 local bossWarioAnims = {
     [0] = get_mario_vanilla_animation(MARIO_ANIM_FIRST_PERSON),
-    get_mario_vanilla_animation(MARIO_ANIM_RUNNING),
+    get_mario_vanilla_animation(MARIO_ANIM_WALKING),
     get_mario_vanilla_animation(MARIO_ANIM_FIRST_PUNCH),
 }
 
@@ -2446,7 +2446,8 @@ function bhv_wario_boss_init(o)
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
 
     o.header.gfx.skipInViewCheck = true
-
+    o.oFriction = 1
+    o.oGravity = 2.1
     obj_init_animation_from_custom_table(o, bossWarioAnims, 0, true)
     o.oGraphYOffset = 40
 end
@@ -2458,8 +2459,16 @@ WARIO_WALK = 1
 function bhv_wario_boss_loop(o)
     local neastMario = nearest_mario_state_to_object(o)
 
-    if o.oAction == WARIO_IDLE and should_start_or_continue_dialog(neastMario, o) ~= 0 and cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_046) ~= 0 then
-        o.oAction = WARIO_WALK
+    if o.oAction == WARIO_IDLE then
+        o.oForwardVel = 0
+        obj_init_animation_from_custom_table(o, bossWarioAnims, 0, true)
+        if should_start_or_continue_dialog(neastMario, o) ~= 0 and cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_046) ~= 0 then
+            o.oAction = 2
+        end
+    elseif o.oAction == WARIO_WALK then
+        obj_init_animation_from_custom_table(o, bossWarioAnims, 1, true, 3.3)
+        object_step()
+        o.oForwardVel = 12
     end
 end
 
