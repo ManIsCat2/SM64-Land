@@ -95,17 +95,25 @@ function worldCheck()
     end
 end
 
+TEX_SEPERATOR = get_texture_info("custom_hud_slash.rgba16")
+TEX_UNCOLLECTED_STAR = get_texture_info("hud_star_uncollected") -- DO NOT LOCALIZE
+TEX_UNCOLLECTED_STAR_100 = get_texture_info("hud_star_100_uncollected")
+local TEX_SCORE = get_texture_info("hud_score")
+local TEX_TIMER = get_texture_info("hud_timer")
+TEX_GLOBAL_STAR = gTextures.star
+TEX_CS_100_UNCOLLECTED = get_texture_info("hud_score")
+
 function world_unlocked(world)
     if world == 1 then
         return true
     end
 
     if world == 2 then
-        return operation(COURSE_JRB, 0) == gTextures.star
+        return operation(COURSE_JRB, 0) == TEX_GLOBAL_STAR
     end
 
     if world == 3 then
-        return operation(COURSE_CCM, 5) == gTextures.star
+        return operation(COURSE_CCM, 5) == TEX_GLOBAL_STAR
     end
 
     -- WIP Worlds --
@@ -133,12 +141,6 @@ function worlds_unlocked()
     end
     return worldsUnlocked
 end
-
-TEX_SEPERATOR = get_texture_info("custom_hud_slash.rgba16")
-TEX_UNCOLLECTED_STAR = get_texture_info("hud_star_uncollected") -- DO NOT LOCALIZE
-TEX_UNCOLLECTED_STAR_100 = get_texture_info("hud_star_100_uncollected")
-local TEX_SCORE = get_texture_info("hud_score")
-local TEX_TIMER = get_texture_info("hud_timer")
 
 -- World Specific Hud Stars
 
@@ -182,12 +184,19 @@ function operation(course, star, is100star)
     courseReal = course - 1
     starflags = save_file_get_star_flags(get_current_save_file_num() - 1, courseReal)
     if starflags & (1 << star) ~= 0 then
-        return gTextures.star
+        djui_hud_set_color(255, 255, 255, 255)
+        return TEX_GLOBAL_STAR
     else
         if is100star then
-            return TEX_UNCOLLECTED_STAR_100
+            if charSelect.character_get_star_icon(0) ~= gTextures.star then
+                djui_hud_set_color(255, 255, 255, 255)
+            end
+            return (charSelect.character_get_star_icon(0) ~= gTextures.star and TEX_CS_100_UNCOLLECTED or TEX_UNCOLLECTED_STAR_100)
         else
-            return TEX_UNCOLLECTED_STAR
+            if charSelect.character_get_star_icon(0) ~= gTextures.star then
+                djui_hud_set_color(90, 90, 90, 255)
+            end
+            return (charSelect.character_get_star_icon(0) ~= gTextures.star and TEX_GLOBAL_STAR or TEX_UNCOLLECTED_STAR)
         end
     end
 end
@@ -198,6 +207,7 @@ function mario_update(m)
 end
 
 function lobby_hud()
+    TEX_GLOBAL_STAR = charSelect and charSelect.character_get_star_icon(0) or gTextures.star
     starPower = get_star_count() / curWorld
     if gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS) or gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) then
         -- World Star Counter
@@ -207,7 +217,7 @@ function lobby_hud()
         djui_hud_print_text(tostring(curWorld and worldSpecific[curWorld].stars or 0), 40, 4, 1)
 
         starIcon = worldSpecific[curWorld].starIcon
-        djui_hud_render_texture(starIcon and starIcon or gTextures.star, 68, 3, 1, 1)
+        djui_hud_render_texture(starIcon and starIcon or TEX_GLOBAL_STAR, 68, 3, 1, 1)
 
         -- Star Power Counter
 
@@ -220,7 +230,7 @@ function lobby_hud()
 
         -- Star Counter
 
-        djui_hud_print_text("*", djui_hud_get_screen_width() - 62, 4, 1)
+        djui_hud_render_texture(TEX_GLOBAL_STAR, djui_hud_get_screen_width() - 62, 4, 1, 1)
         if numStars < 100 then
             djui_hud_print_text("@", djui_hud_get_screen_width() - 46, 4, 1)
         end
@@ -251,10 +261,24 @@ function level_hud()
         coinStar = levelData[curCourseNum] and levelData[curCourseNum][curAreaIndex].coinStar
         if areaStars then
             for i = 0, #areaStars - 1 do
-                djui_hud_render_texture(operation(curCourseNum, areaStars[i + 1], coinStar and coinStar == areaStars
-                    [i + 1]), ((djui_hud_get_screen_width() / 2) - 24) + 14 * i, 4, 1, 1)
+                if operation(curCourseNum, areaStars[i + 1], coinStar and coinStar == areaStars
+                        [i + 1]) ~= TEX_CS_100_UNCOLLECTED then
+                    djui_hud_render_texture(operation(curCourseNum, areaStars[i + 1], coinStar and coinStar == areaStars
+                        [i + 1]), ((djui_hud_get_screen_width() / 2) - 24) + 14 * i, 4, 1, 1)
+                else
+                    djui_hud_render_texture(operation(curCourseNum, areaStars[i + 1], false),
+                        ((djui_hud_get_screen_width() / 2) - 24) + 14 * i, 4, 1, 1)
+                    --if coinStar == areaStars then
+                       -- djui_hud_render_texture(operation(curCourseNum, areaStars[i + 1], false),
+                         --   ((djui_hud_get_screen_width() / 2) - 24) + 14 * i, 4, 1, 1)
+                        djui_hud_set_color(170, 170, 170, 255)
+                        djui_hud_render_texture(get_texture_info("hud_100_uncollected"), ((djui_hud_get_screen_width() / 2) - 24) + 14 * i, 4, 1, 1)
+                   -- end
+                end
             end
         end
+
+        djui_hud_set_color(255, 255, 255, 255)
 
         -- Timer
 
