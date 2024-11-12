@@ -872,7 +872,7 @@ function bhv_king_goomba_loop(o)
         m.action = ACT_TRIPLE_JUMP
         m.vel.y = 78
         m.invincTimer = 60
-        play_sound(SOUND_OBJ_KING_WHOMP_DEATH, o.header.gfx.cameraToObject)
+        play_sound(SOUND_OBJ_KING_WHOMP_DEATH, gGlobalSoundSource)
         o.oHealth = o.oHealth - 1
         spawn_sync_object(id_bhvGoomba, E_MODEL_GOOMBA, o.oPosX, o.oPosY, o.oPosZ,
             function(obj) obj.oBehParams2ndByte = 1 end)
@@ -1387,7 +1387,7 @@ function bhv_angry_sun_loop(o)
         spawn_triangle_break_particles(20, 138, 3.0, 4);
         obj_mark_for_deletion(o)
         spawn_default_star(m.pos.x, m.pos.y + 230, m.pos.z)
-        play_sound(SOUND_OBJ_KING_WHOMP_DEATH, o.header.gfx.cameraToObject)
+        play_sound(SOUND_OBJ_KING_WHOMP_DEATH, gGlobalSoundSource)
     end
 
     if o.oHealth <= 0 and o.oAction ~= ACT_ANGRYSUN_DIE then
@@ -2294,7 +2294,7 @@ function bhv_master_hand_loop(o)
 
                 o.oAction = MASTER_HAND_DAMAGED
 
-                play_sound(SOUND_OBJ_KING_WHOMP_DEATH, o.header.gfx.cameraToObject)
+                play_sound(SOUND_OBJ_KING_WHOMP_DEATH, gGlobalSoundSource)
 
                 o.oSubAction = 0
 
@@ -2359,19 +2359,53 @@ end
 bhvBush = hook_behavior(nil, OBJ_LIST_LEVEL, true, bhv_bush,
     nil)
 
-
 ---@param o Object
 function bhv_octopus_boss_init(o)
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
-
+    o.hitboxHeight = 320 * 4.7
+    o.hitboxRadius = 600
+    o.oIntangibleTimer = 0
     o.header.gfx.skipInViewCheck = true
+    o.oHealth = 3
 end
+
+OCTOPUS_IDLE      = 0
+OCTOPUS_ACTIVATED = 2
+OCTOPUS_DAMAGED   = 3
 
 ---@param o Object
 function bhv_octopus_boss_loop(o)
     local nearestMario = nearest_mario_state_to_object(o)
 
-    o.oFaceAngleYaw = obj_angle_to_object(o, nearestMario.marioObj)
+
+
+    if o.oAction == OCTOPUS_IDLE then
+        if should_start_or_continue_dialog(nearestMario, o) ~= 0 and cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_032) ~= 0 then
+            o.oAction = OCTOPUS_ACTIVATED
+        end
+    elseif o.oAction == OCTOPUS_ACTIVATED then
+        o.oFaceAnglePitch = approach_s16_symmetric(o.oFaceAnglePitch, 0, 1000)
+        o.oFaceAngleYaw = obj_angle_to_object(o, nearestMario.marioObj)
+        if nearestMario.action == ACT_SHOT_FROM_CANNON and obj_check_hitbox_overlap(o, nearestMario.marioObj) then
+            play_sound(SOUND_OBJ_KING_WHOMP_DEATH, gGlobalSoundSource)
+            o.oAction = OCTOPUS_DAMAGED
+            o.oHealth = o.oHealth - 1
+            o.oSubAction = 0
+        end
+
+        if o.oHealth <= 0 then
+            spawn_mist_particles_variable(0, 0, 100.0);
+            spawn_triangle_break_particles(20, 138, 3.0, 4);
+            spawn_default_star(nearestMario.pos.x, nearestMario.pos.y, nearestMario.pos.z)
+            obj_mark_for_deletion(o)
+        end
+    elseif o.oAction == OCTOPUS_DAMAGED then
+        o.oSubAction = o.oSubAction + 1
+        o.oFaceAnglePitch = approach_s16_symmetric(o.oFaceAnglePitch, -16384, 1000)
+        if o.oSubAction > 60 then
+            o.oAction = OCTOPUS_ACTIVATED
+        end
+    end
 end
 
 bhvOctopusBoss = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_octopus_boss_init,
@@ -2398,8 +2432,8 @@ function act_in_cannon_custom(m)
 
     if m.actionTimer > 30 then
         m.action = ACT_SHOT_FROM_CANNON
-        m.vel.y = 50
-        m.forwardVel = 60
+        m.vel.y = 40
+        m.forwardVel = 80 * 1.22
     end
 end
 

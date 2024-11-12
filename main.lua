@@ -38,6 +38,9 @@ gLevelValues.vanishCapDurationVcutm = 1
 --really needed
 gServerSettings.stayInLevelAfterStar = true
 gLevelValues.disableActs = true
+gBehaviorValues.ShowStarDialog = false
+gBehaviorValues.dialogs.StarCollectionBaseDialog = DIALOG_013
+gBehaviorValues.dialogs.CollectedStarDialog = DIALOG_013
 
 camera_set_use_course_specific_settings(false)
 
@@ -101,3 +104,10 @@ function timer_score()
 end
 
 hook_event(HOOK_UPDATE, timer_update)
+
+function hook_diag(d)
+    if d == 13 then
+        return false
+    end
+end
+hook_event(HOOK_ON_DIALOG, hook_diag)

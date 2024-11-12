@@ -87,7 +87,7 @@ function spawn_yoshi_from_egg(o)
             end
         )
     end
-    audio_sample_play(SOUND_YOSHI_EGG_HATCH, o.header.gfx.cameraToObject, 4)
+    audio_sample_play(SOUND_YOSHI_EGG_HATCH, gGlobalSoundSource, 4)
     obj_mark_for_deletion(o)
 end
 

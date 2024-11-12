@@ -181,10 +181,7 @@ Would you like to Save?\
 \
 //Yes////No"))
 
-smlua_text_utils_dialog_replace(DIALOG_013,1,4,30,200, ("Wow! Another Power Star!\
-Do you want to Save?\
-\
-//You Bet//Not Now"))
+smlua_text_utils_dialog_replace(DIALOG_013,1,4,30,200, (""))
 
 smlua_text_utils_dialog_replace(DIALOG_014,1,4,30,200, ("Wow! Another Power Star!\
 Do you want to Save?\
