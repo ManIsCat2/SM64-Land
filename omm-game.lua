@@ -21,6 +21,8 @@ if _G.OmmEnabled then
         
        -- _G.OmmApi.omm_register_star_behavior(bhv, "name", "NAME", function(bhvParams) return true end)
         _G.OmmApi.omm_register_star_behavior(id_bhvKingGoomba, "King Goomba", "KING GOOMBA", function(bhvParams) return true end)
+        _G.OmmApi.omm_register_star_behavior(bhvMasterHand, "Master Hand", "MASTER HAND", function(bhvParams) return true end)
+        _G.OmmApi.omm_register_star_behavior(bhvOctopusBoss, "Tyrant Tormentoso", "TYRANT TORMENTOSO", function(bhvParams) return true end)
 
         --------------------
         -- Camera presets --
