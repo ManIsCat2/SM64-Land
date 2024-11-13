@@ -33,7 +33,7 @@ levelData = {
     [COURSE_THI] = { { stars = { 1, 0 }, finalStar = 0 }, { stars = { 4, 5 }, finalStar = 5 } },
     [COURSE_DDD] = { { stars = { 1, 0 }, finalStar = 0 }, { stars = { 3, 4, 5, 6 }, coinStar = 6, finalStar = 4 }, },
     [COURSE_BITFS] = { { stars = { 1, 0, 2 }, finalStar = 2 } },
-    [COURSE_WDW] = { { stars = { 1, 0, 2, 3 }, finalStar = 3 }, { stars = { 4,5 }}},
+    [COURSE_WDW] = { { stars = { 1, 0, 2, 3 }, finalStar = 3 }, { stars = { 4, 5 } } },
 }
 
 bossLevelData = {
@@ -182,8 +182,8 @@ local worldSpecific = {
 ---@param is100star boolean|nil
 ---@return TextureInfo
 function operation(course, star, is100star)
-    courseReal = course - 1
-    starflags = save_file_get_star_flags(get_current_save_file_num() - 1, courseReal)
+    local courseReal = course - 1
+    local starflags = save_file_get_star_flags(get_current_save_file_num() - 1, courseReal)
     if starflags & (1 << star) ~= 0 then
         djui_hud_set_color(255, 255, 255, 255)
         return TEX_GLOBAL_STAR
@@ -199,6 +199,19 @@ function operation(course, star, is100star)
             end
             return (charSelect.character_get_star_icon(0) ~= gTextures.star and TEX_GLOBAL_STAR or TEX_UNCOLLECTED_STAR)
         end
+    end
+end
+
+---@param course integer
+---@param star integer
+---@return TextureInfo
+function operation2(course, star)
+    local courseReal = course - 1
+    local starflags = save_file_get_star_flags(get_current_save_file_num() - 1, courseReal)
+    if starflags & (1 << star) ~= 0 then
+        return TEX_GLOBAL_STAR
+    else
+        return TEX_UNCOLLECTED_STAR
     end
 end
 
@@ -270,11 +283,12 @@ function level_hud()
                     djui_hud_render_texture(operation(curCourseNum, areaStars[i + 1], false),
                         ((djui_hud_get_screen_width() / 2) - 24) + 14 * i, 4, 1, 1)
                     --if coinStar == areaStars then
-                       -- djui_hud_render_texture(operation(curCourseNum, areaStars[i + 1], false),
-                         --   ((djui_hud_get_screen_width() / 2) - 24) + 14 * i, 4, 1, 1)
-                        djui_hud_set_color(170, 170, 170, 255)
-                        djui_hud_render_texture(get_texture_info("hud_100_uncollected"), ((djui_hud_get_screen_width() / 2) - 24) + 14 * i, 4, 1, 1)
-                   -- end
+                    -- djui_hud_render_texture(operation(curCourseNum, areaStars[i + 1], false),
+                    --   ((djui_hud_get_screen_width() / 2) - 24) + 14 * i, 4, 1, 1)
+                    djui_hud_set_color(170, 170, 170, 255)
+                    djui_hud_render_texture(get_texture_info("hud_100_uncollected"),
+                        ((djui_hud_get_screen_width() / 2) - 24) + 14 * i, 4, 1, 1)
+                    -- end
                 end
             end
         end
