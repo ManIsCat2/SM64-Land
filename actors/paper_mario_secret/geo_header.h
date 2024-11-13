@@ -1,0 +1,15 @@
+extern const GeoLayout paper_mario_secret_geo[];
+extern Lights1 paper_mario_secret_Material_0_f3d_lights;
+extern Lights1 paper_mario_secret_Material_1_f3d_lights;
+extern u8 paper_mario_secret__0_ci8[];
+extern u8 paper_mario_secret__0_pal_rgba16[];
+extern u8 paper_mario_secret__1_i8[];
+extern Vtx paper_mario_secret_node_mesh_layer_1_vtx_cull[8];
+extern Vtx paper_mario_secret_node_mesh_layer_1_vtx_0[6];
+extern Gfx paper_mario_secret_node_mesh_layer_1_tri_0[];
+extern Vtx paper_mario_secret_node_mesh_layer_1_vtx_1[6];
+extern Gfx paper_mario_secret_node_mesh_layer_1_tri_1[];
+extern Gfx mat_paper_mario_secret_Material_0_f3d[];
+extern Gfx mat_revert_paper_mario_secret_Material_0_f3d[];
+extern Gfx mat_paper_mario_secret_Material_1_f3d[];
+extern Gfx paper_mario_secret_node_mesh_layer_1[];

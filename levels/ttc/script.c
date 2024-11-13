@@ -28,7 +28,7 @@ LOAD_MIO0(6,_group17_mio0SegmentRomStart,_group17_mio0SegmentRomEnd),
 LOAD_RAW(13,_group17_geoSegmentRomStart,_group17_geoSegmentRomEnd),
 ALLOC_LEVEL_POOL(),
 MARIO(/*model*/ MODEL_MARIO, /*behParam*/ 0x00000001, /*beh*/ bhvMario),
-
+LOAD_MODEL_FROM_GEO(24, paper_mario_secret_geo),
 LOAD_MODEL_FROM_GEO(56, purple_pendulum_geo),
 LOAD_MODEL_FROM_GEO(59, custom_ttc_moving_block_platform_geo),
 LOAD_MODEL_FROM_GEO(60, custom_ttc_rotating_platform_geo),
@@ -157,7 +157,7 @@ WARP_NODE(241,16,4,23,0),
 RETURN()
 };
 const LevelScript local_area_ttc_2_[] = {
-AREA(2,ttc_area_1),
+AREA(2,Geo_ttc_2_0x1d283e0),
 TERRAIN(col_ttc_2_0xe038220),
 SET_BACKGROUND_MUSIC(0,46),
 TERRAIN_TYPE(0),

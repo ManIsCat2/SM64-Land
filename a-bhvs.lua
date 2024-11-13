@@ -1420,7 +1420,7 @@ local sWaterBucketHitbox = {
 E_MODEL_WATER_BUCKET_FULL = smlua_model_util_get_id("bucket_water_geo")
 E_MODEL_WATER_BUCKET_EMPTY = smlua_model_util_get_id("bucket_no_water_geo")
 
-function custom_water_bucket_holdable()
+function update_for_eachs()
     for_each_object_with_behavior(id_bhvBetaHoldableObject,
         ---@param o Object
         function(o)
@@ -1435,9 +1435,16 @@ function custom_water_bucket_holdable()
             end
         end
     )
+
+    for_each_object_with_behavior(id_bhvHiddenStarTrigger,
+        ---@param o Object
+        function(o)
+           o.oFaceAngleYaw = o.oFaceAngleYaw + 0x880
+        end
+    )
 end
 
-hook_event(HOOK_UPDATE, custom_water_bucket_holdable)
+hook_event(HOOK_UPDATE, update_for_eachs)
 
 ---@param o Object
 function bhv_ttm_blue_platform(o)
