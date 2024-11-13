@@ -84,7 +84,7 @@ const LevelScript local_objects_vcutm_1_[] = {
 OBJECT_WITH_ACTS(0,-1638,0,98,0,90,0,0xa0000, bhvSpinAirborneWarp,31),
 OBJECT_WITH_ACTS(E_MODEL_TOAD,-246,130,49,0,270,0,0x1, id_bhvToadMessage,31),
 OBJECT_WITH_ACTS(0,-2142,0,62,0,90,0,0xa0a0000, bhvWarp,31),
-OBJECT_WITH_ACTS(0,0,0,0,0,0,0,0x0, Bhv_Custom_0x0041f5a0,31),
+//OBJECT_WITH_ACTS(0,0,0,0,0,0,0,0x0, Bhv_Custom_0x0041f5a0,31),
 RETURN()
 };
 const LevelScript local_warps_vcutm_1_[] = {
@@ -107,8 +107,8 @@ const LevelScript local_objects_vcutm_2_[] = {
 OBJECT_WITH_ACTS(0,-1638,0,98,0,90,0,0xa0000, bhvSpinAirborneWarp,31),
 OBJECT_WITH_ACTS(E_MODEL_TOAD,-246,130,49,0,270,0,0x1, id_bhvToadMessage,31),
 OBJECT_WITH_ACTS(0,-2142,0,62,0,90,0,0xa0a0000, bhvWarp,31),
-OBJECT_WITH_ACTS(0,0,0,0,0,0,0,0x0, Bhv_Custom_0x070266e0,31),
-OBJECT_WITH_ACTS(0,0,0,0,0,0,0,0x0, Bhv_Custom_0x0041f5a0,31),
+//OBJECT_WITH_ACTS(0,0,0,0,0,0,0,0x0, Bhv_Custom_0x070266e0,31),
+//OBJECT_WITH_ACTS(0,0,0,0,0,0,0,0x0, Bhv_Custom_0x0041f5a0,31),
 RETURN()
 };
 const LevelScript local_warps_vcutm_2_[] = {

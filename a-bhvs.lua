@@ -2367,6 +2367,8 @@ function bhv_octopus_boss_init(o)
     o.oIntangibleTimer = 0
     o.header.gfx.skipInViewCheck = true
     o.oHealth = 3
+
+    network_init_object(o, true, {"oAction", "oSubAction", "oHealth"})
 end
 
 OCTOPUS_IDLE      = 0
@@ -2376,8 +2378,6 @@ OCTOPUS_DAMAGED   = 3
 ---@param o Object
 function bhv_octopus_boss_loop(o)
     local nearestMario = nearest_mario_state_to_object(o)
-
-
 
     if o.oAction == OCTOPUS_IDLE then
         if should_start_or_continue_dialog(nearestMario, o) ~= 0 and cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_032) ~= 0 then
@@ -2508,3 +2508,14 @@ end
 
 bhvWarioBoss = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_wario_boss_init,
     bhv_wario_boss_loop)
+
+---@param o Object
+function bhv_goomba_watchers(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_MOVE_XZ_USING_FVEL | OBJ_FLAG_SET_FACE_ANGLE_TO_MOVE_ANGLE
+    o.header.gfx.skipInViewCheck = true
+    o.oAnimations = gObjectAnimations.goomba_seg8_anims_0801DA4C
+    cur_obj_init_animation(0)
+end
+
+bhvGoombaWatchers = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_goomba_watchers,
+    nil)

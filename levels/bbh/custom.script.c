@@ -140,11 +140,11 @@ const LevelScript local_objects_bbh_2_[] = {
 	OBJECT_WITH_ACTS(0, -2644, 217, -1069, 0, 0, 0, 0xa0000, bhvSpinAirborneWarp, 31),
 	OBJECT_WITH_ACTS(137, -559, 2155, -1807, 0, 0, 0, 0x20000, bhvExclamationBox, 31),
 	OBJECT_WITH_ACTS(22, 422, 6662, -5, 0, 0, 0, 0x50000, bhvWarpPipe, 31),
-	OBJECT_WITH_ACTS(0, 90, 0, -1800, 0, 0, 0, 0x7009620, bhvCustom0x00377c40, 31),
-	OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x10000, bhvCustom0x0041f3e0, 31),
+	//OBJECT_WITH_ACTS(0, 90, 0, -1800, 0, 0, 0, 0x7009620, bhvCustom0x00377c40, 31),
+	//OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x10000, bhvCustom0x0041f3e0, 31),
 	OBJECT_WITH_ACTS(0, -2828, 217, 346, 0, 0, 0, 0x110000, bhvCoinFormation, 31),
 	OBJECT_WITH_ACTS(87, 362, 6662, -231, 0, 0, 0, 0x0, bhvWigglerHead, 31),
-	OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x20004e20, bhvCustom0x1300003c, 31),
+	//OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x20004e20, bhvCustom0x1300003c, 31),
 	RETURN(),
 };
 

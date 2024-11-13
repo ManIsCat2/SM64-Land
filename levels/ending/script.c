@@ -53,7 +53,7 @@ RETURN()
 };
 const LevelScript local_objects_ending_1_[] = {
 OBJECT_WITH_ACTS(0,0,-346,0,0,0,0,0xa0000, bhvSpinAirborneWarp,31),
-OBJECT_WITH_ACTS(0,1238,0,-1618,0,0,0,0x0, Bhv_Custom_0x07000000,31),
+//OBJECT_WITH_ACTS(0,1238,0,-1618,0,0,0,0x0, Bhv_Custom_0x07000000,31),
 RETURN()
 };
 const LevelScript local_warps_ending_1_[] = {

@@ -370,7 +370,6 @@ function tanooki_update(m)
 end
 
 function act_flutter(m)
-    if m.playerIndex ~= 0 then return end
     if m.controller.buttonPressed & B_BUTTON ~= 0 then
         if m.forwardVel >= 28 then
             set_mario_action(m, ACT_DIVE, 0)
@@ -444,9 +443,9 @@ local common_blacklisted_actions = {
 
 function energy_meter()
     if math.ceil((gPlayerSyncTable[0].energyBar / 12) * 2) ~= 0 then
-        curEnergy = math.ceil((gPlayerSyncTable[0].energyBar / 12) * 2)
+        gPlayerSyncTable[0].curEnergy = math.ceil((gPlayerSyncTable[0].energyBar / 12) * 2)
     else
-        curEnergy = 1
+        gPlayerSyncTable[0].curEnergy = 1
     end
 end
 
@@ -502,7 +501,7 @@ function bee_hud()
     djui_hud_set_resolution(RESOLUTION_N64)
 
     if gPlayerSyncTable[0].activePowerup ~= BEE then return end
-    djui_hud_render_texture(energyMeter[curEnergy].energy, xMid - 62, 4, 1, 1)
+    djui_hud_render_texture(energyMeter[gPlayerSyncTable[0].curEnergy].energy, xMid - 62, 4, 1, 1)
 end
 
 function act_fly(m)
