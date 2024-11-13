@@ -104,6 +104,7 @@ function get_world_star_count(world)
     local course1
     local course2
     local course3
+    local course4
     local stars_world = 0
     if world == 1 then
         course1 = COURSE_BOB
@@ -125,6 +126,7 @@ function get_world_star_count(world)
         course1 = COURSE_SL
         course2 = COURSE_WDW
         course3 = COURSE_TTC
+        course4 = COURSE_PSS
     end
 
     if world == 5 then
@@ -165,7 +167,8 @@ function get_world_star_count(world)
 
     if course3 ~= nil then
         return stars_world + save_file_get_course_star_count(get_current_save_file_num() - 1, course3 - 1) +
-            totalcourseHub
+            totalcourseHub +
+            (course4 and (save_file_get_course_star_count(get_current_save_file_num() - 1, course4 - 1)) or 0)
     else
         return stars_world + totalcourseHub
     end
@@ -431,13 +434,15 @@ function pipe_cover_loop(o)
         obj_mark_for_deletion(o)
     end
 
-
     if operation(COURSE_CCM, 5) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 8 then
         obj_mark_for_deletion(o)
     end
 
-
     if operation(COURSE_SSL, 3) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 12 then
+        obj_mark_for_deletion(o)
+    end
+
+    if operation(COURSE_PSS, 2) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 20 then
         obj_mark_for_deletion(o)
     end
 end
@@ -2368,7 +2373,7 @@ function bhv_octopus_boss_init(o)
     o.header.gfx.skipInViewCheck = true
     o.oHealth = 3
 
-    network_init_object(o, true, {"oAction", "oSubAction", "oHealth"})
+    network_init_object(o, true, { "oAction", "oSubAction", "oHealth" })
 end
 
 OCTOPUS_IDLE      = 0
