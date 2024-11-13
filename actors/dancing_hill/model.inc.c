@@ -1,6 +1,6 @@
 Lights1 dancing_hill_f3dlite_material_003_lights = gdSPDefLights1(
 	0x7F, 0x7F, 0x7F,
-	0xFF, 0xFF, 0xFF, 0x49, 0x49, 0x49);
+	0xFF, 0xFF, 0xFF, 0x28, 0x28, 0x28);
 
 Gfx dancing_hill_Null_geo_00405e00_0x404010_custom_rgba16_png_001_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 dancing_hill_Null_geo_00405e00_0x404010_custom_rgba16_png_001_rgba16[] = {
@@ -286,8 +286,9 @@ Gfx dancing_hill_Bone_001_mesh_layer_4_tri_0[] = {
 
 Gfx mat_dancing_hill_f3dlite_material_006[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, SHADE, TEXEL0, 0, SHADE, 0, 0, 0, 0, SHADE),
+	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, SHADE, 0, TEXEL0, 0, ENVIRONMENT, 0),
 	gsSPTexture(65535, 65535, 0, 0, 1),
+	gsSPSetLights1(dancing_hill_f3dlite_material_003_lights),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b_LOAD_BLOCK, 1, dancing_hill_Null_geo_00405e00_0x404010_custom_rgba16_png_001_rgba16),
 	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b_LOAD_BLOCK, 0, 0, 7, 0, G_TX_WRAP | G_TX_NOMIRROR, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 0, 0),
 	gsDPLoadBlock(7, 0, 0, 1023, 256),
