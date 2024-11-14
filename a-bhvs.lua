@@ -1439,7 +1439,7 @@ function update_for_eachs()
     for_each_object_with_behavior(id_bhvHiddenStarTrigger,
         ---@param o Object
         function(o)
-           o.oFaceAngleYaw = o.oFaceAngleYaw + 0x880
+            o.oFaceAngleYaw = o.oFaceAngleYaw + 0x700
         end
     )
 end
@@ -2531,3 +2531,93 @@ end
 
 bhvGoombaWatchers = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_goomba_watchers,
     nil)
+
+ACT_YEET_STAT = allocate_mario_action(ACT_FLAG_STATIONARY)
+
+function act_yeet_stationary(m)
+    set_mario_animation(m, MARIO_ANIM_AIRBORNE_ON_STOMACH)
+    m.marioObj.header.gfx.angle.y = m.faceAngle.y
+end
+
+hook_mario_action(ACT_YEET_STAT, act_yeet_stationary)
+
+---@param o Object
+function bhv_chuckya_lift(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE|OBJ_FLAG_MOVE_XZ_USING_FVEL|OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW
+
+    o.oAnimations = gObjectAnimations.chuckya_seg8_anims_0800C070
+    cur_obj_init_animation(4)
+    o.hitboxRadius = 200
+    o.hitboxHeight = 120 * 2
+    obj_scale(o, 2.1)
+    o.oIntangibleTimer = 0
+end
+
+local chuckSpeed = 18
+---@param o Object
+function bhv_chuckya_lift_loop(o)
+    ---@type MarioState
+    local lM = gMarioStates[0]
+    if o.oAction == 0 then
+        cur_obj_init_animation(4)
+        o.oMoveAngleYaw = obj_angle_to_object(o, lM.marioObj)
+        o.oForwardVel = 0
+        if obj_check_hitbox_overlap(o, lM.marioObj) and lM.floorHeight == lM.pos.y then
+            lM.action = ACT_READING_NPC_DIALOG
+            cur_obj_push_mario_away(o.hitboxRadius)
+            if cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_015) ~= 0 then
+                o.oAction = 1
+                o.hitboxRadius = 160
+            end
+        end
+    elseif o.oAction == 1 then
+        o.oSubAction = o.oSubAction + 1
+        if o.oSubAction > 80 then
+            o.hitboxRadius = 160
+            o.hitboxHeight = 120 * 2
+            o.oSubAction = 0
+        end
+        cur_obj_init_animation(4)
+        ---folllowr
+        if dist_between_objects(o, lM.marioObj) > 300 then
+            o.oForwardVel = chuckSpeed * (dist_between_objects(o, lM.marioObj) / 700)
+        else
+            o.oForwardVel = 0
+        end
+        o.oPosY = lM.pos.y
+        ----------angle
+        o.oMoveAngleYaw = obj_angle_to_object(o, lM.marioObj)
+
+        if obj_check_hitbox_overlap(o, lM.marioObj) and o.hitboxRadius ~= 0 then
+            o.oAction = 2
+            o.oSubAction = 0
+        end
+    elseif o.oAction == 2 then
+        cur_obj_init_animation(1)
+        o.oForwardVel = 0
+        o.oMoveAngleYaw = o.oMoveAngleYaw + 0x200
+        lM.action = ACT_YEET_STAT
+        lM.forwardVel = 0
+        lM.faceAngle.y = o.oMoveAngleYaw
+
+        if lM.controller.buttonPressed & A_BUTTON ~= 0 then
+            lM.vel.y = 37
+            lM.forwardVel = 50
+            o.oAction = 1
+            o.hitboxRadius = 0
+            o.hitboxHeight = 0
+            lM.action = ACT_SHOT_FROM_CANNON
+        end
+
+        lM.marioObj.header.gfx.pos.x = o.oPosX + (sins(o.oMoveAngleYaw) * 70)
+        lM.marioObj.header.gfx.pos.z = o.oPosZ + (coss(o.oMoveAngleYaw) * 70)
+        lM.marioObj.header.gfx.pos.y = o.oPosY + 300
+
+        lM.pos.x = lM.marioObj.header.gfx.pos.x
+        lM.pos.z = lM.marioObj.header.gfx.pos.z
+        lM.pos.y = lM.marioObj.header.gfx.pos.y
+    end
+end
+
+bhvChuckyaLift = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_chuckya_lift,
+    bhv_chuckya_lift_loop)

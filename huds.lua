@@ -28,7 +28,7 @@ levelData = {
     [COURSE_LLL] = { { stars = {}, finalStar = nil } },
     [COURSE_SSL] = { { stars = { 1, 2, 0 }, finalStar = 0 } },
     [COURSE_TTM] = { { stars = { 1, 2 }, finalStar = 2 }, { stars = { 3, 4 }, finalStar = 4 } },
-    [COURSE_TTC] = { { stars = { 0 }, finalStar = 0 }, },
+    [COURSE_TTC] = { { stars = { 0 }, finalStar = 0 }, { stars = { 3, 4, 5 }, finalStar = 5 }, },
     [COURSE_SL] = { { stars = { 5, 4, 3 }, finalStar = 3 }, { stars = { 1, 0 }, finalStar = 0 } },
     [COURSE_THI] = { { stars = { 1, 0 }, finalStar = 0 }, { stars = { 4, 5 }, finalStar = 5 } },
     [COURSE_DDD] = { { stars = { 1, 0 }, finalStar = 0 }, { stars = { 3, 4, 5, 6 }, coinStar = 6, finalStar = 4 }, },
