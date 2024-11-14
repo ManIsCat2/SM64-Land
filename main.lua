@@ -108,4 +108,53 @@ function hook_diag(d)
         return false
     end
 end
+
 hook_event(HOOK_ON_DIALOG, hook_diag)
+
+local champRoad = "Ch. Road"
+
+local sm64landlevelnames = {
+    --{ level = LEVEL_,            names = { "", } },
+    --hubs
+    { level = LEVEL_CASTLE_GROUNDS,   names = { "World 1", "World 3", "World 5", "World 7", } },
+    { level = LEVEL_CASTLE,           names = { "Tutorial", } },
+    { level = LEVEL_CASTLE_COURTYARD, names = { "World 2", "World 4", "World 6", "World 8", } },
+    --toads
+    { level = LEVEL_COTMC,            names = { "Toad House", "Toad House", "Toad House", "Toad House", "Toad House", } },
+    { level = LEVEL_VCUTM,            names = { "Toad House", "Toad House", "Toad House", "Toad House", "Toad House", } },
+    { level = LEVEL_TOTWC,            names = { "Toad House", "Toad House", "Toad House", "Toad House", "Toad House", } },
+    --levels
+    { level = LEVEL_BOB,              names = { "1-1", "1-4", "Boss 1", champRoad } },
+    { level = LEVEL_WF,               names = { "1-2", "1-3", } },
+    { level = LEVEL_JRB,              names = { "2-1", "2-2" } },
+    { level = LEVEL_CCM,              names = { "2-3", "2-4", "Boss 2" } },
+    { level = LEVEL_BBH,              names = { "3-1", champRoad } },
+    { level = LEVEL_HMC,              names = { "3-3", "5-3", champRoad } },
+    { level = LEVEL_SSL,              names = { "3-4", "6-3", "Boss 3" } },
+    { level = LEVEL_SL,               names = { "5-4", "4-1" } },
+    { level = LEVEL_WDW,              names = { "4-4", "4-2", champRoad } },
+    { level = LEVEL_TTC,              names = { "7-4", "4-3" } },
+    { level = LEVEL_PSS,              names = { "Boss 4", "what the fuck" } },
+    { level = LEVEL_DDD,              names = { "5-1", "5-2" } },
+    { level = LEVEL_TTM,              names = { "6-1", "6-2", champRoad } },
+    { level = LEVEL_THI,              names = { "6-4", "7-1", champRoad } },
+    { level = LEVEL_BITDW,            names = { "Boss 6", "what the fuck" } },
+    { level = LEVEL_RR,               names = { "7-2", "7-3" } },
+    { level = LEVEL_BITS,             names = { "Boss 7" } },
+    { level = LEVEL_SA,               names = { "8-1" } },
+    { level = LEVEL_WMOTR,            names = { "8-2", "8-3" } },
+    { level = LEVEL_BITFS,            names = { "8-4", "Boss 8", champRoad } },
+}
+
+function correct_level_name()
+    for indexOfNP = 0, MAX_PLAYERS - 1 do
+        for j = 1, #sm64landlevelnames do
+            if gNetworkPlayers[indexOfNP].currLevelNum == sm64landlevelnames[j].level then
+                network_player_set_description(gNetworkPlayers[indexOfNP],
+                    sm64landlevelnames[j].names[gNetworkPlayers[indexOfNP].currAreaIndex], 255, 255, 255, 255)
+            end
+        end
+    end
+end
+
+hook_event(HOOK_UPDATE, correct_level_name)
