@@ -250,7 +250,7 @@ const LevelScript local_area_castle_grounds_3_[] = {
 	END_AREA(),
 	RETURN()};
 const LevelScript local_objects_castle_grounds_3_[] = {
-	OBJECT_WITH_ACTS(MODEL_BITS_WARP_PIPE, -6401, -477, 1448, 0, 180, 0, 0xa0000, bhvWarpPipe, 31),
+	OBJECT_WITH_ACTS(E_MODEL_BLUE_WARP_PIPE, -6401, -477, 1448, 0, 180, 0, 0xa0000, id_bhvWarpPipe, 31),
 	OBJECT_WITH_ACTS(0, -6571, 573, -1705, 0, 0, 0, 0xb0000, bhvFlyingWarp, 31),
 	OBJECT_WITH_ACTS(MODEL_BITS_WARP_PIPE, -5990, -477, -1768, 0, 0, 0, 0x140000, bhvWarpPipe, 31),
 	OBJECT_WITH_ACTS(MODEL_BITS_WARP_PIPE, -2278, -477, -3391, 0, 0, 0, 0x150000, bhvWarpPipe, 31),
@@ -343,11 +343,11 @@ const LevelScript local_objects_castle_grounds_4_[] = {
 	OBJECT_WITH_ACTS(0, 7375, 934, 905, 0, 0, 0, 0x210000, bhvAirborneStarCollectWarp, 31),
 	OBJECT_WITH_ACTS(0, 4431, 617, 434, 0, 0, 0, 0x220000, bhvAirborneStarCollectWarp, 31),
 	OBJECT_WITH_ACTS(53,2355,162,2769,0,270,0,0x0,bhvWorldCannon,31),
-	OBJECT_WITH_ACTS(MODEL_BITS_WARP_PIPE, -5525, 436, 2098, 0, 90, 0, 0xa0000, bhvWarpPipe, 31),
-	OBJECT_WITH_ACTS(MODEL_BITS_WARP_PIPE, 10245, 179, 430, 0, 270, 0, 0xf0000, bhvWarpPipe, 31),
+	OBJECT_WITH_ACTS(E_MODEL_BLUE_WARP_PIPE, -5525, 436, 2098, 0, 90, 0, 0xa0000, id_bhvWarpPipe, 31),
+	OBJECT_WITH_ACTS(E_MODEL_BLUE_WARP_PIPE, 10245, 179, 430, 0, 270, 0, 0xf0000, id_bhvWarpPipe, 31),
 	OBJECT_WITH_ACTS(0, 203, 162, 3321, 0, 77, 0, 0x50000, bhvSpinAirborneWarp, 31),
 	OBJECT_WITH_ACTS(0, -379, 162, 3034, 0, 291, 0, 0xa050000, bhvWarp, 31),
-	OBJECT_WITH_ACTS(34, 9231, 179, 287, 0, 0, 0, 0x60000, bhvWarpPipe, 31),
+	OBJECT_WITH_ACTS(E_MODEL_RED_WARP_PIPE, 9231, 179, 287, 0, 0, 0, 0x60000, id_bhvWarpPipe, 31),
 	// OBJECT_WITH_ACTS(57,9231,179,287,0,180,0,0x28060000,0x0700ccc0,31),
 	OBJECT_WITH_ACTS(0, 9234, 420, 704, 0, 0, 0, 0x6c0000, bhvAirborneStarCollectWarp, 31),
 	OBJECT_WITH_ACTS(0, 9234, 420, 704, 0, 0, 0, 0x6d0000, bhvDeathWarp, 31),

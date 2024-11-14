@@ -89,7 +89,7 @@ const LevelScript local_area_castle_courtyard_1_[] = {
     END_AREA(),
     RETURN()};
 const LevelScript local_objects_castle_courtyard_1_[] = {
-    OBJECT(E_MODEL_BITS_WARP_PIPE, -4029, 351, 1807, 0, 180, 0, 0x000A0000, id_bhvWarpPipe),
+    OBJECT(E_MODEL_BLUE_WARP_PIPE, -4029, 351, 1807, 0, 180, 0, 0x000A0000, id_bhvWarpPipe),
     OBJECT(E_MODEL_BITS_WARP_PIPE, -3153, 351, 283, 0, 0, 0, (21 << 16), id_bhvWarpPipe),
     OBJECT(E_MODEL_BITS_WARP_PIPE, -2268, 351, -2567, 0, 0, 0, (22 << 16), id_bhvWarpPipe),
     OBJECT(E_MODEL_BITS_WARP_PIPE, 1085, 590, 1284, 0, 0, 0, (13 << 16), id_bhvWarpPipe),
@@ -232,7 +232,7 @@ const LevelScript local_objects_castle_courtyard_3_[] = {
     OBJECT_WITH_ACTS(22, 43, 942, -857, 0, 0, 0, 0x2b0000, bhvWarpPipe, 31),
     OBJECT_WITH_ACTS(22, 4034, 954, -383, 0, 0, 0, 0x2c0000, bhvWarpPipe, 31),
     OBJECT_WITH_ACTS(122, 3549, 4076, -1335, 0, 0, 0, 0x6000000, bhvStar, 31),
-    OBJECT_WITH_ACTS(36, 8855, 954, -376, 0, 0, 0, 0xf0000, bhvWarpPipe, 31),
+    OBJECT_WITH_ACTS(E_MODEL_BLUE_WARP_PIPE, 8855, 954, -376, 0, 0, 0, 0xf0000, id_bhvWarpPipe, 31),
     //OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x0, Bhv_Custom_0x19000434, 31),
     /*OBJECT_WITH_ACTS(243, -11150, 456, -3531, 0, 0, 0, 0x28000000, Bhv_Custom_0x0040fdb4, 31),
     OBJECT_WITH_ACTS(243, -8900, 6, -5491, 0, 0, 0, 0x32000000, Bhv_Custom_0x0040fdb4, 31),
@@ -282,7 +282,7 @@ const LevelScript local_objects_castle_courtyard_3_[] = {
     OBJECT_WITH_ACTS(0, -1880, 942, -802, 0, 0, 0, 0x15000000, Bhv_Custom_0x130001dc, 31),
     OBJECT_WITH_ACTS(0, 10, 942, -869, 0, 0, 0, 0x16000000, Bhv_Custom_0x130001dc, 31),
     OBJECT_WITH_ACTS(0, 4060, 954, -377, 0, 0, 0, 0x17000000, Bhv_Custom_0x130001dc, 31),*/
-    OBJECT_WITH_ACTS(34, 7865, 954, -811, 0, 0, 0, 0x370000, bhvWarpPipe, 31),
+    OBJECT_WITH_ACTS(E_MODEL_RED_WARP_PIPE, 7865, 954, -811, 0, 0, 0, 0x370000, id_bhvWarpPipe, 31),
     //OBJECT_WITH_ACTS(57, 7865, 954, -811, 0, 180, 0, 0x23050000, Bhv_Custom_0x0700ccc0, 31),
     OBJECT_WITH_ACTS(0, -1982, 666, 1917, 0, -90, 0, 0x10000, bhvSpinAirborneWarp, 31),
     OBJECT_WITH_ACTS(0, -1488, 666, 1931, 0, -90, 0, 0xa010000, bhvWarp, 31),

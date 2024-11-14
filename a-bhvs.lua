@@ -751,13 +751,13 @@ function fake_pipe_loop(o)
         o.oSubAction = 0
     end
 
-    if operation(COURSE_BOB, 1) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 1 then
+    if operation2(COURSE_BOB, 1) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 1 then
         obj_set_model_extended(o, E_MODEL_BITS_WARP_PIPE)
     end
-    if operation(COURSE_WF, 0) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 2 then
+    if operation2(COURSE_WF, 0) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 2 then
         obj_set_model_extended(o, E_MODEL_BITS_WARP_PIPE)
     end
-    if operation(COURSE_WF, 4) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 3 then
+    if operation2(COURSE_WF, 4) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 3 then
         obj_set_model_extended(o, E_MODEL_BITS_WARP_PIPE)
     end
 end
