@@ -2541,36 +2541,45 @@ end
 
 hook_mario_action(ACT_YEET_STAT, act_yeet_stationary)
 
+CHUCKYEET_ACT_DIALOG = 0
+CHUCKYEET_ACT_FOLLOW = 1
+CHUCKYEET_ACT_HOLD = 2
+CHUCKYEET_ACT_WAIT = 3
+
 ---@param o Object
 function bhv_chuckya_lift(o)
-    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE|OBJ_FLAG_MOVE_XZ_USING_FVEL|OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE|OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW
 
     o.oAnimations = gObjectAnimations.chuckya_seg8_anims_0800C070
     cur_obj_init_animation(4)
     o.hitboxRadius = 200
     o.hitboxHeight = 120 * 2
     obj_scale(o, 2.1)
-    o.oIntangibleTimer = 0
+    o.oBounciness = 0
+    o.oGravity = -3
 end
 
-local chuckSpeed = 18
+local chuckSpeed = 4
 ---@param o Object
 function bhv_chuckya_lift_loop(o)
     ---@type MarioState
     local lM = gMarioStates[0]
-    if o.oAction == 0 then
-        cur_obj_init_animation(4)
-        o.oMoveAngleYaw = obj_angle_to_object(o, lM.marioObj)
+    cur_obj_move_standard(-78)
+    cur_obj_update_floor()
+    o.oBounciness = 0
+    if o.oAction == CHUCKYEET_ACT_DIALOG then
+        cur_obj_init_animation(5)
+        --o.oMoveAngleYaw = obj_angle_to_object(o, lM.marioObj) he doesn't actually face mario in the hack
         o.oForwardVel = 0
         if obj_check_hitbox_overlap(o, lM.marioObj) and lM.floorHeight == lM.pos.y then
-            lM.action = ACT_READING_NPC_DIALOG
+            set_mario_action(lM, ACT_READING_NPC_DIALOG, 0)
             cur_obj_push_mario_away(o.hitboxRadius)
             if cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_015) ~= 0 then
-                o.oAction = 1
+                o.oAction = CHUCKYEET_ACT_FOLLOW
                 o.hitboxRadius = 160
             end
         end
-    elseif o.oAction == 1 then
+    elseif o.oAction == CHUCKYEET_ACT_FOLLOW then
         o.oSubAction = o.oSubAction + 1
         if o.oSubAction > 80 then
             o.hitboxRadius = 160
@@ -2579,20 +2588,28 @@ function bhv_chuckya_lift_loop(o)
         end
         cur_obj_init_animation(4)
         ---folllowr
-        if dist_between_objects(o, lM.marioObj) > 300 then
-            o.oForwardVel = chuckSpeed * (dist_between_objects(o, lM.marioObj) / 700)
+        if dist_between_objects(o, lM.marioObj) > 480 then
+            o.oForwardVel = approach_f32_symmetric(o.oForwardVel, dist_between_objects(o, lM.marioObj) / 10 - 48 <= 48 and dist_between_objects(o, lM.marioObj) / 10 - 48 or 48, chuckSpeed)
         else
-            o.oForwardVel = 0
+            o.oForwardVel = approach_f32_symmetric(o.oForwardVel, 0, chuckSpeed)
         end
-        o.oPosY = lM.pos.y
+        if o.oPosY ~= lM.pos.y then
+            o.oVelY = approach_f32_symmetric(o.oVelY, lM.vel.y, chuckSpeed)
+        else
+            o.oVelY = approach_f32_symmetric(o.oVelY, 0, chuckSpeed)
+        end
+
+        if lM.action & ACT_FLAG_AIR == 0 and math.abs(lM.pos.y - o.oPosY) > 100 then
+            o.oPosY = lM.pos.y
+        end
         ----------angle
         o.oMoveAngleYaw = obj_angle_to_object(o, lM.marioObj)
 
         if obj_check_hitbox_overlap(o, lM.marioObj) and o.hitboxRadius ~= 0 then
-            o.oAction = 2
+            o.oAction = CHUCKYEET_ACT_HOLD
             o.oSubAction = 0
         end
-    elseif o.oAction == 2 then
+    elseif o.oAction == CHUCKYEET_ACT_HOLD then
         cur_obj_init_animation(1)
         o.oForwardVel = 0
         o.oMoveAngleYaw = o.oMoveAngleYaw + 0x200
@@ -2601,9 +2618,10 @@ function bhv_chuckya_lift_loop(o)
         lM.faceAngle.y = o.oMoveAngleYaw
 
         if lM.controller.buttonPressed & A_BUTTON ~= 0 then
+            cur_obj_init_animation(3)
             lM.vel.y = 37
             lM.forwardVel = 50
-            o.oAction = 1
+            o.oAction = CHUCKYEET_ACT_WAIT
             o.hitboxRadius = 0
             o.hitboxHeight = 0
             lM.action = ACT_SHOT_FROM_CANNON
@@ -2616,6 +2634,14 @@ function bhv_chuckya_lift_loop(o)
         lM.pos.x = lM.marioObj.header.gfx.pos.x
         lM.pos.z = lM.marioObj.header.gfx.pos.z
         lM.pos.y = lM.marioObj.header.gfx.pos.y
+    elseif o.oAction == CHUCKYEET_ACT_WAIT then
+        cur_obj_init_animation(3)
+        o.header.gfx.animInfo.animFrame = o.header.gfx.animInfo.curAnim.loopEnd
+        o.oVelY = 0
+        o.oForwardVel = 0
+        if lM.action == ACT_IDLE then
+            o.oAction = CHUCKYEET_ACT_FOLLOW
+        end
     end
 end
 
