@@ -2556,7 +2556,9 @@ function bhv_chuckya_lift(o)
     o.hitboxHeight = 120 * 2
     obj_scale(o, 2.1)
     o.oBounciness = 0
-    o.oGravity = -3
+    o.oGravity = 3*4
+    o.oFriction = 1
+    o.oIntangibleTimer = 0
 end
 
 local chuckSpeed = 4
@@ -2564,8 +2566,7 @@ local chuckSpeed = 4
 function bhv_chuckya_lift_loop(o)
     ---@type MarioState
     local lM = gMarioStates[0]
-    cur_obj_move_standard(-78)
-    cur_obj_update_floor()
+    object_step()
     o.oBounciness = 0
     if o.oAction == CHUCKYEET_ACT_DIALOG then
         cur_obj_init_animation(5)
@@ -2589,7 +2590,9 @@ function bhv_chuckya_lift_loop(o)
         cur_obj_init_animation(4)
         ---folllowr
         if dist_between_objects(o, lM.marioObj) > 480 then
-            o.oForwardVel = approach_f32_symmetric(o.oForwardVel, dist_between_objects(o, lM.marioObj) / 10 - 48 <= 48 and dist_between_objects(o, lM.marioObj) / 10 - 48 or 48, chuckSpeed)
+            o.oForwardVel = approach_f32_symmetric(o.oForwardVel,
+                dist_between_objects(o, lM.marioObj) / 10 - 48 <= 48 and dist_between_objects(o, lM.marioObj) / 10 - 48 or
+                48, chuckSpeed)
         else
             o.oForwardVel = approach_f32_symmetric(o.oForwardVel, 0, chuckSpeed)
         end
@@ -2599,8 +2602,12 @@ function bhv_chuckya_lift_loop(o)
             o.oVelY = approach_f32_symmetric(o.oVelY, 0, chuckSpeed)
         end
 
-        if lM.action & ACT_FLAG_AIR == 0 and math.abs(lM.pos.y - o.oPosY) > 100 then
+        if lM.pos.y > o.oPosY then
             o.oPosY = lM.pos.y
+        end
+
+        if o.oPosY > find_floor_height(o.oPosX, o.oPosY, o.oPosZ) + 300 then
+            spawn_non_sync_object(id_bhvSparkleSpawn, E_MODEL_NONE, o.oPosX, o.oPosY, o.oPosZ, nil);
         end
         ----------angle
         o.oMoveAngleYaw = obj_angle_to_object(o, lM.marioObj)
