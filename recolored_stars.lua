@@ -53,6 +53,10 @@ function bhv_star_loop(o)
         if gNetworkPlayers[0].currLevelNum == LEVEL_RR or gNetworkPlayers[0].currLevelNum == LEVEL_THI and gNetworkPlayers[0].currAreaIndex == 2 or gNetworkPlayers[0].currLevelNum == LEVEL_TTC and gNetworkPlayers[0].currAreaIndex == 1 then
             obj_set_model_extended(o, E_MODEL_STAR_W7)
         end
+
+        if gNetworkPlayers[0].currLevelNum == LEVEL_WMOTR or gNetworkPlayers[0].currLevelNum == LEVEL_BITFS or gNetworkPlayers[0].currLevelNum == LEVEL_SA and gNetworkPlayers[0].currAreaIndex == 1 then
+            obj_set_model_extended(o, E_MODEL_STAR_W8)
+        end
     end
 end
 

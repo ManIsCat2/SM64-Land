@@ -20,6 +20,31 @@ function obj_init_animation_from_custom_table(obj, animTable, animIndex, vanilla
     end
 end
 
+---function from SM64: Through the ages
+---@param clampFloor boolean
+---@param o Object
+local function move_obj_with_physics(clampFloor, o)
+    local bounciness = o.oBounciness
+    o.oVelY = o.oVelY + o.oGravity
+    if o.oVelY < -70.0 then
+        o.oVelY = -70.0
+    end
+    o.oPosY = o.oPosY + o.oVelY
+    o.oMoveFlags = o.oMoveFlags & ~OBJ_MOVE_ON_GROUND
+
+    if o.oPosY < find_floor_height(o.oPosX, o.oPosY + 70.0, o.oPosZ) and clampFloor then
+        o.oPosY = find_floor_height(o.oPosX, o.oPosY + 70.0, o.oPosZ)
+        o.oVelY = o.oVelY * bounciness / 100.0
+        o.oMoveFlags = o.oMoveFlags | (OBJ_MOVE_ON_GROUND)
+    end
+
+    o.oPosX = o.oPosX + o.oForwardVel * sins(o.oMoveAngleYaw)
+    o.oPosZ = o.oPosZ + o.oForwardVel * coss(o.oMoveAngleYaw)
+
+    -- wall collision
+    cur_obj_resolve_wall_collisions()
+end
+
 function get_star_count()
     local courseMax = 25
     local courseMin = 1
@@ -140,18 +165,16 @@ function get_world_star_count(world)
         course2 = COURSE_THI
     end
 
-    -- WIP (added to avoid hud errors)
-
     if world == 7 then
-        course1 = COURSE_DDD
-        course2 = COURSE_SL
-        course3 = COURSE_HMC
+        course1 = COURSE_THI
+        course2 = COURSE_RR
+        course3 = COURSE_BITS
     end
 
     if world == 8 then
-        course1 = COURSE_DDD
-        course2 = COURSE_SL
-        course3 = COURSE_HMC
+        course1 = COURSE_WMOTR
+        course2 = COURSE_SA
+        course3 = COURSE_BITFS
     end
 
     for i = course1, course2 do
@@ -2556,7 +2579,7 @@ function bhv_chuckya_lift(o)
     o.hitboxHeight = 120 * 2
     obj_scale(o, 2.1)
     o.oBounciness = 0
-    o.oGravity = 3*4
+    o.oGravity = 3 * 4
     o.oFriction = 1
     o.oIntangibleTimer = 0
 end
@@ -2654,3 +2677,82 @@ end
 
 bhvChuckyaLift = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_chuckya_lift,
     bhv_chuckya_lift_loop)
+
+
+---@param o Object
+function bhv_casino_random_dice(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.header.gfx.skipInViewCheck = true
+    o.hitboxHeight = 150
+    o.hitboxRadius = 110
+    o.oIntangibleTimer = 0
+    cur_obj_scale(0.5)
+    o.oGravity = -6
+    o.oGraphYOffset = 76 + 35
+    o.oBounciness = 4
+
+    network_init_object(o, true,
+        { "oAction", "oVelY", "oForwardVel", "oFaceAngleRoll", "oFaceAnglePitch", "oFaceAngleYaw", "oSubAction" })
+end
+
+---@param o Object
+function bhv_casino_random_dice_loop(o)
+    local oMS = nearest_mario_state_to_object(o)
+    if o.oAction == 0 then
+        o.oFaceAngleRoll = o.oFaceAngleRoll + 0x160 / 4.7
+        o.oFaceAngleYaw = o.oFaceAngleYaw + 0x240 / 4.7
+
+        if obj_check_hitbox_overlap(oMS.marioObj, o) then
+            o.oMoveAngleYaw = oMS.faceAngle.y
+            o.oVelY = 30 * 2.4
+            o.oForwardVel = 6 * 2
+            o.oFaceAngleRoll = 40000 / 1.1
+            o.oFaceAnglePitch = 40000 / 1.1
+            o.oAction = 1
+            o.oFaceAngleYaw = 0
+        end
+    elseif o.oAction == 1 then
+        if o.oPosY < find_floor_height(o.oPosX, o.oPosY, o.oPosZ) + 100 then
+            o.oForwardVel = 0
+        end
+        o.oFaceAngleRoll = approach_f32_symmetric(o.oFaceAngleRoll, 0, 0x160 / 4.7 * 15)
+        o.oFaceAngleYaw = approach_f32_symmetric(o.oFaceAngleYaw, 0, 0x160 / 4.7 * 15)
+        o.oFaceAnglePitch = approach_f32_symmetric(o.oFaceAnglePitch, 0, 0x160 / 4.7 * 15)
+
+        if o.oFaceAngleRoll == 0 and o.oFaceAngleYaw == 0 and o.oFaceAnglePitch == 0 then
+            o.oSubAction = o.oSubAction + 1
+            if o.oSubAction > 25 then
+                obj_mark_for_deletion(o)
+                spawn_mist_particles()
+                spawn_non_sync_object(id_bhvTenCoinsSpawn, E_MODEL_NONE, o.oPosX, o.oPosY, o.oPosZ, nil)
+            end
+        end
+    end
+    move_obj_with_physics(true, o)
+end
+
+bhvCasinoRandomDice = hook_behavior(nil, OBJ_LIST_LEVEL, true, bhv_casino_random_dice,
+    bhv_casino_random_dice_loop)
+
+---@param o Object
+function bhv_smash_bros_metal(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+
+    o.hitboxHeight = 70
+    o.hitboxRadius = 160
+
+    o.oIntangibleTimer = 0
+end
+
+---@param o Object
+function bhv_smash_bros_metal_loo(o)
+    local oSM = gMarioStates[0]
+    cur_obj_push_mario_away(150)
+    if obj_check_hitbox_overlap(o, oSM.marioObj) then
+        play_sound(SOUND_ACTION_METAL_STEP, gGlobalSoundSource)
+        oSM.forwardVel = -oSM.forwardVel
+    end
+end
+
+bhvSmashBrosMetal = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_smash_bros_metal,
+    bhv_smash_bros_metal_loo)

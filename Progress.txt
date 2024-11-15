@@ -37,7 +37,7 @@ World 4: "Retro Land"
 4-3: Paper Jungle Adventure - 95%
 4-4: Super Mario World - 100%
 4-EX: Toad House - 100%
-W4 Boss: Bowser Jr.'s Trial - 0%
+W4 Boss: Bowser Jr.'s Trial - 0% //couldnt model
 
 World 5: "Cyber-Synth Land"
 5-1: Synthscape Land - 95%
@@ -45,7 +45,7 @@ World 5: "Cyber-Synth Land"
 5-3: Synthcity - 100%
 5-4: Synthmetro - 90%
 5-EX: Toad House - 100%
-W5 Boss: Shadow Mario's Trial - 0%
+W5 Boss: Shadow Mario's Trial - 0% //couldnt model
 
 World 6: "Sky Haven"
 6-1: Flipping Blocks - 100%
@@ -65,7 +65,7 @@ W7 Boss: Wario's Ambush - 50%
 
 World 8: "Bowser's Space Land"
 8-1: Space Garden - 95%
-8-2: Sun-Moon Casino - 80%
+8-2: Sun-Moon Casino - 95%
 8-3: Volcano Cluster - 65%
 8-4: Bowser's Space Base - 90%
 8-EX: Toad House - 100%

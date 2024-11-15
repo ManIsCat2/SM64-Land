@@ -35,6 +35,7 @@ levelData = {
     [COURSE_BITFS] = { { stars = { 1, 0, 2 }, finalStar = 2 } },
     [COURSE_WDW] = { { stars = { 1, 0, 2, 3 }, finalStar = 3 }, { stars = { 4, 5 } } },
     [COURSE_SA] = { { stars = { 2, 1, 3, 6 }, finalStar = 3, coinStar = 6 } },
+    [COURSE_WMOTR] = { { stars = { 0, 1, 6 }, finalStar = 1, coinStar = 6 } },
 }
 
 bossLevelData = {
