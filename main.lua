@@ -77,7 +77,7 @@ hook_event(HOOK_MARIO_UPDATE, world_map_cam)
 ]]
 
 function low_grav(m)
-    if m.action & ACT_FLAG_AIR ~= 0 and (gNetworkPlayers[0].currLevelNum == LEVEL_WF and gNetworkPlayers[0].currAreaIndex == 2 or gNetworkPlayers[0].currLevelNum == LEVEL_CASTLE_COURTYARD and gNetworkPlayers[0].currAreaIndex == 4) and m.action ~= ACT_TWIRLING then
+    if m.action & ACT_FLAG_AIR ~= 0 and (gNetworkPlayers[0].currLevelNum == LEVEL_WF and gNetworkPlayers[0].currAreaIndex == 2 or gNetworkPlayers[0].currLevelNum == LEVEL_CASTLE_COURTYARD and gNetworkPlayers[0].currAreaIndex == 4 or gNetworkPlayers[0].currLevelNum == LEVEL_WMOTR and gNetworkPlayers[0].currAreaIndex == 2 or gNetworkPlayers[0].currLevelNum == LEVEL_SA and gNetworkPlayers[0].currAreaIndex == 1) and m.action ~= ACT_TWIRLING then
         m.vel.y = m.vel.y + 1.2
     end
 end
@@ -102,14 +102,6 @@ function timer_score()
 end
 
 hook_event(HOOK_UPDATE, timer_update)
-
-function hook_diag(d)
-    if d == 13 then
-        return false
-    end
-end
-
-hook_event(HOOK_ON_DIALOG, hook_diag)
 
 local champRoad = "Ch. Road"
 

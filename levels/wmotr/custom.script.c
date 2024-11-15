@@ -93,7 +93,7 @@ const LevelScript local_area_wmotr_1_[] = {
 
 const LevelScript local_objects_wmotr_1_[] = {
 	OBJECT_WITH_ACTS(0, 1395, -281, 1646, 0, 270, 0, 0xa0000, bhvSpinAirborneWarp, 31),
-	OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x1d004e20, bhvCustom0x1300003c, 31),
+	//OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x1d004e20, bhvCustom0x1300003c, 31),
 	OBJECT_WITH_ACTS(122, -9203, 17043, -18415, 0, 0, 0, 0x1010000, bhvStar, 31),
 	OBJECT_WITH_ACTS(0, -6782, 2246, 10338, 0, 0, 0, 0x0, bhvBowserCourseRedCoinStar, 31),
 	OBJECT_WITH_ACTS(215, -11051, 7791, -2712, 0, 0, 0, 0x0, bhvRedCoin, 31),
