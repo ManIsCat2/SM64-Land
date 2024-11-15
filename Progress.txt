@@ -50,10 +50,10 @@ W5 Boss: Shadow Mario's Trial - 0% //couldnt model
 World 6: "Sky Haven"
 6-1: Flipping Blocks - 100%
 6-2: Pendulums and Beetles - 100%
-6-3: Sandbird - 55%
+6-3: Sandbird - 100% // no sandbird cuz i cant code it
 6-4: Cloud Rush - 100%
 6-EX: Toad House - 100%
-W6 Boss: Tyrant Tormentoso's Trial - 85%
+W6 Boss: Tyrant Tormentoso's Trial - 90%
 
 World 7: "Power Plant"
 7-1: Zap Factory - 90%

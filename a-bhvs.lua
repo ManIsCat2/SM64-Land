@@ -163,6 +163,7 @@ function get_world_star_count(world)
     if world == 6 then
         course1 = COURSE_TTM
         course2 = COURSE_THI
+        course3= COURSE_SSL
     end
 
     if world == 7 then
@@ -466,6 +467,10 @@ function pipe_cover_loop(o)
     end
 
     if operation2(COURSE_PSS, 2) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 20 then
+        obj_mark_for_deletion(o)
+    end
+
+    if operation2(COURSE_BITDW, 1) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 24 then
         obj_mark_for_deletion(o)
     end
 end

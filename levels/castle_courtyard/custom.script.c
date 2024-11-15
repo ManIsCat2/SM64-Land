@@ -283,13 +283,14 @@ const LevelScript local_objects_castle_courtyard_3_[] = {
     OBJECT_WITH_ACTS(0, 10, 942, -869, 0, 0, 0, 0x16000000, Bhv_Custom_0x130001dc, 31),
     OBJECT_WITH_ACTS(0, 4060, 954, -377, 0, 0, 0, 0x17000000, Bhv_Custom_0x130001dc, 31),*/
     OBJECT_WITH_ACTS(E_MODEL_RED_WARP_PIPE, 7865, 954, -811, 0, 0, 0, 0x370000, id_bhvWarpPipe, 31),
+    OBJECT_WITH_ACTS(E_MODEL_8_STAR_CAGE, 7865, 954, -811, 0, 0, 0, (6 << 16), bhv8StarCage, 31),
     //OBJECT_WITH_ACTS(57, 7865, 954, -811, 0, 180, 0, 0x23050000, Bhv_Custom_0x0700ccc0, 31),
     OBJECT_WITH_ACTS(0, -1982, 666, 1917, 0, -90, 0, 0x10000, bhvSpinAirborneWarp, 31),
     OBJECT_WITH_ACTS(0, -1488, 666, 1931, 0, -90, 0, 0xa010000, bhvWarp, 31),
     OBJECT_WITH_ACTS(0, 7864, 1154, -517, 0, 180, 0, 0x6c0000, bhvAirborneStarCollectWarp, 31),
     OBJECT_WITH_ACTS(0, 7864, 1154, -517, 0, 180, 0, 0x6d0000, bhvDeathWarp, 31),
     //OBJECT_WITH_ACTS(0, 0, 0, 0, 0, 0, 0, 0x0, Bhv_Custom_0x0703f200, 31),
-    //OBJECT_WITH_ACTS(59, 8855, 1154, -376, 0, 0, 0, 0x1b010000, Bhv_Custom_0x0703fdc0, 31),
+    OBJECT_WITH_ACTS(E_MODEL_PIPE_COVER, 8855, 1154, -376, 0, 0, 0, (24 << 16), bhvPipeCover, 31),
     OBJECT_WITH_ACTS(/* model*/ 0, /*speed*/ 4, /*axis*/4, /*vtx count*/4, 0, /*scroll type*/ 0, /*cycle*/ 1, /*index*/ 9, RM_Scroll_Texture, 31),
     RETURN()};
 const LevelScript local_warps_castle_courtyard_3_[] = {

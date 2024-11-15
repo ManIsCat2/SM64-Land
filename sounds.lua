@@ -33,6 +33,7 @@ smlua_audio_utils_replace_sequence(58, 42, 75, "SM64_3D_Land_Master_Hand_Boss") 
 smlua_audio_utils_replace_sequence(52, 25, 75, "4-3_Bowser_Castle")                             --4-2 done
 smlua_audio_utils_replace_sequence(61, 42, 75, "Octopus_Boss_-_Fraaz_Theme")                    --6-Boss done
 smlua_audio_utils_replace_sequence(74, 26, 75, "WarioStrikers_Andy_NI26")
+smlua_audio_utils_replace_sequence(42, 37, 75, "0x3f sky and sea")
 
 --RM2C
 smlua_audio_utils_replace_sequence(0x01, 0x11, 75, "01_Seq_custom") --Star Collect
