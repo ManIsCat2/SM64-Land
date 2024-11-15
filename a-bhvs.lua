@@ -2750,7 +2750,7 @@ function bhv_smash_bros_metal_loo(o)
     cur_obj_push_mario_away(150)
     if obj_check_hitbox_overlap(o, oSM.marioObj) then
         play_sound(SOUND_ACTION_METAL_STEP, gGlobalSoundSource)
-        oSM.forwardVel = -oSM.forwardVel
+        oSM.forwardVel = -oSM.forwardVel-13
     end
 end
 
