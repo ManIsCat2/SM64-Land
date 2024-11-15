@@ -46,7 +46,7 @@ EXIT(),
 const LevelScript local_area_ddd_1_[] = {
 AREA(1,Geo_ddd_1_0x199b6e0),
 TERRAIN(col_ddd_1_0xe085d10),
-SET_BACKGROUND_MUSIC(0,17),
+//SET_BACKGROUND_MUSIC(0,17),
 TERRAIN_TYPE(0),
 JUMP_LINK(local_objects_ddd_1_),
 JUMP_LINK(local_warps_ddd_1_),
