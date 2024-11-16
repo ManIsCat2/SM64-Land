@@ -163,7 +163,7 @@ function get_world_star_count(world)
     if world == 6 then
         course1 = COURSE_TTM
         course2 = COURSE_THI
-        course3= COURSE_SSL
+        course3 = COURSE_SSL
     end
 
     if world == 7 then
@@ -2512,37 +2512,86 @@ local bossWarioAnims = {
     [0] = get_mario_vanilla_animation(MARIO_ANIM_FIRST_PERSON),
     get_mario_vanilla_animation(MARIO_ANIM_WALKING),
     get_mario_vanilla_animation(MARIO_ANIM_FIRST_PUNCH),
+    get_mario_vanilla_animation(MARIO_ANIM_FIRE_LAVA_BURN),
 }
 
 
 ---@param o Object
 function bhv_wario_boss_init(o)
-    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
-
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE|OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW
+    o.oInteractType = INTERACT_DAMAGE
+    o.hitboxHeight = 120
+    o.hitboxRadius = 90
+    o.oIntangibleTimer = 0
     o.header.gfx.skipInViewCheck = true
     o.oFriction = 1
     o.oGravity = 2.1
     obj_init_animation_from_custom_table(o, bossWarioAnims, 0, true)
+    o.oDamageOrCoinValue = 2
     o.oGraphYOffset = 40
+    o.oHealth = 3
+
+    ---phase
+
+    o.oBobombBuddyPosXCopy = 1
 end
 
 WARIO_IDLE = 0
 WARIO_WALK = 1
+WARIO_SHOULDER_BASH = 2
+WARIO_THROW_BOMB = 3
+WARIO_BURNING = 4
 
 ---@param o Object
 function bhv_wario_boss_loop(o)
+    o.oInteractStatus = 0
     local neastMario = nearest_mario_state_to_object(o)
 
     if o.oAction == WARIO_IDLE then
         o.oForwardVel = 0
         obj_init_animation_from_custom_table(o, bossWarioAnims, 0, true)
         if should_start_or_continue_dialog(neastMario, o) ~= 0 and cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_046) ~= 0 then
-            o.oAction = 2
+            o.oAction = WARIO_WALK
         end
     elseif o.oAction == WARIO_WALK then
         obj_init_animation_from_custom_table(o, bossWarioAnims, 1, true, 3.3)
-        object_step()
         o.oForwardVel = 12
+
+        o.oMoveAngleYaw = obj_angle_to_object(o, neastMario.marioObj)
+        o.oSubAction = o.oSubAction + 1
+
+        if o.oSubAction > 80 then
+            o.oAction = WARIO_SHOULDER_BASH
+            play_sound(gCharacters[CT_WARIO].soundWah2, gGlobalSoundSource)
+            o.oSubAction = 0
+        end
+    elseif o.oAction == WARIO_SHOULDER_BASH then
+        obj_init_animation_from_custom_table(o, bossWarioAnims, 2, true)
+        o.oForwardVel = 18 * 1.7
+        o.oSubAction = o.oSubAction + 1
+
+        if o.oSubAction > 40 then
+            o.oAction = WARIO_WALK
+            o.oSubAction = 0
+        end
+    elseif o.oAction == WARIO_BURNING then
+        obj_init_animation_from_custom_table(o, bossWarioAnims, 3, true)
+        o.oForwardVel = 18
+    end
+
+    if o.oAction ~= WARIO_BURNING then
+        if o.oFloor then
+            if o.oFloor.type == SURFACE_BURNING then
+                if o.oPosY < find_floor_height(o.oPosX, o.oPosY, o.oPosZ) + 300 then
+                    play_sound(gCharacters[CT_WARIO].soundOnFire, gGlobalSoundSource)
+                    o.oBobombBuddyPosXCopy = o.oBobombBuddyPosXCopy + 1
+                    o.oAction = WARIO_BURNING
+                end
+            end
+        end
+    end
+    if o.oAction ~= WARIO_IDLE then
+        object_step()
     end
 end
 
@@ -2755,7 +2804,7 @@ function bhv_smash_bros_metal_loo(o)
     cur_obj_push_mario_away(150)
     if obj_check_hitbox_overlap(o, oSM.marioObj) then
         play_sound(SOUND_ACTION_METAL_STEP, gGlobalSoundSource)
-        oSM.forwardVel = -oSM.forwardVel-13
+        oSM.forwardVel = -oSM.forwardVel - 13
     end
 end
 
