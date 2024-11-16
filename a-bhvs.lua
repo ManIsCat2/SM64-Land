@@ -473,7 +473,11 @@ function pipe_cover_loop(o)
     if operation2(COURSE_BITDW, 1) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 24 then
         obj_mark_for_deletion(o)
     end
+    if operation2(COURSE_BITS, 1) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 28 then
+        obj_mark_for_deletion(o)
+    end
 end
+
 
 bhvPipeCover = hook_behavior(nil, OBJ_LIST_SURFACE, true, pipe_cover_init, pipe_cover_loop)
 bhv8StarCage = hook_behavior(nil, OBJ_LIST_SURFACE, true, star_cage_init, star_cage_loop)
@@ -2513,8 +2517,24 @@ local bossWarioAnims = {
     get_mario_vanilla_animation(MARIO_ANIM_WALKING),
     get_mario_vanilla_animation(MARIO_ANIM_FIRST_PUNCH),
     get_mario_vanilla_animation(MARIO_ANIM_FIRE_LAVA_BURN),
+    get_mario_vanilla_animation(MARIO_ANIM_DYING_ON_STOMACH),
 }
 
+function bhv_wario_fire(o)
+    o.hitboxHeight = 40 * 3
+    o.hitboxRadius = 9999
+    o.oIntangibleTimer = 0
+end
+
+bhvWarioFire = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_wario_fire,
+    nil)
+
+function bhv_wario_to_ang(o)
+    o.oFaceAngleYaw = obj_angle_to_object(o, obj_get_nearest_object_with_behavior_id(o, bhvWarioBoss))
+end
+
+bhvWarioToAngle = hook_behavior(nil, OBJ_LIST_GENACTOR, true, nil,
+    bhv_wario_to_ang)
 
 ---@param o Object
 function bhv_wario_boss_init(o)
@@ -2541,6 +2561,7 @@ WARIO_WALK = 1
 WARIO_SHOULDER_BASH = 2
 WARIO_THROW_BOMB = 3
 WARIO_BURNING = 4
+WARIO_DIE = 5
 
 ---@param o Object
 function bhv_wario_boss_loop(o)
@@ -2576,20 +2597,42 @@ function bhv_wario_boss_loop(o)
         end
     elseif o.oAction == WARIO_BURNING then
         obj_init_animation_from_custom_table(o, bossWarioAnims, 3, true)
+        -- o.oVelY = 60
+        o.oSubAction = o.oSubAction + 1
         o.oForwardVel = 18
-    end
-
-    if o.oAction ~= WARIO_BURNING then
-        if o.oFloor then
-            if o.oFloor.type == SURFACE_BURNING then
-                if o.oPosY < find_floor_height(o.oPosX, o.oPosY, o.oPosZ) + 300 then
-                    play_sound(gCharacters[CT_WARIO].soundOnFire, gGlobalSoundSource)
-                    o.oBobombBuddyPosXCopy = o.oBobombBuddyPosXCopy + 1
-                    o.oAction = WARIO_BURNING
-                end
+        o.oMoveAngleYaw = obj_angle_to_object(o, obj_get_nearest_object_with_behavior_id(o, bhvWarioToAngle))
+        if o.oSubAction > 80 then
+            if o.oHealth > 0 then
+                o.oAction = WARIO_WALK
+            else
+                o.oAction = WARIO_DIE
             end
+            o.oSubAction = 0
+        end
+    elseif o.oAction == WARIO_DIE then
+        obj_init_animation_from_custom_table(o, bossWarioAnims, 4, true)
+        o.oSubAction = o.oSubAction + 1
+        o.oForwardVel = 0
+
+        if o.oSubAction > 50 then
+            spawn_mist_particles_variable(0, 0, 100.0);
+            spawn_triangle_break_particles(20, 138, 3.0, 4);
+            spawn_default_star(0, 122 + 340, 0)
+            obj_mark_for_deletion(o)
+
+            o.oSubAction = 0
         end
     end
+    if o.oAction ~= WARIO_BURNING then
+        if obj_check_hitbox_overlap(o, obj_get_nearest_object_with_behavior_id(o, bhvWarioFire)) then
+            play_sound(gCharacters[CT_WARIO].soundOnFire, gGlobalSoundSource)
+            o.oBobombBuddyPosXCopy = o.oBobombBuddyPosXCopy + 1
+            o.oAction = WARIO_BURNING
+            o.oVelY = 60
+            o.oHealth = o.oHealth - 1
+        end
+    end
+
     if o.oAction ~= WARIO_IDLE then
         object_step()
     end

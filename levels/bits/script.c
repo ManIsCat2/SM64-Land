@@ -48,6 +48,8 @@ RETURN()
 const LevelScript local_objects_bits_1_[] = {
 OBJECT_WITH_ACTS(0,0,0,-1710,0,0,0,0xa0000, bhvSpinAirborneWarp,31),
 OBJECT_WITH_ACTS(53,0,122,0,0,180,0,0x1000000,bhvWarioBoss,31),
+OBJECT_WITH_ACTS(53,0,-230,0,0,0,0,0,bhvWarioFire,31),
+OBJECT_WITH_ACTS(53,0,-230,0,0,0,0,0,bhvWarioToAngle,31)
 OBJECT_WITH_ACTS(61,-30,25,-1389,0,0,0,0x0,bhvBattreyPowerup,31),
 //OBJECT_WITH_ACTS(0,0,0,0,0,0,0,0x60000,0x00377ef0,31),
 OBJECT_WITH_ACTS(0,77,-24556,20,0,0,0,0xe008fe0, bhvStaticObject,31),

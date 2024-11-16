@@ -61,7 +61,7 @@ World 7: "Power Plant"
 7-3: Nuclear Plant - 85%
 7-4: Haunted Clock - 100%
 7-EX: Toad House - 100%
-W7 Boss: Wario's Ambush - 70% 
+W7 Boss: Wario's Ambush - 90% //doesnt have all phases
 
 World 8: "Bowser's Space Land"
 8-1: Space Garden - 95%
