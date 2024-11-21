@@ -179,7 +179,7 @@ end
 ---@param goal integer
 ---@param src integer
 ---@param inc integer
-local function approach_by_increment(goal, src, inc)
+function approach_by_increment(goal, src, inc)
     local diff = goal - src
     if diff > inc then
         return src + inc

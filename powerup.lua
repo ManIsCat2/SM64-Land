@@ -120,7 +120,8 @@ end)
 function on_death_warp()
     timer = 0
     score = 0
-    scoreCounter = 0
+    gPlayerSyncTable[0].score = 0
+    gPlayerSyncTable[0].scoreHUD = 0
     cloudcount = 0
     chargingMul = 1
     chargingRocket = false

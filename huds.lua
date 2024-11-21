@@ -269,7 +269,7 @@ function level_hud()
         -- Score Counter
 
         djui_hud_render_texture(TEX_SCORE, 8, 4, 1, 1)
-        djui_hud_print_text(string.format(("%.05d"), math.floor(scoreCounter)), 24, 4, 1)
+        djui_hud_print_text(string.format(("%.05d"), math.floor(gPlayerSyncTable[0].scoreHUD)), 24, 4, 1)
 
         -- Collected Stars Display
 
