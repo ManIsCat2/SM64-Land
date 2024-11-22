@@ -191,15 +191,23 @@ function operation(course, star, is100star)
         return TEX_GLOBAL_STAR
     else
         if is100star then
-            if charSelect.character_get_star_icon(0) ~= gTextures.star then
-                djui_hud_set_color(255, 255, 255, 255)
+            if charSelect then
+                if charSelect.character_get_star_icon(0) ~= gTextures.star then
+                    djui_hud_set_color(255, 255, 255, 255)
+                end
+                return (charSelect.character_get_star_icon(0) ~= gTextures.star and TEX_CS_100_UNCOLLECTED or TEX_UNCOLLECTED_STAR_100)
+            else
+                return (TEX_UNCOLLECTED_STAR_100)
             end
-            return (charSelect.character_get_star_icon(0) ~= gTextures.star and TEX_CS_100_UNCOLLECTED or TEX_UNCOLLECTED_STAR_100)
         else
-            if charSelect.character_get_star_icon(0) ~= gTextures.star then
-                djui_hud_set_color(90, 90, 90, 255)
+            if charSelect then
+                if charSelect.character_get_star_icon(0) ~= gTextures.star then
+                    djui_hud_set_color(90, 90, 90, 255)
+                end
+                return (charSelect.character_get_star_icon(0) ~= gTextures.star and TEX_GLOBAL_STAR or TEX_UNCOLLECTED_STAR)
+            else
+                return (TEX_UNCOLLECTED_STAR)
             end
-            return (charSelect.character_get_star_icon(0) ~= gTextures.star and TEX_GLOBAL_STAR or TEX_UNCOLLECTED_STAR)
         end
     end
 end
