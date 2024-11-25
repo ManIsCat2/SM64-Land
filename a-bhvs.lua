@@ -466,7 +466,7 @@ function pipe_cover_loop(o)
         obj_mark_for_deletion(o)
     end
 
-   djui_chat_message_create(tostring( operation(COURSE_PSS, 0) == TEX_GLOBAL_STAR))
+   --djui_chat_message_create(tostring( operation(COURSE_PSS, 0) == TEX_GLOBAL_STAR))
 
     if operation2(COURSE_PSS, 0) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 20 then
         obj_mark_for_deletion(o)
