@@ -466,7 +466,9 @@ function pipe_cover_loop(o)
         obj_mark_for_deletion(o)
     end
 
-    if operation2(COURSE_PSS, 2) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 20 then
+   djui_chat_message_create(tostring( operation(COURSE_PSS, 0) == TEX_GLOBAL_STAR))
+
+    if operation2(COURSE_PSS, 0) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 20 then
         obj_mark_for_deletion(o)
     end
 
@@ -477,7 +479,6 @@ function pipe_cover_loop(o)
         obj_mark_for_deletion(o)
     end
 end
-
 
 bhvPipeCover = hook_behavior(nil, OBJ_LIST_SURFACE, true, pipe_cover_init, pipe_cover_loop)
 bhv8StarCage = hook_behavior(nil, OBJ_LIST_SURFACE, true, star_cage_init, star_cage_loop)
