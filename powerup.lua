@@ -45,6 +45,15 @@ characterPowerupModels            = {
     [CT_WALUIGI] = { tanooki = E_MODEL_KITSUNE_WALUIGI, cat = nil, bee = nil, cloud = nil, electric = nil, rocket = nil, gravity = nil },
 }
 
+local default_models = {
+    [CT_MARIO] = E_MODEL_MARIO,
+    [CT_LUIGI] = E_MODEL_LUIGI,
+    [CT_TOAD] = E_MODEL_TOAD_PLAYER,
+    [CT_WALUIGI] = E_MODEL_WALUIGI,
+    [CT_WARIO] = E_MODEL_WARIO
+}
+
+local powerup_model = nil
 local powerupStates               = {
     [NORMAL]  = { modelId = nil },
     [TANOOKI] = { modelId = nil },
@@ -62,7 +71,7 @@ function get_character_model(m)
     CPM = characterPowerupModels[m.character.type] -- To get the model easily
     CPMM = characterPowerupModels[CT_MARIO]        -- To get Mario's model easily
     powerupStates = {
-        [NORMAL]  = { modelId = nil },
+        [NORMAL]  = { modelId = default_models[gMarioStates[0].character.type] },
         [TANOOKI] = { modelId = CPM.tanooki and CPM.tanooki or CPMM.tanooki },
         [CAT]     = { modelId = CPM.cat and CPM.cat or CPMM.cat },
         [BEE]     = { modelId = CPM.bee and CPM.bee or CPMM.bee },
@@ -71,47 +80,30 @@ function get_character_model(m)
         [BATTERY] = { modelId = CPM.electric and CPM.electric or CPMM.electric },
         [GRAVITY] = { modelId = CPM.gravity and CPM.gravity or CPMM.gravity },
     }
+
+    powerup_model = powerupStates[gPlayerSyncTable[0].activePowerup].modelId
+    gPlayerSyncTable[0].modelId = powerup_model
 end
 
---- Charselect Model fix. By OneCalledRPG
-function cs_model_set(m)
-    if _G.charSelectExists then
-        if _G.charSelect.character_get_current_number() == 1 then
-            get_character_model(m)
-        else
-            powerupStates = {
-                [NORMAL] = { modelId = nil },
-                [TANOOKI] = { modelId = nil },
-                [CAT] = { modelId = nil },
-                [BEE] = { modelId = nil },
-                [CLOUD] = { modelId = nil },
-                [ROCKET] = { modelId = nil },
-                [BATTERY] = { modelId = nil },
-                [GRAVITY] = { modelId = nil },
-            }
-        end
-    else
-        get_character_model(m)
-    end
-end
-
-hook_event(HOOK_MARIO_UPDATE, cs_model_set)
+hook_event(HOOK_MARIO_UPDATE, get_character_model)
 
 -- Powerup Model Functions --
-
-function powerups()
-    gPlayerSyncTable[0].modelId = powerupStates[gPlayerSyncTable[0].activePowerup].modelId
-end
 
 hook_event(HOOK_OBJECT_SET_MODEL, function(o)
     if obj_has_behavior_id(o, id_bhvMario) ~= 0 then
         local i = network_local_index_from_global(o.globalPlayerIndex)
-        if stuck then
-            gPlayerSyncTable[i].modelId = E_MODEL_NONE
-        end
-        if gPlayerSyncTable[i].modelId ~= nil and obj_has_model_extended(o, gPlayerSyncTable[i].modelId) == 0 then
-            obj_set_model_extended(o, gPlayerSyncTable[i].modelId)
-        end
+        if _G.charSelectExists then
+			for i = 1, 5 do
+    			_G.charSelect.character_edit_costume(1, i, nil, nil, nil, nil, powerup_model)
+			end
+		else
+        	if stuck then
+                gPlayerSyncTable[i].modelId = E_MODEL_NONE
+            end
+            if gPlayerSyncTable[i].modelId ~= nil and obj_has_model_extended(o, gPlayerSyncTable[i].modelId) == 0 then
+                obj_set_model_extended(o, gPlayerSyncTable[i].modelId)
+            end
+		end
     end
 end)
 
@@ -141,7 +133,6 @@ function damage_check(m)
     end
 end
 
-hook_event(HOOK_UPDATE, powerups)
 hook_event(HOOK_MARIO_UPDATE, damage_check)
 hook_event(HOOK_ON_DEATH, on_death_warp)
 hook_event(HOOK_ON_WARP, on_death_warp)
