@@ -1,0 +1,93 @@
+# Misc
+* Models missing all around, need to compile a list of them
+* Certain custom hud elements
+* Checkpoints
+* Score and rank system, and final star exit and cutscene
+* Character models for base game characters after getting all mario models
+* Skyboxes, a ton of them
+* Locked pipes
+* Overworld camera
+* Scrolling textures all around
+* Hills
+
+# World 1
+* Moveset code for the tanooki suit
+* Behavior code and models for rocks, trees, mushroom platforms, switchboards
+* Cannon warp behaviors
+
+# World 2
+* Moveset code for cat suit
+* Overworld star klepto is missing
+* Custom tornado behaviors
+* Bouncy surface code
+* Ants issues
+* Thwomp fixes
+
+# World 3
+* Moveset code for bee suit
+* Sponges and Soaps behavior code
+* Microwave behavior accuracy check
+* Jello model and behavior issues
+* Toy train behavior and model
+* Jack in a box behavior
+* Domino Whomps
+* Balloon pole height fix
+* Paper airplane code check
+* Bullet bills accuracy check
+* Master hand boss fight behaviors
+* Slow killing fridge
+
+# World 4
+* Theater audience code and behaviors
+* Donut platform behaviors and models and collision
+* Noteblocks
+* Boomerang bros
+* Kart for the kart level
+* Flip block code and model
+* Unanimated munchers
+* Yoshi behavior check
+* Chuckyeet broken, need accuracy checks
+* Bowser jr model and behavior
+
+# World 5
+* Synth powerup accuracy checks and models
+* Skybox clipping distance needs to be higher
+* Some collision bugs
+* Appearing platform behavior accuracy check
+* Train tunnel scrolling textures
+* Train events
+* Clone model (attempt at making it player model based)
+
+# World 6
+* Flying trajectory sandbird
+* Check other courses for accuracy issues
+* Boss needs full revamp
+
+# World 7
+* Scrolling textures
+* Electricity walls and conveyor belts
+* Platform shit
+* No aim cannon
+* Spike traps
+* All directional mr. I
+* Net64 Wario
+
+# World 8
+* Rocket Power up code and models and textures
+* Falling flower petal platforms
+* Flower fan
+* Dice
+* Platform Big Dice
+* Extending card platforms
+* Smash bros bumpers
+* Platforms that turn green when you step on them
+* Custom bitdw platforms
+* Flip Platforms (accuracy check)
+* Trajectory Platform
+* Slope Dropping platforms
+* Moving ropes
+* Breaking Light platforms
+* Custom bowser fight
+
+# Post World 8
+* Champion's road rainbow effect

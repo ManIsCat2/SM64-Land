@@ -466,7 +466,7 @@ function pipe_cover_loop(o)
         obj_mark_for_deletion(o)
     end
 
-   --djui_chat_message_create(tostring( operation(COURSE_PSS, 0) == TEX_GLOBAL_STAR))
+    --djui_chat_message_create(tostring( operation(COURSE_PSS, 0) == TEX_GLOBAL_STAR))
 
     if operation2(COURSE_PSS, 0) ~= TEX_UNCOLLECTED_STAR and o.oBehParams2ndByte == 20 then
         obj_mark_for_deletion(o)
@@ -770,6 +770,10 @@ function bhv_fake_pipe_init(o)
     end
 end
 
+local function should_object_spawn()
+    return (is_nearest_mario_state_to_object(gMarioStates[0], get_current_object()) ~= 0)
+end
+
 ---@param o Object
 function fake_pipe_loop(o)
     load_object_collision_model()
@@ -778,9 +782,11 @@ function fake_pipe_loop(o)
     end
 
     if o.oSubAction > 120 then
-        spawn_sync_object(id_bhvAnt, E_MODEL_ANT, o.oPosX, o.oPosY, o.oPosZ, function(obj)
-            obj.parentObj = o
-        end)
+        if should_object_spawn() then
+            spawn_sync_object(id_bhvAnt, E_MODEL_ANT, o.oPosX, o.oPosY, o.oPosZ, function(obj)
+                obj.parentObj = o
+            end)
+        end
         o.oSubAction = 0
     end
 
@@ -912,8 +918,10 @@ function bhv_king_goomba_loop(o)
         m.invincTimer = 60
         play_sound(SOUND_OBJ_KING_WHOMP_DEATH, gGlobalSoundSource)
         o.oHealth = o.oHealth - 1
-        spawn_sync_object(id_bhvGoomba, E_MODEL_GOOMBA, o.oPosX, o.oPosY, o.oPosZ,
-            function(obj) obj.oBehParams2ndByte = 1 end)
+        if should_object_spawn() then
+            spawn_sync_object(id_bhvGoomba, E_MODEL_GOOMBA, o.oPosX, o.oPosY, o.oPosZ,
+                function(obj) obj.oBehParams2ndByte = 1 end)
+        end
         o.oAnimState = 1
     end
 end
@@ -1220,7 +1228,19 @@ end
 
 function bhv_custom_rotating_platform_loop(o)
     load_object_collision_model()
-    o.oFaceAngleYaw = o.oFaceAngleYaw + 100
+    if o.oAction == 0 then
+        o.oFaceAngleYaw = o.oFaceAngleYaw + 128
+        o.oAngleVelYaw = 100
+        if o.oFaceAngleYaw % 16384 == 0 then
+            o.oAction = 1
+        end
+    elseif o.oAction == 1 then
+        o.oAngleVelYaw = 0
+        if o.oTimer == 45 then
+            o.oTimer = 0
+            o.oAction = 0
+        end
+    end
 end
 
 id_bhvRotPlatformJRB = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_custom_rotating_platform,
@@ -1270,26 +1290,104 @@ local sKickableRockHitbox = {
     numLootScore = 100
 }
 
-function bhv_kickable_rock_init(o)
-    obj_set_model_extended(o, E_MODEL_KICKABLE_ROCK)
-    o.header.gfx.pos.y = o.oPosY + 50
-    obj_set_hitbox(o, sKickableRockHitbox)
-    network_init_object(o, true, nil)
+local function bhv_ball_init(obj)
+    obj.oFlags            = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    obj.oGraphYOffset     = 35
+
+    -- physics
+    obj.oWallHitboxRadius = 40.00
+    obj.oGravity          = 2.50
+    obj.oBounciness       = -0.75
+    obj.oDragStrength     = 0.00
+    obj.oFriction         = 0.99
+    obj.oBuoyancy         = -2.00
+
+    -- hitbox
+    obj.hitboxRadius      = 100
+    obj.hitboxHeight      = 100
+
+    network_init_object(obj, true, nil)
 end
 
-function bhv_kickable_rock_loop(o)
-    if obj_check_hitbox_overlap(gMarioStates[0].marioObj, o) then
-        -- need code moment
+local function bhv_ball_loop(obj)
+    local m = nearest_mario_state_to_object(obj)
+    local player = m.marioObj
+    local distanceToPlayer = dist_between_objects(obj, player)
+    local angleToPlayer = obj_angle_to_object(obj, player)
+    local localPlayerTouch = false
+
+    -- figure out player-to-ball radius
+    local radius = 100
+    if (m.action & ACT_FLAG_ATTACKING) ~= 0 and distanceToPlayer < 130 then
+        radius = 150
+        obj.oAction = 1
     end
-    if o.oVelX ~= 0 or o.oVelZ ~= 0 then
-        local moveAngle = atan2s(o.oVelZ * 100, o.oVelX * 100)
-        local forwardRot = math.sqrt(o.oVelX ^ 2 + o.oVelZ ^ 2)
-        o.oFaceAngleYaw = moveAngle
-        o.oFaceAnglePitch = o.oFaceAnglePitch + forwardRot * 100
+
+    if obj.oAction == 0 then
+        obj.oFriction = 0
+    else
+        obj.oFriction = 1
+    end
+    -- check if player should affect ball
+    if distanceToPlayer < radius then
+        local xdiff = player.oPosX - obj.oPosX
+        local zdiff = player.oPosZ - obj.oPosZ
+
+        obj.oPosX = obj.oPosX - (radius - distanceToPlayer) / radius * xdiff;
+        obj.oPosZ = obj.oPosZ - (radius - distanceToPlayer) / radius * zdiff;
+
+        obj.oMoveAngleYaw = angleToPlayer + 0x8000
+        obj.oForwardVel = obj.oForwardVel + 10
+
+        if (m.action & ACT_FLAG_ATTACKING) ~= 0 then
+            obj.oVelY = obj.oVelY + 20.0
+        end
+        if m.playerIndex == 0 then
+            localPlayerTouch = true
+        end
+    end
+
+    -- do physics
+
+    local stepRc = 0
+    stepRc = object_step_without_floor_orient()
+    if obj.oForwardVel > 0 then
+        obj.oForwardVel = obj.oForwardVel - 0.2
+    end
+    -- play sounds
+    if stepRc == 1 then
+        cur_obj_play_sound_2(SOUND_GENERAL_BOX_LANDING_2)
+    elseif (stepRc & 1) ~= 0 then
+        if obj.oForwardVel > 20.0 then
+            cur_obj_play_sound_2(SOUND_ENV_SLIDING)
+        end
+    end
+
+    if stepRc & OBJ_COL_FLAG_HIT_WALL ~= 0 then
+        obj.oNumLootCoins = 4
+        obj.oHealth = 0
+        obj_die_if_health_non_positive()
+    end
+
+    -- check for floor death
+    local floor = cur_obj_update_floor_height_and_get_floor()
+    if floor ~= nil then
+        obj_check_floor_death(stepRc, floor)
+    end
+
+    -- update visual rotation
+    if obj.oForwardVel > 0 then
+        obj.oFaceAngleYaw = obj.oMoveAngleYaw
+        obj.oFaceAnglePitch = obj.oFaceAnglePitch + obj.oForwardVel * 100
+    end
+
+    -- if we touched it, send an immediate update instead of waiting
+    if localPlayerTouch then
+        network_send_object(obj, false)
     end
 end
 
-id_bhvKickableRock = hook_behavior(nil, OBJ_LIST_DEFAULT, true, bhv_kickable_rock_init, bhv_kickable_rock_loop)
+id_bhvKickableRock = hook_behavior(nil, OBJ_LIST_DEFAULT, true, bhv_ball_init, bhv_ball_loop)
 
 -- Checkpoint Flag (I'm so peak)
 
@@ -1312,18 +1410,20 @@ define_custom_obj_fields({
 })
 
 function bhv_checkpoint_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
     obj_set_model_extended(o, E_MODEL_CHECKPOINT)
     o.oAnimations = gObjectAnimations.castle_grounds_seg7_anims_flags
     o.oAnimState = 1
     cur_obj_init_animation(0)
     o.oCollected = FALSE
-    o.header.gfx.pos.y = o.oPosY - 180
+    obj_scale(o, 2.5)
     network_init_object(o, true, { "oCollected" })
     obj_set_hitbox(o, sCheckpointHitbox)
 end
 
 function bhv_checkpoint_loop(o)
     local m = gMarioStates[0]
+    obj_mark_for_deletion(o)
     if obj_check_hitbox_overlap(m.marioObj, o) then
         o.oCollected = TRUE
     end
@@ -1543,7 +1643,19 @@ end
 
 function bhv_rr_rotating_plus_loop(o)
     load_object_collision_model()
-    o.oFaceAngleYaw = o.oFaceAngleYaw + 100
+    if o.oAction == 0 then
+        o.oFaceAngleYaw = o.oFaceAngleYaw + 128
+        o.oAngleVelYaw = 100
+        if o.oFaceAngleYaw % 16384 == 0 then
+            o.oAction = 1
+        end
+    elseif o.oAction == 1 then
+        o.oAngleVelYaw = 0
+        if o.oTimer == 45 then
+            o.oTimer = 0
+            o.oAction = 0
+        end
+    end
 end
 
 bhvRRRotPlus = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_rr_rotating_plus_init,
@@ -2159,14 +2271,17 @@ bhvCasinoDice = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_casino_dice,
 
 ---@param o Object
 function bhv_wmotr_static_platform(o)
-    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_MOVE_XZ_USING_FVEL
     o.collisionData = smlua_collision_util_get("wmotr_static_platform_collision")
     o.header.gfx.skipInViewCheck = true
     o.oCollisionDistance = 1000
 end
 
 bhvWMOTRStaticPlatform = hook_behavior(nil, OBJ_LIST_SURFACE, true, bhv_wmotr_static_platform,
-    function() load_object_collision_model() end)
+    function(o)
+        -- o.oForwardVel = math.sin(get_global_timer()/1000)*100
+        load_object_collision_model()
+    end)
 
 ---@param o Object
 function bhv_mario_world_block(o)
@@ -2644,14 +2759,17 @@ bhvWarioBoss = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_wario_boss_init,
 
 ---@param o Object
 function bhv_goomba_watchers(o)
-    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_MOVE_XZ_USING_FVEL | OBJ_FLAG_SET_FACE_ANGLE_TO_MOVE_ANGLE
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_MOVE_XZ_USING_FVEL
     o.header.gfx.skipInViewCheck = true
     o.oAnimations = gObjectAnimations.goomba_seg8_anims_0801DA4C
     cur_obj_init_animation(0)
 end
 
 bhvGoombaWatchers = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_goomba_watchers,
-    nil)
+    function(o)
+        o.oFaceAngleYaw = obj_angle_to_object(o,
+            cur_obj_nearest_object_with_behavior(get_behavior_from_id(id_bhvKingGoomba)))
+    end)
 
 ACT_YEET_STAT = allocate_mario_action(ACT_FLAG_STATIONARY)
 
@@ -2854,3 +2972,55 @@ end
 
 bhvSmashBrosMetal = hook_behavior(nil, OBJ_LIST_GENACTOR, true, bhv_smash_bros_metal,
     bhv_smash_bros_metal_loo)
+
+local function rolling_chomp(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE|OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW
+    o.hitboxRadius, o.hitboxHeight = 256, 256
+    o.oAnimations = gObjectAnimations.chain_chomp_seg6_anims_06025178
+    cur_obj_init_animation(0)
+    o.oMoveAngleYaw      = o.oMoveAngleYaw - 16384
+    --o.oMoveAngleYaw = o.oFaceAngleYaw
+    o.oGravity           = 3
+    o.oForwardVel        = 30
+    o.oFriction          = 1
+    o.oInteractType      = INTERACT_DAMAGE
+    o.oIntangibleTimer   = 0
+    o.oDamageOrCoinValue = 2
+end
+
+
+---@param o Object
+local function rolling_chomp_loop(o)
+    o.oFaceAnglePitch = o.oFaceAnglePitch + 0x100 * o.oForwardVel
+    object_step_without_floor_orient()
+    cur_obj_scale(1.5)
+    if o.oPosY < -716 then
+        obj_mark_for_deletion(o)
+    end
+
+    if o.parentObj.behavior == get_behavior_from_id(bhvRollingChompSpawn) then
+        o.oMoveAngleYaw = 16384
+        o.oFaceAngleRoll = 0
+        if o.oTimer > 350 then
+            obj_mark_for_deletion(o)
+        end
+    end
+
+    o.oGraphYOffset = 197
+end
+
+bhvRollingChomp = hook_behavior(nil, OBJ_LIST_GENACTOR, true, rolling_chomp, rolling_chomp_loop)
+
+local function rolling_chomp_spawn(o)
+    o.oPosX = -10859
+    o.oPosY = 2644
+    o.oPosZ = -1355
+    if o.oTimer % 70 == 0 then
+        if should_object_spawn() then
+            spawn_sync_object(bhvRollingChomp, E_MODEL_CHAIN_CHOMP, o.oPosX, o.oPosY, -1255, function(j)
+                j.parentObj = o
+            end)
+        end
+    end
+end
+bhvRollingChompSpawn = hook_behavior(nil, OBJ_LIST_GENACTOR, true, nil, rolling_chomp_spawn)

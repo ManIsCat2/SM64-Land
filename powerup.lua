@@ -779,7 +779,7 @@ function checkCloudCount()
     local gMarioObject = gMarioState.marioObj
     local oclou
 
-    if cloudcount > obj_count_objects_with_behavior_id(bhvCloudFollow) then
+    if cloudcount > count_objects_with_behavior(get_behavior_from_id(bhvCloudFollow)) then
         oclou = spawn_object(gMarioObject, MODEL_CLOUDSPAWN, bhvCloudFollow)
         oclou.oHiddenBlueCoinSwitch = gMarioObject.oHiddenBlueCoinSwitch
         gMarioObject.oHiddenBlueCoinSwitch = oclou

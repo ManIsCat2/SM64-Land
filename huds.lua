@@ -35,7 +35,7 @@ levelData = {
     [COURSE_BITFS] = { { stars = { 1, 0, 2 }, finalStar = 2 } },
     [COURSE_WDW] = { { stars = { 1, 0, 2, 3 }, finalStar = 3 }, { stars = { 4, 5 } } },
     [COURSE_SA] = { { stars = { 2, 1, 3, 6 }, finalStar = 3, coinStar = 6 } },
-    [COURSE_WMOTR] = { { stars = { 0, 1, 6 }, finalStar = 1, coinStar = 6 } },
+    [COURSE_WMOTR] = { { stars = { 0, 1, 6 }, finalStar = 1, coinStar = 6 }, { stars = { 2, 3 }, finalStar = 3 } },
 }
 
 bossLevelData = {
@@ -225,12 +225,9 @@ function operation2(course, star)
     end
 end
 
-function mario_update(m)
-    numStars = hud_get_value(HUD_DISPLAY_STARS)
-    numCoins = hud_get_value(HUD_DISPLAY_COINS)
-end
-
 function lobby_hud()
+    local numStars = hud_get_value(HUD_DISPLAY_STARS)
+    local numCoins = hud_get_value(HUD_DISPLAY_COINS)
     TEX_GLOBAL_STAR = charSelect and charSelect.character_get_star_icon(0) or gTextures.star
     starPower = get_star_count() / curWorld
     if gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_GROUNDS) or gNetworkPlayers[0].currLevelNum == (LEVEL_CASTLE_COURTYARD) then
@@ -263,6 +260,8 @@ function lobby_hud()
 end
 
 function level_hud()
+    local numStars = hud_get_value(HUD_DISPLAY_STARS)
+    local numCoins = hud_get_value(HUD_DISPLAY_COINS)
     local curCourseNum = gNetworkPlayers[0].currCourseNum
     local curAreaIndex = gNetworkPlayers[0].currAreaIndex
     local bossLevel = bossLevelData[curCourseNum] and bossLevelData[curCourseNum][curAreaIndex] and
@@ -321,6 +320,8 @@ function level_hud()
 end
 
 function toad_house_hud()
+    local numStars = hud_get_value(HUD_DISPLAY_STARS)
+    local numCoins = hud_get_value(HUD_DISPLAY_COINS)
     if gNetworkPlayers[0].currLevelNum == (LEVEL_COTMC) or gNetworkPlayers[0].currLevelNum == (LEVEL_VCUTM) or gNetworkPlayers[0].currLevelNum == (LEVEL_TOTWC) then
         -- Coin Counter
 
@@ -487,5 +488,4 @@ function on_hud_render_behind()
 end
 
 hook_event(HOOK_ON_HUD_RENDER_BEHIND, on_hud_render_behind)
-hook_event(HOOK_MARIO_UPDATE, mario_update)
 hook_event(HOOK_UPDATE, worldCheck)
