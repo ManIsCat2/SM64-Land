@@ -43,7 +43,6 @@
 * Noteblocks
 * Boomerang bros
 * Kart for the kart level
-* Flip block code and model
 * Unanimated munchers
 * Yoshi behavior check
 * Chuckyeet broken, need accuracy checks
