@@ -748,7 +748,7 @@ E_MODEL_DANCING_HILL2 = smlua_model_util_get_id("dancing_hill2_geo")
 ---@param o Object
 function bhv_dancing_hill_init(o)
     o.header.gfx.skipInViewCheck = true
-   -- obj_set_model_extended(o, E_MODEL_DANCING_HILL)
+    -- obj_set_model_extended(o, E_MODEL_DANCING_HILL)
     smlua_anim_util_set_animation(o, "anim_dance_hill")
 end
 
@@ -1135,12 +1135,31 @@ COL_FLIP_BLOCK = smlua_collision_util_get("flip_block_collision")
 ACT_FLIP_BLOCK_IDLE = 0
 ACT_FLIP_BLOCK_FLIPPING = 1
 
-define_custom_obj_fields({
-    oBlockExtX = "f32",
-    oBlockExtZ = "f32",
-    oBlockExtDiagonal = "f32",
-    oBlockExtDelay = "f32"
-})
+local function spawn_flip_pair(o, i, dx, dz)
+    -- positive offset
+    spawn_non_sync_object(id_bhvFlipBlock, E_MODEL_FLIP_BLOCK, o.oPosX, o.oPosY, o.oPosZ,
+        function(t)
+            t.oHomeX, t.oHomeY, t.oHomeZ = t.oPosX, t.oPosY, t.oPosZ
+            t.oBehParams = (i << 8)
+
+            t.oPosX = o.oPosX + dx * (250 * i)
+            t.oPosZ = o.oPosZ + dz * (250 * i)
+
+            t.oHealth, t.oDoorUnk100, t.oDoorUnk88 = t.oPosX, t.oPosY, t.oPosZ
+        end)
+
+    -- negative offset
+    spawn_non_sync_object(id_bhvFlipBlock, E_MODEL_FLIP_BLOCK, o.oPosX, o.oPosY, o.oPosZ,
+        function(t)
+            t.oHomeX, t.oHomeY, t.oHomeZ = t.oPosX, t.oPosY, t.oPosZ
+            t.oBehParams = (i << 8)
+
+            t.oPosX = o.oPosX - dx * (250 * i)
+            t.oPosZ = o.oPosZ - dz * (250 * i)
+
+            t.oHealth, t.oDoorUnk100, t.oDoorUnk88 = t.oPosX, t.oPosY, t.oPosZ
+        end)
+end
 
 function bhv_flip_block_init(o)
     o.header.gfx.skipInViewCheck = true
@@ -1153,32 +1172,69 @@ function bhv_flip_block_init(o)
     o.hitboxRadius = 230
     o.oIntangibleTimer = 0
     o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
-    o.oBlockExtX = ((o.oBehParams >> 16) & 0xFF)
-    o.oBlockExtZ = ((o.oBehParams >> 24) & 0xFF)
-    o.oBlockExtDiagonal = (o.oBlockExtX + o.oBlockExtZ) ^ 2 * (o.oBlockExtX * o.oBlockExtZ)
-    o.oBlockExtDelay = ((o.oBehParams >> 0) & 0xFF)
     obj_set_model_extended(o, E_MODEL_FLIP_BLOCK)
-    network_init_object(o, true, { "oBlockExtX", "oBlockExtZ", "oBlockExtDiagonal", "oBlockExtDelay" })
+    -- X axis expansion
+    local count_x = (o.oBehParams >> 24) & 0xff
+    if count_x ~= 0 then
+        local dx, dz = sins(o.oFaceAngleYaw), coss(o.oFaceAngleYaw)
+        for i = 1, count_x do
+            spawn_flip_pair(o, i, dx, dz)
+        end
+    end
+
+    -- Z axis expansion
+    local count_z = (o.oBehParams >> 16) & 0xff
+    if count_z ~= 0 then
+        local dx, dz = -coss(o.oFaceAngleYaw), sins(o.oFaceAngleYaw)
+        for i = 1, count_z do
+            spawn_flip_pair(o, i, dx, dz)
+        end
+    end
+    -- network_init_object(o, true, { "oBlockExtX", "oBlockExtZ", "oBlockExtDiagonal", "oBlockExtDelay" })
 end
 
+local FLIPBLOCK_EXTTIME = 180
 function bhv_flip_block_loop(o)
-    --if ((o.oBehParams >> 24) & 0xFF) == 0 and ((o.oBehParams >> 16) & 0xFF) == 0 and ((o.oBehParams >> 0) & 0xFF) == 0 then
-    if o.oAction == ACT_FLIP_BLOCK_IDLE then
-        o.oTimer = 0
+    if (o.oBehParams >> 8) & 0xff ~= 0 then
         load_object_collision_model()
-
-        local nearM = nearest_mario_state_to_object(o)
-
-        if (cur_obj_was_attacked_or_ground_pounded() ~= 0) or nearM.ceil ~= nil and nearM.ceil.object == o and obj_check_hitbox_overlap(o, nearM.marioObj) then
-            o.oAction = ACT_FLIP_BLOCK_FLIPPING
+        if o.oAction == 0 then
+            o.oPosX = approach_f32_symmetric(o.oPosX, o.oHomeX, 5)
+            o.oPosY = approach_f32_symmetric(o.oPosY, o.oHomeY, 5)
+            o.oPosZ = approach_f32_symmetric(o.oPosZ, o.oHomeZ, 5)
+            if o.oTimer == FLIPBLOCK_EXTTIME then
+                o.oTimer = 0
+                o.oAction = 1
+            end
+        elseif o.oAction == 1 then
+            o.oPosX = approach_f32_symmetric(o.oPosX, o.oHealth, 5)
+            o.oPosY = approach_f32_symmetric(o.oPosY, o.oDoorUnk100, 5)
+            o.oPosZ = approach_f32_symmetric(o.oPosZ, o.oDoorUnk88, 5)
+            if o.oTimer == FLIPBLOCK_EXTTIME then
+                o.oTimer = 0
+                o.oAction = 0
+            end
         end
-    elseif o.oAction == ACT_FLIP_BLOCK_FLIPPING then
-        o.oFaceAnglePitch = cubicOut(0, 344064, 1, o.oTimer / 150)
-        o.oInteractStatus = 0
-        if o.oTimer > 150 then
-            o.oAction = ACT_FLIP_BLOCK_IDLE
+    else
+        --if ((o.oBehParams >> 24) & 0xFF) == 0 and ((o.oBehParams >> 16) & 0xFF) == 0 and ((o.oBehParams >> 0) & 0xFF) == 0 then
+        if o.oAction == ACT_FLIP_BLOCK_IDLE then
+            o.oTimer = 0
+            load_object_collision_model()
+
+            local nearM = nearest_mario_state_to_object(o)
+
+            if (cur_obj_was_attacked_or_ground_pounded() ~= 0) or nearM.ceil ~= nil and nearM.ceil.object == o and obj_check_hitbox_overlap(o, nearM.marioObj) then
+                if (o.oBehParams >> 24) & 0xff == 0 then
+                    o.oAction = ACT_FLIP_BLOCK_FLIPPING
+                end
+            end
+        elseif o.oAction == ACT_FLIP_BLOCK_FLIPPING then
+            o.oFaceAnglePitch = cubicOut(0, 344064, 1, o.oTimer / 150)
+            o.oInteractStatus = 0
+            if o.oTimer > 150 then
+                o.oAction = ACT_FLIP_BLOCK_IDLE
+            end
+            obj_scale_xyz(o, 1, 1, 0.02)
         end
-        --obj_scale_xyz(o, 1, 1, 0.02)
     end
 end
 
