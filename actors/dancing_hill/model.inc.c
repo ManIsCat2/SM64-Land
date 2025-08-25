@@ -12,6 +12,11 @@ u8 dancing_hill_Null_geo_00405e00_0x405e90_custom_rgba16_png_001_rgba16[] = {
 	#include "actors/dancing_hill/Null_geo_00405e00_0x405e90_custom.rgba16.png.001.rgba16.inc.c"
 };
 
+u8 YellowWORLD2[] = {
+	#include "actors/dancing_hill/Yellow.rgba16.inc.c"
+};
+
+
 Vtx dancing_hill_Bone_mesh_layer_1_vtx_0[22] = {
 	{{ {-647, -716, 268}, 0, {2, 909}, {139, 0, 49, 255} }},
 	{{ {-647, -407, -268}, 0, {-297, 556}, {129, 0, 0, 255} }},
@@ -297,6 +302,19 @@ Gfx mat_dancing_hill_f3dlite_material_006[] = {
 	gsSPEndDisplayList(),
 };
 
+Gfx WORLD2_MAT[] = {
+	gsDPPipeSync(),
+	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, SHADE, 0, TEXEL0, 0, ENVIRONMENT, 0),
+	gsSPTexture(65535, 65535, 0, 0, 1),
+	gsSPSetLights1(dancing_hill_f3dlite_material_003_lights),
+	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b_LOAD_BLOCK, 1, YellowWORLD2),
+	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b_LOAD_BLOCK, 0, 0, 7, 0, G_TX_WRAP | G_TX_NOMIRROR, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 0, 0),
+	gsDPLoadBlock(7, 0, 0, 1023, 256),
+	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
+	gsDPSetTileSize(0, 0, 0, 124, 124),
+	gsSPEndDisplayList(),
+};
+
 Gfx mat_dancing_hill_f3dlite_material_003[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, SHADE, 0, TEXEL0, 0, ENVIRONMENT, 0),
@@ -331,6 +349,34 @@ Gfx dancing_hill_Bone_001_skinned_mesh_layer_1[] = {
 
 Gfx dancing_hill_Bone_001_mesh_layer_1[] = {
 	gsSPDisplayList(mat_dancing_hill_f3dlite_material_006),
+	gsSPDisplayList(dancing_hill_Bone_001_mesh_layer_1_tri_0),
+	gsSPDisplayList(dancing_hill_Bone_001_mesh_layer_1_tri_1),
+	gsDPPipeSync(),
+	gsSPSetGeometryMode(G_LIGHTING),
+	gsSPClearGeometryMode(G_TEXTURE_GEN),
+	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
+	gsSPTexture(65535, 65535, 0, 0, 0),
+	gsDPSetEnvColor(255, 255, 255, 255),
+	gsDPSetAlphaCompare(G_AC_NONE),
+	gsSPEndDisplayList(),
+};
+
+//W2
+
+Gfx dancing_hill_Bone_mesh_layer_1_2[] = {
+	gsSPDisplayList(WORLD2_MAT),
+	gsSPDisplayList(dancing_hill_Bone_mesh_layer_1_tri_0),
+	gsSPEndDisplayList(),
+};
+
+Gfx dancing_hill_Bone_001_skinned_mesh_layer_1_2[] = {
+	gsSPDisplayList(WORLD2_MAT),
+	gsSPDisplayList(dancing_hill_Bone_001_skinned_mesh_layer_1_tri_0),
+	gsSPEndDisplayList(),
+};
+
+Gfx dancing_hill_Bone_001_mesh_layer_1_2[] = {
+	gsSPDisplayList(WORLD2_MAT),
 	gsSPDisplayList(dancing_hill_Bone_001_mesh_layer_1_tri_0),
 	gsSPDisplayList(dancing_hill_Bone_001_mesh_layer_1_tri_1),
 	gsDPPipeSync(),

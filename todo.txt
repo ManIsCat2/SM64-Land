@@ -84,7 +84,6 @@
 * Custom bitdw platforms
 * Flip Platforms (accuracy check)
 * Trajectory Platform
-* Slope Dropping platforms
 * Moving ropes
 * Breaking Light platforms
 * Custom bowser fight

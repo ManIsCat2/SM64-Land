@@ -744,10 +744,11 @@ end
 
 E_MODEL_DANCING_HILL = smlua_model_util_get_id("dancing_hill_geo")
 
+E_MODEL_DANCING_HILL2 = smlua_model_util_get_id("dancing_hill2_geo")
 ---@param o Object
 function bhv_dancing_hill_init(o)
     o.header.gfx.skipInViewCheck = true
-    obj_set_model_extended(o, E_MODEL_DANCING_HILL)
+   -- obj_set_model_extended(o, E_MODEL_DANCING_HILL)
     smlua_anim_util_set_animation(o, "anim_dance_hill")
 end
 
